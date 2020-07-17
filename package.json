@@ -1,0 +1,21 @@
+{
+  "name": "dnd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "packages/client"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "2.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write"
+  }
+}
