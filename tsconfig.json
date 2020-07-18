@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "packages",
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
