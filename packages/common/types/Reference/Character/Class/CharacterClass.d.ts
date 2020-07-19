@@ -4,6 +4,7 @@ declare type CharacterClass = Readonly<{
   name: string
   description: string
   hpDice: BaseDiceValue
+
   proficiencies: CharacterClassProficiencies
   archetypes: ReadonlyArray<CharacterClassArchetype>
   spellcasting?: CharacterClassSpellcasting
