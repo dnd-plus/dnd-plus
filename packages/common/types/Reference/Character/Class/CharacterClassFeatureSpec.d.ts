@@ -5,7 +5,7 @@ declare type CharacterClassFeatureSpec = Readonly<
       description: string
     }
   | {
-      featureByLevel: ReadonlyArray<{
+      featuresByLevel: ReadonlyArray<{
         level: CharacterLevel
         feature: CharacterClassFeature
       }>

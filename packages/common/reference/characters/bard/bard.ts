@@ -4,6 +4,7 @@ export const bard: CharacterClass = {
   type: 'bard',
   name: 'Бард',
   description: 'Вдохновляющий маг, чья сила идет от музыки создания',
+  hpDice: 8,
   proficiencies: {
     armor: ['light'],
     weapon: [
@@ -28,7 +29,24 @@ export const bard: CharacterClass = {
       ],
     },
   },
-  hpDice: 8,
+  spellcasting: {
+    spellSlotsType: 'mage',
+    baseAbility: 'charisma',
+    // prettier-ignore
+    cantripsByLevel: [
+      2, 2, 2, 3, 3,
+      3, 3, 3, 3, 4,
+      4, 4, 4, 4, 4,
+      4, 4, 4, 4, 4,
+    ],
+    // prettier-ignore
+    spellsByLevel: [
+      4,  5,  6,  7,  8,
+      9,  10, 11, 12, 13,
+      14, 15, 15, 16, 18,
+      19, 19, 20, 22, 22,
+    ]
+  },
   archetypes: [],
   featuresSpec: [],
 } as const

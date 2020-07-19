@@ -6,5 +6,6 @@ declare type CharacterClass = Readonly<{
   hpDice: BaseDiceValue
   proficiencies: CharacterClassProficiencies
   archetypes: ReadonlyArray<CharacterClassArchetype>
+  spellcasting?: CharacterClassSpellcasting
   featuresSpec: ReadonlyArray<CharacterClassFeatureSpec>
 }>
