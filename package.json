@@ -4,8 +4,15 @@
   "main": "index.js",
   "private": true,
   "workspaces": [
-    "packages/client"
+    "packages/client",
+    "packages/common",
+    "packages/server"
   ],
+  "scripts": {
+    "start:client": "cd ./packages/client && yarn start",
+    "build:client": "cd ./packages/client && yarn build",
+    "dev:server": "cd ./packages/server && yarn dev"
+  },
   "license": "MIT",
   "devDependencies": {
     "husky": "4.2.5",
@@ -14,7 +21,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && tsc"
+      "pre-commit": "lint-staged && cd ./packages/client && tsc && cd ../server && tsc"
     }
   },
   "lint-staged": {

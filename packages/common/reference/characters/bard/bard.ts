@@ -1,4 +1,4 @@
-import { SIMPLE_WEAPON_GROUP_TYPE } from '../../equipment/WEAPON_TYPE'
+import { SIMPLE_WEAPON_GROUP_TYPE } from 'common/reference/equipment/WEAPON_TYPE'
 
 export const bard: CharacterClass = {
   type: 'bard',

@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["es2019"],
+    "module": "CommonJS",
+    "baseUrl": "./src",
+    "types": [],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "common/*": ["../../common/*"]
+    }
+  },
+  "include": [
+    "src",
+    "../common"
+  ]
+}
