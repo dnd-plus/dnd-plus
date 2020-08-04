@@ -1,7 +1,7 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "packages/client/src",
+    "baseUrl": "src",
     "paths": {
       "common/*": ["../../common/*"]
     }

@@ -9,9 +9,10 @@
     "packages/server"
   ],
   "scripts": {
-    "start:client": "cd ./packages/client && yarn start",
-    "build:client": "cd ./packages/client && yarn build",
-    "dev:server": "cd ./packages/server && yarn dev"
+    "client:start": "cd ./packages/client && yarn start",
+    "client:build": "cd ./packages/client && yarn build",
+    "server:dev": "cd ./packages/server && yarn dev",
+    "server:prod": "cd ./packages/server && yarn prod"
   },
   "license": "MIT",
   "devDependencies": {

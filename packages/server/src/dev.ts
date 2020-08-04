@@ -1,6 +1,10 @@
 // load env before imports
 require('dotenv').config()
 
-import { run } from './run'
+import { createServer } from 'createServer'
 
-run()
+;(async function () {
+  const server = await createServer()
+
+  await server.listen()
+})()

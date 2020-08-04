@@ -1,7 +1,7 @@
-import { Server } from '@logux/server'
+import { Server, ServerOptions } from '@logux/server'
 import { mongoose } from '@typegoose/typegoose'
 
-export async function run() {
+export async function createServer(serverOptions?: ServerOptions) {
   // db init
   await mongoose.connect('mongodb://localhost/dnd', { useNewUrlParser: true })
 
@@ -11,11 +11,12 @@ export async function run() {
       subprotocol: '1.0.0',
       supports: '1.x',
       root: __dirname,
+      ...serverOptions,
     }),
   )
 
   // @ts-ignore
   await server.autoloadModules(['modules/**/*.module.ts'])
 
-  await server.listen()
+  return server
 }
