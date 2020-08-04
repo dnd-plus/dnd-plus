@@ -7,7 +7,7 @@ import path from 'path'
 
 // run
 ;(async function () {
-  // app to serve static
+  // app to serve static 1
   const app = express()
 
   const staticDir = path.join(__dirname, '../../client/build')
