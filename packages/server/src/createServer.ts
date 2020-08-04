@@ -4,6 +4,10 @@ import { mongoose } from '@typegoose/typegoose'
 export async function createServer(serverOptions?: ServerOptions) {
   // db init
   await mongoose.connect('mongodb://localhost/dnd', { useNewUrlParser: true })
+  process.on('SIGINT', async () => {
+    await mongoose.disconnect()
+    process.exit(0)
+  })
 
   // server init
   const server = new Server(
