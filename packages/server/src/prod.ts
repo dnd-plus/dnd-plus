@@ -20,7 +20,9 @@ import path from 'path'
   await app.listen(8080)
 
   // logux server
-  const server = await createServer()
+  const server = await createServer({
+    port: 31337,
+  })
   await server.listen()
 
   process.send?.('ready')
