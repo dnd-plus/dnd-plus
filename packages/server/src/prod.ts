@@ -21,6 +21,7 @@ import path from 'path'
 
   // logux server
   const server = await createServer({
+    host: '0.0.0.0',
     port: 31337,
   })
   await server.listen()
