@@ -17,7 +17,7 @@ import path from 'path'
     response.sendFile(path.resolve(staticDir, 'index.html'))
   })
 
-  await app.listen(8080)
+  await app.listen(80)
 
   // logux server
   const server = await createServer({
