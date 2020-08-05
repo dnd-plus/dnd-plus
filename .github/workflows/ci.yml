@@ -29,8 +29,6 @@ jobs:
         yarn client:build
         
     - name: Move
-      env:
-        HOME: /home/git-runner
       run: |
         cd /var/www
         pm2 stop dnd.ecosystem.config.js
