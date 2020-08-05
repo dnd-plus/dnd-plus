@@ -11,6 +11,7 @@ export const configureStore = () => {
       process.env.NODE_ENV === 'development'
         ? 'ws://localhost:31337'
         : `ws://${process.env.REACT_APP_LOGUX_URL}`,
+    allowDangerousProtocol: true,
     userId: localStorage.getItem('userId') || GUEST_USER,
     token: localStorage.getItem('token') || '',
   })
