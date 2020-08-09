@@ -60,6 +60,9 @@ module.exports = function override(config, env) {
         use.options.emitWarning = true
       }
     }
+
+    // resolve common folder not from node_modules
+    config.resolve.modules.unshift(require('path').resolve(__dirname, '../'))
   }
 
   return config

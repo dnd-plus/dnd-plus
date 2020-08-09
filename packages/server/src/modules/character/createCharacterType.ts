@@ -77,6 +77,17 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
             to.channel = channel
           }
 
+          const user = ctx.userId
+
+          if (to.user) {
+            to.users = [to.user, user]
+            delete to.user
+          } else if (to.users) {
+            to.users = to.users.concat(user)
+          } else {
+            to.user = user
+          }
+
           return to
         },
       },
