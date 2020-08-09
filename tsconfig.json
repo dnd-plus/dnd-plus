@@ -15,7 +15,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noUnusedParameters": true,
     "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "assumeChangesOnlyAffectDirectDependencies": true,
     "jsx": "react",
     "types": []
   }

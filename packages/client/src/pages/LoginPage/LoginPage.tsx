@@ -5,7 +5,6 @@ import {
   Button,
   ButtonGroup,
   ClickAwayListener,
-  Container,
   Grid,
   Grow,
   MenuItem,
@@ -27,9 +26,10 @@ import {
   UNIQUE_FIELD_EXIST,
   UNKNOWN_USER,
   WRONG_PASSWORD,
-} from 'common/constants/errors/user'
+} from 'common/modules/user/errors'
 import { FORM_ERROR } from 'final-form'
 import { MuiField } from 'components/MuiField'
+import { DefaultContainer } from 'components/DefaultContainer'
 
 const requiredValidator = (value: string) => {
   if (!value) {
@@ -57,7 +57,6 @@ export function LoginPage() {
         await dispatch.sync(userActions.login({ login, password }))
       }
     } catch (error) {
-      console.log('error', { ...error })
       switch (error.action?.reason) {
         case UNKNOWN_USER:
           return { login: 'Такого пользователя не существует' }
@@ -79,7 +78,7 @@ export function LoginPage() {
   }
 
   return (
-    <Container>
+    <DefaultContainer>
       <Form
         onSubmit={handleSubmit}
         subscription={{ submitting: true, submitError: true }}
@@ -88,22 +87,16 @@ export function LoginPage() {
           submitting,
           submitError,
           dirtySinceLastSubmit,
-          form,
         }) => (
-          <Box mt={4}>
+          <Box my={5}>
             <form onSubmit={handleSubmit}>
-              <Grid
-                container
-                direction={'column'}
-                alignItems={'center'}
-                spacing={3}
-              >
-                <Grid container item xs={12} sm={8} md={6} lg={4}>
-                  <Typography variant={'h4'}>
+              <Grid container item direction={'column'} spacing={3}>
+                <Grid container item>
+                  <Typography variant={'h3'}>
                     {isRegister ? 'Регистрация' : 'Вход'} в DnD+
                   </Typography>
                 </Grid>
-                <Grid container item xs={12} sm={8} md={6} lg={4}>
+                <Grid container item>
                   <Field
                     name={'login'}
                     label={'Логин'}
@@ -112,7 +105,7 @@ export function LoginPage() {
                   />
                 </Grid>
                 {isRegister && (
-                  <Grid container item xs={12} sm={8} md={6} lg={4}>
+                  <Grid container item>
                     <Field
                       name={'email'}
                       validate={emailValidator}
@@ -121,7 +114,7 @@ export function LoginPage() {
                     />
                   </Grid>
                 )}
-                <Grid container item xs={12} sm={8} md={6} lg={4}>
+                <Grid container item>
                   <Field
                     name={'password'}
                     label={'Пароль'}
@@ -133,7 +126,7 @@ export function LoginPage() {
                   />
                 </Grid>
                 {isRegister && (
-                  <Grid container item xs={12} sm={8} md={6} lg={4}>
+                  <Grid container item>
                     <Field
                       name={'repeatPassword'}
                       label={'Повторите пароль'}
@@ -147,7 +140,7 @@ export function LoginPage() {
                     />
                   </Grid>
                 )}
-                <Grid container item xs={12} sm={8} md={6} lg={4}>
+                <Grid container item>
                   <ButtonGroup
                     variant={'contained'}
                     color={'primary'}
@@ -212,7 +205,7 @@ export function LoginPage() {
                     )}
                   </Popper>
                 </Grid>
-                <Grid container item xs={12} sm={8} md={6} lg={4}>
+                <Grid container item>
                   {!dirtySinceLastSubmit && submitError && (
                     <Typography color={'error'}>{submitError}</Typography>
                   )}
@@ -222,6 +215,6 @@ export function LoginPage() {
           </Box>
         )}
       />
-    </Container>
+    </DefaultContainer>
   )
 }

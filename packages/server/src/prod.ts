@@ -1,3 +1,5 @@
+'use strict'
+
 // load env before imports
 require('dotenv').config()
 
@@ -13,7 +15,7 @@ import path from 'path'
   const staticDir = path.join(__dirname, '../../client/build')
 
   app.use(express.static(staticDir, { index: false }))
-  app.get('*', function (request, response) {
+  app.get('*', function (_, response) {
     response.sendFile(path.resolve(staticDir, 'index.html'))
   })
 

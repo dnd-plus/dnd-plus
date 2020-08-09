@@ -1,4 +1,5 @@
 import {
+  DocumentType,
   getModelForClass,
   modelOptions,
   plugin,
@@ -13,14 +14,14 @@ import uniqueValidator from 'mongoose-unique-validator'
   },
 })
 @plugin(uniqueValidator)
-class UserSchema {
-  @prop({ required: true, unique: true })
+export class UserSchema {
+  @prop({ required: true, unique: true, select: false })
   email!: string
 
   @prop({ required: true, unique: true })
   login!: string
 
-  @prop({ required: true })
+  @prop({ required: true, select: false })
   passwordHash!: string
 
   async setPassword(password: string) {
@@ -31,5 +32,7 @@ class UserSchema {
     return await bcrypt.compare(password, this.passwordHash)
   }
 }
+
+export type UserDocument = DocumentType<UserSchema>
 
 export const User = getModelForClass(UserSchema)

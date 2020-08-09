@@ -1,5 +1,10 @@
 declare interface CharacterState {
-  hp: {
+  _id: string
+  name: string
+  userId: string
+  createdAt: number
+  updatedAt: number
+  hp?: {
     current: number
     temporary?: number
     /** user param, added to max hp */
@@ -7,8 +12,9 @@ declare interface CharacterState {
     /** user param, replace max hp */
     maxOverride?: number
   }
-  baseAbilityScores: BaseAbilityScoresState
-  classes: Array<{
+  baseAbilityScores?: BaseAbilityScoresState
+  race?: string
+  classes?: Array<{
     type: CharacterClassName
     level: CharacterLevel
     choices: {

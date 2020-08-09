@@ -2,7 +2,13 @@ import { getDefaultMiddleware, applyMiddleware } from '@reduxjs/toolkit'
 import { createLoguxCreator } from '@logux/redux'
 import { rootReducer } from 'common/modules/redux/rootReducer'
 import { GUEST_USER, userActions } from 'common/modules/user/redux'
-import { PROFILE_PAGE, LOGIN_PAGE } from 'constants/routes'
+import { loginRoute, profileRoute } from 'constants/routes'
+
+function logout() {
+  localStorage.removeItem('userId')
+  localStorage.removeItem('token')
+  window.location.href = loginRoute.link()
+}
 
 export const configureStore = () => {
   const createStore = createLoguxCreator({
@@ -23,20 +29,18 @@ export const configureStore = () => {
 
   store.client.on('add', (action) => {
     if (action.type === userActions.done.type) {
-      localStorage.setItem('userId', action.payload.login)
-      localStorage.setItem('token', action.payload.token)
-      window.location.href = PROFILE_PAGE.replace(
-        ':login',
-        action.payload.login,
-      )
+      const { payload } = action as ReturnType<typeof userActions.done>
+      localStorage.setItem('userId', payload.userId)
+      localStorage.setItem('token', payload.token)
+      window.location.href = profileRoute.link()
+    } else if (action.type === userActions.logout.type) {
+      logout()
     }
   })
 
   store.client.node.on('error', (error: any) => {
     if (error.type === 'wrong-credentials') {
-      localStorage.removeItem('userId')
-      localStorage.removeItem('token')
-      window.location.href = LOGIN_PAGE
+      logout()
     }
   })
 
@@ -64,4 +68,14 @@ declare module 'react-redux' {
 
   function useStore(): AppStore
   function useDispatch(): AppStore['dispatch']
+}
+
+declare module '@logux/core' {
+  function parseId(
+    id: string,
+  ): {
+    clientId: string
+    nodeId: string
+    userId: string
+  }
 }

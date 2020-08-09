@@ -20,6 +20,9 @@ const store = configureStore()
 badge(store.client, { messages: badgeRu, styles: badgeStyles })
 log(store.client)
 
+// @ts-ignore
+window.store = store
+
 ReactDOM.render(
   <BrowserRouter>
     <ReduxProvider store={store}>

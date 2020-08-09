@@ -1,3 +1,12 @@
-import { createMuiTheme } from '@material-ui/core'
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core'
 
-export default createMuiTheme()
+let theme = createMuiTheme()
+theme = responsiveFontSizes(theme)
+
+export type Theme = typeof theme
+
+declare module 'styled-components' {
+  interface DefaultTheme extends Theme {}
+}
+
+export default theme

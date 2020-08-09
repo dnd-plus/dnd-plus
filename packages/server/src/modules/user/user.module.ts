@@ -5,13 +5,14 @@ import {
   UNIQUE_FIELD_EXIST,
   UNKNOWN_USER,
   WRONG_PASSWORD,
-} from 'common/constants/errors/user'
+} from 'common/modules/user/errors'
 import { jwtDecode, jwtEncode } from 'utils/jwt'
 import {
   emailValidator,
   loginValidator,
   passwordValidator,
 } from 'common/modules/user/validators'
+import { currentUserChannel } from 'common/modules/user/channels'
 
 module.exports = function userModule(server: Server) {
   server.auth(async ({ userId, token }) => {
@@ -21,14 +22,28 @@ module.exports = function userModule(server: Server) {
 
     try {
       const data = await jwtDecode(token)
-      return data.login === userId
+      return data.userId === userId
     } catch (e) {
       return false
     }
   })
 
+  server.channel(currentUserChannel.path, {
+    access() {
+      return true
+    },
+    async load(ctx) {
+      if (ctx.userId === GUEST_USER) return
+
+      const user = await User.findById(ctx.userId)
+      if (user) {
+        return userActions.load(user.toObject())
+      }
+    },
+  })
+
   server.type(userActions.register, {
-    async access() {
+    access() {
       return true
     },
     async process(ctx, { payload: { email, login, password } }, meta) {
@@ -41,12 +56,13 @@ module.exports = function userModule(server: Server) {
         return
       }
 
-      const user = new User({ login, email })
+      let user = new User({ login, email })
       await user.setPassword(password)
       try {
-        await user.save()
-        const token = jwtEncode({ login })
-        ctx.sendBack(userActions.done({ login, token }))
+        user = await user.save()
+        const userId = user._id.toString()
+        const token = jwtEncode({ userId })
+        ctx.sendBack(userActions.done({ userId, token }))
       } catch (error) {
         if (error.name === 'ValidationError' && error.errors) {
           server.undo(meta, UNIQUE_FIELD_EXIST, {
@@ -65,15 +81,16 @@ module.exports = function userModule(server: Server) {
       return true
     },
     async process(ctx, { payload: { login, password } }, meta) {
-      const user = await User.findOne({ login }).exec()
+      const user = await User.findOne({ login }, '+passwordHash').exec()
       if (!user) {
         server.undo(meta, UNKNOWN_USER)
         return
       }
 
       if (await user.checkPassword(password)) {
-        const token = jwtEncode({ login })
-        ctx.sendBack(userActions.done({ login, token }))
+        const userId = user._id.toString()
+        const token = jwtEncode({ userId })
+        ctx.sendBack(userActions.done({ userId, token }))
         return
       }
 

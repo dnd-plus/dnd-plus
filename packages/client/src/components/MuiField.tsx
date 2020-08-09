@@ -19,7 +19,7 @@ export function MuiField({
       helperText={error}
       disabled={meta.submitting}
       fullWidth
-      variant={'filled'}
+      variant={'outlined'}
       {...rest}
       {...input}
     />

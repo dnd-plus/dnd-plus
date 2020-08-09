@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple'
 
 export type JwtPayload = {
-  login: string
+  userId: string
 }
 
 const jwtSecret = process.env.JWT_SECRET as string
