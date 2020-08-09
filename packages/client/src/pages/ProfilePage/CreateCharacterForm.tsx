@@ -44,6 +44,7 @@ export function CreateCharacterForm(props: {
                   name={'name'}
                   label={'Имя персонажа'}
                   validate={characterNameValidator}
+                  autoComplete={'off'}
                   component={MuiField}
                 />
               </DialogContent>
