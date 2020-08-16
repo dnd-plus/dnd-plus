@@ -7,6 +7,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
@@ -72,40 +74,35 @@ export function CharacterSettingsRacePage() {
           </div>
         </Box>
         {!reselectRace && (
-          <List>
+          <Grid container direction={'row'} spacing={2}>
             {race.features.map((feature) => (
-              <React.Fragment key={feature.key}>
-                <ListItem>
-                  <ListItemText
-                    primary={feature.data.name}
-                    secondary={feature.data.description}
-                  />
-                </ListItem>
+              <Grid item key={feature.key}>
+                <Box mb={1}>
+                  <Typography variant={'subtitle1'}>
+                    <b>{feature.data.name}</b>
+                  </Typography>
+                  <Divider />
+                </Box>
+                <Typography variant={'body1'}>
+                  {feature.data.description}
+                </Typography>
                 {feature.choices?.length > 0 && (
-                  <List component={'div'} disablePadding>
-                    <ListItem>
-                      <Box mt={-1} width={1}>
-                        <MapHooks
-                          hooks={feature.choices.map(({ hook }) => hook)}
-                          render={(choices) => (
-                            <Box mb={1}>
-                              {Object.entries(choices).map(
-                                ([key, { node }]) => (
-                                  <React.Fragment key={key}>
-                                    {node}
-                                  </React.Fragment>
-                                ),
-                              )}
-                            </Box>
-                          )}
-                        />
-                      </Box>
-                    </ListItem>
-                  </List>
+                  <Box mt={1} width={1}>
+                    <MapHooks
+                      hooks={feature.choices.map(({ hook }) => hook)}
+                      render={(choices) => (
+                        <Box mb={1}>
+                          {Object.entries(choices).map(([key, { node }]) => (
+                            <React.Fragment key={key}>{node}</React.Fragment>
+                          ))}
+                        </Box>
+                      )}
+                    />
+                  </Box>
                 )}
-              </React.Fragment>
+              </Grid>
             ))}
-          </List>
+          </Grid>
         )}
         {reselectRace && (
           <SelectRaceList onSelectRace={() => toggleReselectRace(false)} />
@@ -163,18 +160,20 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
                 <Box mr={2}>
                   <Avatar src={raceInfo.image} alt={raceInfo.name} />
                 </Box>
-                <div>
-                  {raceName(raceInfo)}
-                  <Typography variant={'body1'}>
-                    {raceInfo.description}
-                  </Typography>
-                </div>
+                <div>{raceName(raceInfo)}</div>
               </Box>
             </DialogTitle>
             <DialogContent>
-              <List>
+              <List disablePadding>
+                <ListItem disableGutters>
+                  <ListItemText
+                    primary={raceInfo.description}
+                    primaryTypographyProps={{ variant: 'body1' }}
+                  />
+                </ListItem>
+                <Divider />
                 {raceInfo.features.map(({ name, description }) => (
-                  <ListItem key={name}>
+                  <ListItem disableGutters key={name}>
                     <ListItemText primary={name} secondary={description} />
                   </ListItem>
                 ))}
