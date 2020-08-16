@@ -9,6 +9,7 @@ import {
 import uniqueValidator from 'mongoose-unique-validator'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
 import { UserSchema } from 'modules/user/user.schema'
+import { RaceSchema } from 'modules/character/race/race.schema'
 
 @modelOptions({
   options: {
@@ -33,6 +34,9 @@ export class CharacterSchema {
 
   @prop()
   updatedAt!: number
+
+  @prop()
+  race?: RaceSchema
 }
 
 export type CharacterDocument = DocumentType<CharacterSchema>

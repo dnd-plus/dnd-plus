@@ -39,12 +39,10 @@ export const SKILL_TYPES = [
   ...CHARISMA_SKILL_TYPES,
 ] as const
 
-declare global {
-  type StrengthSkillType = typeof STRENGTH_SKILL_TYPES[number]
-  type DexteritySkillType = typeof DEXTERITY_SKILL_TYPES[number]
-  type IntelligenceSkillType = typeof INTELLIGENCE_SKILL_TYPES[number]
-  type WisdomSkillType = typeof WISDOM_SKILL_TYPES[number]
-  type CharismaSkillType = typeof CHARISMA_SKILL_TYPES[number]
+export type StrengthSkillType = typeof STRENGTH_SKILL_TYPES[number]
+export type DexteritySkillType = typeof DEXTERITY_SKILL_TYPES[number]
+export type IntelligenceSkillType = typeof INTELLIGENCE_SKILL_TYPES[number]
+export type WisdomSkillType = typeof WISDOM_SKILL_TYPES[number]
+export type CharismaSkillType = typeof CHARISMA_SKILL_TYPES[number]
 
-  type SkillType = typeof SKILL_TYPES[number]
-}
+export type SkillType = typeof SKILL_TYPES[number]

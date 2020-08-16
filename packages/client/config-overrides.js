@@ -24,12 +24,12 @@ const getBabelLoader = (config) => {
 }
 
 // Curried function that uses config to search for babel loader and pushes new plugin to options list.
-const addBabelPlugin = (plugin) => (config) => {
-  getBabelLoader(config).options.plugins.push(plugin)
-  return config
-}
+// const addBabelPlugin = (plugin) => (config) => {
+//   getBabelLoader(config).options.plugins.push(plugin)
+//   return config
+// }
 
-module.exports = function override(config, env) {
+module.exports = function override(config) {
   const babelPlugin = getBabelLoader(config)
 
   babelPlugin.options.babelrc = true
@@ -59,6 +59,38 @@ module.exports = function override(config, env) {
         // Inject the option for eslint-loader
         use.options.emitWarning = true
       }
+    }
+
+    // const TsCheckerPlugin = config.plugins.find(
+    //   (plugin) => plugin.constructor.name === 'ForkTsCheckerWebpackPlugin',
+    // )
+    // TsCheckerPlugin.options.compilerOptions = {
+    //   noUnusedLocals: true,
+    //   noUnusedParameters: true,
+    // }
+    // TsCheckerPlugin.options.silent = false
+    // config.plugins.splice(
+    //   config.plugins.findIndex(
+    //     (plugin) => plugin.constructor.name === 'ForkTsCheckerWebpackPlugin',
+    //   ),
+    //   1,
+    // )
+
+    const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin')
+    const _getCompilerHooks = ForkTsCheckerWebpackPlugin.getCompilerHooks
+    ForkTsCheckerWebpackPlugin.getCompilerHooks = (compiler) => {
+      const hooks = _getCompilerHooks(compiler)
+      const _tap = hooks.receive.tap.bind(hooks.receive)
+      hooks.receive.tap = (name, listener) => {
+        if (name !== 'afterTypeScriptCheck') return _tap(name, listener)
+
+        return _tap(name, (diagnostics, lints) => {
+          diagnostics.forEach((msg) => (msg.severity = 'warning'))
+          lints.forEach((msg) => (msg.severity = 'warning'))
+          return listener(diagnostics, lints)
+        })
+      }
+      return hooks
     }
 
     // resolve common folder not from node_modules

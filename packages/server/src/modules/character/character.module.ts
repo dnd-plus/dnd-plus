@@ -14,13 +14,13 @@ import { createCharacterType } from 'modules/character/createCharacterType'
 
 module.exports = function characterModule(server: Server) {
   server.channel(currentUserCharactersChannel.path, {
-    access() {
-      return true
+    access(ctx) {
+      return ctx.userId !== GUEST_USER
     },
     async load(ctx) {
-      if (ctx.userId === GUEST_USER) return
-
-      const characters = await Character.find({ userId: ctx.userId }).exec()
+      const characters = await Character.find({ userId: ctx.userId })
+        .sort({ updatedAt: -1 })
+        .exec()
 
       characters.forEach((character) => {
         ctx.sendBack(characterActions.load(character.toObject()))
@@ -32,19 +32,17 @@ module.exports = function characterModule(server: Server) {
     characterChannel.path,
     {
       async access(ctx) {
+        if (ctx.userId === GUEST_USER) return false
+
         const character = await Character.findById(ctx.params.id).exec()
         ctx.data.character = character
 
         return ctx.userId === character?.userId?.toString()
       },
       async load(ctx) {
-        if (ctx.userId === GUEST_USER) return
-
-        const characters = await Character.find({ user: ctx.userId }).exec()
-
-        characters.forEach((character) => {
-          ctx.sendBack(characterActions.load(character.toObject()))
-        })
+        if (ctx.data.character) {
+          ctx.sendBack(characterActions.load(ctx.data.character.toObject()))
+        }
       },
     },
   )

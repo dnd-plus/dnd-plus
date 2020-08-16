@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.paths.json",
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "dom.iterable",
@@ -14,8 +14,5 @@
     "src",
     "../common",
     "common"
-  ],
-  "exclude": [
-    "../../node_modules/@types/react-native"
   ]
 }

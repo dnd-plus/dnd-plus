@@ -49,15 +49,13 @@ export const configureStore = () => {
   return store
 }
 
-declare global {
-  type AppStore = ReturnType<typeof configureStore>
+export type AppStore = ReturnType<typeof configureStore>
 
-  type AppState = ReturnType<AppStore['getState']>
+export type AppState = ReturnType<AppStore['getState']>
 
-  // type AppDispatch = typeof store.dispatch
+// type AppDispatch = typeof store.dispatch
 
-  // type AppAction = AppDispatch extends (a: infer A) => any ? A : never
-}
+// type AppAction = AppDispatch extends (a: infer A) => any ? A : never
 
 // declare module 'redux' {
 //   interface Store extends AppStore {}

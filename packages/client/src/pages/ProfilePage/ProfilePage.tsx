@@ -19,28 +19,34 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
-  Edit as EditIcon,
+  Settings as SettingsIcon,
 } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
 import { characterInfoRoute, characterSettingsRoute } from 'constants/routes'
-import styled, { css } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 import { useToggle } from 'react-use'
 import { CreateCharacterForm } from 'pages/ProfilePage/CreateCharacterForm'
-import { characterActions } from 'common/modules/character/redux'
+import {
+  characterActions,
+  CharacterState,
+} from 'common/modules/character/redux'
+import stc from 'string-to-color'
+import { DefaultContainer } from 'components/DefaultContainer'
 
 const SFab = styled(Fab)(
   ({ theme }) => css`
-    ${theme.breakpoints.up('md')} {
+    ${theme.breakpoints.up('sm')} {
       position: absolute;
       left: calc(100% + ${theme.spacing(4)}px);
       top: 0;
     }
-    ${theme.breakpoints.down('sm')} {
+    ${theme.breakpoints.down('xs')} {
       position: fixed;
       right: ${theme.spacing(2)}px;
       bottom: ${theme.spacing(2)}px;
@@ -62,7 +68,7 @@ export function ProfilePage() {
 
   const { userId } = parseId(useStore().client.nodeId)
   const characters = useSelector((state) =>
-    Object.values(state.character)
+    Object.values(state.characters)
       .filter((character) => character.userId === userId)
       .sort((a, b) => b.updatedAt - a.updatedAt),
   )
@@ -76,102 +82,121 @@ export function ProfilePage() {
     setCharacterToDelete,
   ] = useState<null | CharacterState>(null)
 
+  const theme = useTheme()
+
   return (
-    <>
-      <SCharList>
-        <Box my={3}>
-          <Typography variant={'h3'}>Мои персонажи</Typography>
-        </Box>
-        {characters.length === 0 && !isSubscribing && (
+    <DefaultContainer>
+      <Box mt={5} mb={8}>
+        <SCharList>
           <Box my={3}>
-            <Typography variant={'body1'} color={'textSecondary'}>
-              Самое время создать персонажа!
-            </Typography>
+            <Typography variant={'h3'}>Мои персонажи</Typography>
           </Box>
-        )}
-        {characters.length > 0 && (
-          <Box my={3}>
-            <List>
-              {characters.map((character) => (
-                <ListItem
-                  key={character._id}
-                  button
-                  component={Link}
-                  to={characterInfoRoute.link(character._id)}
-                >
-                  <ListItemAvatar>
-                    <Avatar>
-                      {character.name
-                        .split(' ')
-                        .slice(0, 2)
-                        .map((w) => w[0].toUpperCase())
-                        .join('')}
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={character.name} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      component={Link}
-                      to={characterSettingsRoute.link(character._id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      edge='end'
-                      onClick={() => setCharacterToDelete(character)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        )}
-        <SFab color='primary' onClick={toggleIsOpenForm}>
-          <AddIcon />
-        </SFab>
-        <CreateCharacterForm onClose={toggleIsOpenForm} open={isOpenForm} />
-        <Dialog
-          open={!!characterToDelete}
-          onClose={() => setCharacterToDelete(null)}
-        >
-          {characterToDelete && (
-            <SDialogInner>
-              <DialogTitle>Создание персонажа</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Вы уверены, что хотите удалить персонажа{' '}
-                  <b>{characterToDelete.name}</b>? Это необратимо!
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  type={'button'}
-                  onClick={() => setCharacterToDelete(null)}
-                  color={'primary'}
-                >
-                  Отмена
-                </Button>
-                <Box color={'error.main'}>
-                  <Button
-                    type={'submit'}
-                    color={'inherit'}
-                    onClick={() => {
-                      dispatch.sync(
-                        characterActions.delete({ _id: characterToDelete._id }),
-                      )
-                      setCharacterToDelete(null)
-                    }}
-                  >
-                    Удалить
-                  </Button>
-                </Box>
-              </DialogActions>
-            </SDialogInner>
+          {characters.length === 0 && !isSubscribing && (
+            <Box my={3}>
+              <Typography variant={'body1'} color={'textSecondary'}>
+                Самое время создать персонажа!
+              </Typography>
+            </Box>
           )}
-        </Dialog>
-      </SCharList>
-    </>
+          {characters.length > 0 && (
+            <Box my={3}>
+              <List>
+                {characters.map((character) => (
+                  <ListItem
+                    key={character._id}
+                    button
+                    component={Link}
+                    to={characterInfoRoute.link(character._id)}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        style={{
+                          color: theme.palette.getContrastText(
+                            stc(character.name),
+                          ),
+                          backgroundColor: stc(character.name),
+                        }}
+                      >
+                        {character.name
+                          .split(' ')
+                          .slice(0, 2)
+                          .map((w) => w[0].toUpperCase())
+                          .join('')}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={character.name} />
+                    <ListItemSecondaryAction>
+                      <Tooltip title={'Настроить'}>
+                        <IconButton
+                          component={Link}
+                          to={characterSettingsRoute.link(character._id)}
+                        >
+                          <SettingsIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title={'Удалить'}>
+                        <IconButton
+                          edge='end'
+                          onClick={() => setCharacterToDelete(character)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
+          <Tooltip title={'Добавить персонажа'}>
+            <SFab color='primary' onClick={toggleIsOpenForm}>
+              <AddIcon />
+            </SFab>
+          </Tooltip>
+          <CreateCharacterForm onClose={toggleIsOpenForm} open={isOpenForm} />
+          <Dialog
+            open={!!characterToDelete}
+            onClose={() => setCharacterToDelete(null)}
+          >
+            {characterToDelete && (
+              <SDialogInner>
+                <DialogTitle>Создание персонажа</DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Вы уверены, что хотите удалить персонажа{' '}
+                    <b>{characterToDelete.name}</b>? Это необратимо!
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    type={'button'}
+                    onClick={() => setCharacterToDelete(null)}
+                    color={'primary'}
+                  >
+                    Отмена
+                  </Button>
+                  <Box color={'error.main'}>
+                    <Button
+                      type={'submit'}
+                      color={'inherit'}
+                      onClick={() => {
+                        dispatch.sync(
+                          characterActions.delete({
+                            _id: characterToDelete._id,
+                          }),
+                        )
+                        setCharacterToDelete(null)
+                      }}
+                    >
+                      Удалить
+                    </Button>
+                  </Box>
+                </DialogActions>
+              </SDialogInner>
+            )}
+          </Dialog>
+        </SCharList>
+      </Box>
+    </DefaultContainer>
   )
 }

@@ -1,4 +1,11 @@
-import React, { MutableRefObject, ReactNode } from 'react'
+import React, {
+  MutableRefObject,
+  ReactNode,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react'
 
 function Runner<DataItem, Arg>({
   dataRef,
@@ -49,20 +56,20 @@ export function MapHooks<Arg, Hooks extends object>({
 }) {
   type DataItem = typeof render extends (arg: infer T) => any ? T : never
 
-  const dataRef = React.useRef(
-    Array.isArray(hooks) ? [] : {},
-  ) as MutableRefObject<DataItem>
+  const dataRef = useRef(Array.isArray(hooks) ? [] : {}) as MutableRefObject<
+    DataItem
+  >
 
-  const isParentRenderRef = React.useRef(true)
+  const isParentRenderRef = useRef(true)
 
-  const [, updateParent] = React.useReducer((x) => x + 1, 0)
+  const [, updateParent] = useReducer((x) => x + 1, 0)
 
   isParentRenderRef.current = true
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     isParentRenderRef.current = false
   })
 
-  const hooksNode = React.useMemo(
+  const hooksNode = useMemo(
     () =>
       Object.entries(hooks).map(([key, hook]) => (
         <Runner

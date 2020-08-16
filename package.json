@@ -14,11 +14,19 @@
     "server:dev": "cd ./packages/server && yarn dev",
     "server:prod": "cd ./packages/server && yarn prod"
   },
-  "license": "MIT",
   "devDependencies": {
     "husky": "4.2.5",
     "lint-staged": "10.2.11",
     "prettier": "2.0.5"
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "plugins": ["unused-imports"],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-imports-ts": "error",
+      "unused-imports/no-unused-vars-ts": "error"
+    }
   },
   "husky": {
     "hooks": {
@@ -26,6 +34,6 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,scss,md}": "prettier --write"
+    "*.{js,jsx,ts,tsx,css,scss,md}": "eslint --fix && prettier --write"
   }
 }

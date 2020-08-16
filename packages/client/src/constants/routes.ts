@@ -2,8 +2,27 @@ import { createRoute } from 'common/utils/createRoute'
 
 export const homeRoute = createRoute('/')
 export const loginRoute = createRoute('/login')
+
+// PROFILE
 export const profileRoute = createRoute('/profile')
-export const characterInfoRoute = createRoute<true>('/character/:id')
+
+// CHARACTER INFO
+export const characterInfoRoute = createRoute<true>('/character/:characterId')
+
+// CHARACTER SETTINGS
 export const characterSettingsRoute = createRoute<true>(
-  '/character-settings/:id',
+  characterInfoRoute.linkPath,
+  'settings',
+)
+export const characterSettingsRaceRoute = createRoute<true>(
+  characterSettingsRoute.linkPath,
+  'race',
+)
+export const characterSettingsClassRoute = createRoute<true>(
+  characterSettingsRoute.linkPath,
+  'class',
+)
+export const characterSettingsDescriptionRoute = createRoute<true>(
+  characterSettingsRoute.linkPath,
+  'description',
 )

@@ -1,7 +1,12 @@
 import { createAction, createSlice } from '@reduxjs/toolkit'
-import { IdPayloadAction } from 'common/types/Utils/IdPayloadAction'
+import { IdPayloadAction } from 'common/modules/redux/IdPayloadAction'
 
 export const GUEST_USER = 'guest'
+
+export interface UserState {
+  _id: string
+  login: string
+}
 
 export const {
   name: userReducerName,
@@ -9,7 +14,7 @@ export const {
   caseReducers: userCaseReducers,
   actions: userClientActions,
 } = createSlice({
-  name: 'users',
+  name: 'user',
   initialState: null as UserState | null,
   reducers: {
     load(_, { payload }: IdPayloadAction<UserState>) {

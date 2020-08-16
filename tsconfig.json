@@ -2,10 +2,9 @@
   "compilerOptions": {
     "baseUrl": "packages",
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"],
     "allowJs": false,
-    "skipLibCheck": false,
-    "noUnusedLocals": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -18,11 +17,17 @@
     "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "assumeChangesOnlyAffectDirectDependencies": true,
     "jsx": "react",
     "types": []
-  }
+  },
+  "include": [],
+  "exclude": [
+    "**/node_modules",
+    "**/.*/"
+  ]
 }

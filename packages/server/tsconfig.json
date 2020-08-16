@@ -17,7 +17,6 @@
   },
   "include": [
     "src",
-    "../common",
-    "common"
+    "../common"
   ]
 }
