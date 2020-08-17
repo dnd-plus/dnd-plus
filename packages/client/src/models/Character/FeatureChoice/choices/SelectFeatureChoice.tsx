@@ -5,23 +5,23 @@ import { rightOrValue } from 'utils/rightOrValue'
 import React from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
+import { DeepReadonly } from 'ts-essentials'
 
-type SelectFeatureChoiceOption = {
-  name: string
-  effects: Effect[]
-}
-
-export type SelectFeatureChoice = {
+export type SelectFeatureChoice = DeepReadonly<{
   type: 'select'
   label: string
-  options: SelectFeatureChoiceOption[]
-}
+  options: Array<{
+    name: string
+    effects: Effect[]
+  }>
+}>
 const SelectFeatureChoiceState = t.type({
   selected: t.number,
 })
 
 export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
-  t.TypeOf<typeof SelectFeatureChoiceState>
+  t.TypeOf<typeof SelectFeatureChoiceState>,
+  SelectFeatureChoice
 > {
   get knownState() {
     return rightOrValue(SelectFeatureChoiceState.decode(this.state), null)

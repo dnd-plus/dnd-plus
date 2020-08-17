@@ -1,19 +1,21 @@
-export type BlindsightVisionEffect = {
+import { DeepReadonly } from 'ts-essentials'
+
+export type BlindsightVisionEffect = DeepReadonly<{
   type: 'blindsightVision'
   distance: number
-}
-export type DarkVisionEffect = {
+}>
+export type DarkVisionEffect = DeepReadonly<{
   type: 'darkVision'
   distance: number
-}
-export type TremorsenseVisionEffect = {
+}>
+export type TremorsenseVisionEffect = DeepReadonly<{
   type: 'tremorsenseVision'
   distance: number
-}
-export type TruesightVisionEffect = {
+}>
+export type TruesightVisionEffect = DeepReadonly<{
   type: 'truesightVision'
   distance: number
-}
+}>
 
 export type VisionEffect =
   | BlindsightVisionEffect

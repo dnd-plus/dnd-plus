@@ -7,21 +7,22 @@ import {
 import { BaseModel } from 'models/Character/BaseModel'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { featureChoiceFactory } from 'models/Character/FeatureChoice/featureChoiceFactory'
+import { DeepReadonly } from 'ts-essentials'
 
-export type Feature = {
+export type Feature = DeepReadonly<{
   name: string
   description: string
   effects?: Effect[]
   choices?: FeatureChoice[]
-}
+}>
 
 export class FeatureModel implements BaseModel {
   constructor(
-    private characterModel: CharacterModel,
-    public state: Feature,
-    public key: string,
-    private choicesState: Record<any, unknown>,
-    private setChoiceAction: FeatureChoiceAction,
+    private readonly characterModel: CharacterModel,
+    public readonly state: Feature,
+    public readonly key: string,
+    private readonly choicesState: Record<any, unknown>,
+    private readonly setChoiceAction: FeatureChoiceAction,
   ) {}
 
   get choices() {

@@ -5,7 +5,7 @@ import hillDwarfImg from './assets/hillDwarf.jpeg'
 import mountainDwarfImg from './assets/mountainDwarf.jpeg'
 
 const CommonDwarf = extendType<Partial<CharacterRace>>()({
-  name: 'Дварф',
+  baseName: 'Дварф',
   size: 'medium',
   languages: ['Общий', 'Дварфский'],
   features: [
@@ -20,6 +20,11 @@ const CommonDwarf = extendType<Partial<CharacterRace>>()({
           speed: 25,
         },
       ],
+    },
+    {
+      name: 'Размер',
+      description:
+        'Рост дварфов находится между 4 и 5 футами (122 и 152 сантиметрами), и весят они около 150 фунтов (68 килограмм). Ваш размер — Средний.',
     },
     {
       name: 'Темное зрение',
@@ -101,6 +106,7 @@ export const MountainDwarf: CharacterRace = {
   type: 'MountainDwarf',
   image: mountainDwarfImg,
   subclass: 'Горный',
+  name: 'Горный дварф',
   description:
     'Смелые и выносливые дварфы известны как опытные воины, шахтёры, камнетёсы и металлурги. Будучи горным дварфом, вы являетесь сильным и выносливым, приспособленным к жизни в суровой местности.',
   features: [
@@ -137,6 +143,7 @@ export const HillDwarf: CharacterRace = {
   type: 'HillDwarf',
   image: hillDwarfImg,
   subclass: 'Холмовой',
+  name: 'Холмовой дварф',
   description:
     'Смелые и выносливые дварфы известны как опытные воины, шахтёры, камнетёсы и металлурги. Будучи холмовым дварфом вы обладаете обострёнными чувствами, развитой интуицией и замечательной стойкостью.',
   features: [

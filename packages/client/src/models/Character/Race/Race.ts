@@ -6,18 +6,20 @@ import { createUseSelector } from 'models/utils/createUseSelector'
 import { racesList } from 'models/Character/Race/racesList'
 
 import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/FeatureChoice'
+import { DeepReadonly } from 'ts-essentials'
 
-export interface CharacterRace {
+export type CharacterRace = DeepReadonly<{
   type: string
   image: string
-  name: string
+  baseName?: string
   subclass?: string
+  name: string
   variant?: boolean
   description: string
   languages: string[] // todo: add languages
   size: CreatureSize
   features: Feature[]
-}
+}>
 
 export class RaceModel implements BaseModel {
   constructor(private characterModel: CharacterModel) {}
@@ -69,7 +71,6 @@ export class RaceModel implements BaseModel {
     ref
       ? {
           ...ref,
-          fullName: [ref.subclass, ref.name].filter(Boolean).join(' '),
           features,
         }
       : undefined,

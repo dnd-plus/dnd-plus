@@ -19,16 +19,14 @@ import {
 } from '@material-ui/core'
 import React, { useState } from 'react'
 import { racesList } from 'models/Character/Race/racesList'
-import { characterActions } from 'common/modules/character/redux'
 import { CharacterRace } from 'models/Character/Race/Race'
 import { Info as InfoIcon } from '@material-ui/icons'
 import { useDispatch } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { MapHooks } from 'components/MapHooks'
 import { useToggle } from 'react-use'
-
-const raceName = (raceRef: CharacterRace) =>
-  [raceRef.subclass, raceRef.name].filter(Boolean).join(' ').toUpperCase()
+import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
+import Markdown from 'markdown-to-jsx'
 
 const SBigAvatar = styled(Avatar)(
   ({ theme }) => css`
@@ -61,9 +59,7 @@ export function CharacterSettingsRacePage() {
           </Box>
           <div>
             <Box mb={1}>
-              <Typography variant={'h5'}>
-                {race.fullName.toUpperCase()}
-              </Typography>
+              <Typography variant={'h5'}>{race.name.toUpperCase()}</Typography>
             </Box>
             <Box mb={1}>
               <Typography variant={'body1'}>{race.description}</Typography>
@@ -74,33 +70,9 @@ export function CharacterSettingsRacePage() {
           </div>
         </Box>
         {!reselectRace && (
-          <Grid container direction={'row'} spacing={2}>
+          <Grid container direction={'column'} spacing={2}>
             {race.features.map((feature) => (
-              <Grid item key={feature.key}>
-                <Box mb={1}>
-                  <Typography variant={'subtitle1'}>
-                    <b>{feature.data.name}</b>
-                  </Typography>
-                  <Divider />
-                </Box>
-                <Typography variant={'body1'}>
-                  {feature.data.description}
-                </Typography>
-                {feature.choices?.length > 0 && (
-                  <Box mt={1} width={1}>
-                    <MapHooks
-                      hooks={feature.choices.map(({ hook }) => hook)}
-                      render={(choices) => (
-                        <Box mb={1}>
-                          {Object.entries(choices).map(([key, { node }]) => (
-                            <React.Fragment key={key}>{node}</React.Fragment>
-                          ))}
-                        </Box>
-                      )}
-                    />
-                  </Box>
-                )}
-              </Grid>
+              <FeatureItem feature={feature} key={feature.key} />
             ))}
           </Grid>
         )}
@@ -118,7 +90,7 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
   const characterModel = useCharacterModel()
   const dispatch = useDispatch()
   const selectRace = (type: CharacterRace['type']) => {
-    dispatch.sync(characterActions.setRace({ _id: characterModel.id, type }))
+    dispatch.sync(characterModel.actions.setRace({ type }))
     onSelectRace?.()
   }
 
@@ -135,9 +107,7 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
               <Avatar src={raceRef.image} alt={raceRef.name} />
             </ListItemAvatar>
             <ListItemText
-              primary={
-                <Typography variant={'h6'}>{raceName(raceRef)}</Typography>
-              }
+              primary={<Typography variant={'h6'}>{raceRef.name}</Typography>}
             />
             <ListItemSecondaryAction>
               <IconButton edge={'end'} onClick={() => setRaceInfo(raceRef)}>
@@ -160,24 +130,21 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
                 <Box mr={2}>
                   <Avatar src={raceInfo.image} alt={raceInfo.name} />
                 </Box>
-                <div>{raceName(raceInfo)}</div>
+                <div>{raceInfo.name}</div>
               </Box>
             </DialogTitle>
             <DialogContent>
-              <List disablePadding>
-                <ListItem disableGutters>
-                  <ListItemText
-                    primary={raceInfo.description}
-                    primaryTypographyProps={{ variant: 'body1' }}
-                  />
-                </ListItem>
+              <Grid container direction={'column'} spacing={2}>
+                <Grid item>
+                  <Typography variant={'body1'}>
+                    {raceInfo.description}
+                  </Typography>
+                </Grid>
                 <Divider />
-                {raceInfo.features.map(({ name, description }) => (
-                  <ListItem disableGutters key={name}>
-                    <ListItemText primary={name} secondary={description} />
-                  </ListItem>
+                {raceInfo.features.map((feature, key) => (
+                  <FeatureItem feature={feature} key={key} />
                 ))}
-              </List>
+              </Grid>
             </DialogContent>
             <DialogActions>
               <Button
@@ -201,5 +168,38 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
         )}
       </Dialog>
     </>
+  )
+}
+
+function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
+  const data = 'data' in feature ? feature.data : feature
+  return (
+    <Grid item>
+      <Box mb={1}>
+        <Typography variant={'subtitle1'}>
+          <b>{data.name}</b>
+        </Typography>
+        <Divider />
+      </Box>
+      <Typography variant={'body1'}>
+        <Markdown>{data.description}</Markdown>
+      </Typography>
+      {'data' in feature &&
+        Array.isArray(feature.choices) &&
+        feature.choices?.length > 0 && (
+          <Box mt={1} width={1}>
+            <MapHooks
+              hooks={feature.choices.map(({ hook }) => hook)}
+              render={(choices) => (
+                <Box mb={1}>
+                  {Object.entries(choices).map(([key, { node }]) => (
+                    <React.Fragment key={key}>{node}</React.Fragment>
+                  ))}
+                </Box>
+              )}
+            />
+          </Box>
+        )}
+    </Grid>
   )
 }

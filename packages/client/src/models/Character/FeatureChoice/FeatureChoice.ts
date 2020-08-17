@@ -3,6 +3,7 @@ import { BaseModel } from 'models/Character/BaseModel'
 import { ReactNode } from 'react'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { AnyAction } from '@logux/core'
+import { DeepReadonly } from 'ts-essentials'
 
 export type FeatureChoice = SelectFeatureChoice
 
@@ -12,16 +13,16 @@ export type FeatureChoiceAction<V = unknown> = (payload: {
   value: V
 }) => AnyAction
 
-export abstract class BaseFeatureChoiceModel<ST> implements BaseModel {
+export abstract class BaseFeatureChoiceModel<ST, R = any> implements BaseModel {
   constructor(
     protected readonly characterModel: CharacterModel,
     public readonly state: unknown,
-    public readonly ref: SelectFeatureChoice,
+    public readonly ref: R,
     public readonly key: string,
     protected readonly setChoiceAction: FeatureChoiceAction<ST>,
   ) {}
 
-  abstract get knownState(): ST | null
+  abstract get knownState(): DeepReadonly<ST> | null
 
   // abstract effects: () => Effect
   abstract get chosen(): string | null
