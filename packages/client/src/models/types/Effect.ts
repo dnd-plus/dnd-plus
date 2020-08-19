@@ -6,6 +6,7 @@ import { EquipmentPossessionEffect } from 'models/types/effects/EquipmentPossess
 import { SpellPossessionEffect } from 'models/types/effects/SpellPossessionEffect'
 import { DefenceEffect } from 'models/types/effects/DefenceEffect'
 import { SavingThrowEffect } from 'models/types/effects/SavingThrowEffect'
+import { SkillPossessionEffect } from 'models/types/effects/SkillPossessionEffect'
 
 export type Effect =
   | AbilityEffect
@@ -15,5 +16,6 @@ export type Effect =
   | SpellPossessionEffect
   | DefenceEffect
   | SavingThrowEffect
+  | SkillPossessionEffect
 
 type EffectGuard = CheckType<{ from?: never; type: string }, Effect>

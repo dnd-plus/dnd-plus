@@ -6,6 +6,7 @@ import {
   RockGnome,
 } from 'models/Character/Race/races/Gnome'
 import { Dragonborn } from 'models/Character/Race/races/Dragonborn'
+import { HalfOrc } from 'models/Character/Race/races/HalfOrc'
 
 export const racesList: CharacterRace[] = [
   MountainDwarf,
@@ -14,4 +15,5 @@ export const racesList: CharacterRace[] = [
   RockGnome,
   DeepGnome,
   Dragonborn,
+  HalfOrc,
 ]
