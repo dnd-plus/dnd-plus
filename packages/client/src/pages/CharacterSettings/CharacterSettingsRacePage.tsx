@@ -26,7 +26,7 @@ import styled, { css } from 'styled-components'
 import { MapHooks } from 'components/MapHooks'
 import { useToggle } from 'react-use'
 import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
-import Markdown from 'markdown-to-jsx'
+import { Markdown } from 'components/Markdown'
 
 const SBigAvatar = styled(Avatar)(
   ({ theme }) => css`
@@ -187,7 +187,7 @@ function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
       {'data' in feature &&
         Array.isArray(feature.choices) &&
         feature.choices?.length > 0 && (
-          <Box mt={1} width={1}>
+          <Box mt={2} width={1}>
             <MapHooks
               hooks={feature.choices.map(({ hook }) => hook)}
               render={(choices) => (

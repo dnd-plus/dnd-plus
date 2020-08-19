@@ -74,7 +74,7 @@ const CommonDwarf = extendType<Partial<CharacterRace>>()({
       choices: [
         {
           type: 'select',
-          label: 'Выбор инструмента',
+          label: 'Владение инструментом',
           options: [
             {
               name: ToolTypeDict.smith,
@@ -105,7 +105,6 @@ export const MountainDwarf: CharacterRace = {
   ...CommonDwarf,
   type: 'MountainDwarf',
   image: mountainDwarfImg,
-  subclass: 'Горный',
   name: 'Горный дварф',
   description:
     'Смелые и выносливые дварфы известны как опытные воины, шахтёры, камнетёсы и металлурги. Будучи горным дварфом, вы являетесь сильным и выносливым, приспособленным к жизни в суровой местности.',
@@ -142,7 +141,6 @@ export const HillDwarf: CharacterRace = {
   ...CommonDwarf,
   type: 'HillDwarf',
   image: hillDwarfImg,
-  subclass: 'Холмовой',
   name: 'Холмовой дварф',
   description:
     'Смелые и выносливые дварфы известны как опытные воины, шахтёры, камнетёсы и металлурги. Будучи холмовым дварфом вы обладаете обострёнными чувствами, развитой интуицией и замечательной стойкостью.',

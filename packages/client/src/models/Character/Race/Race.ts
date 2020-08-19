@@ -12,7 +12,6 @@ export type CharacterRace = DeepReadonly<{
   type: string
   image: string
   baseName?: string
-  subclass?: string
   name: string
   variant?: boolean
   description: string
