@@ -7,17 +7,11 @@ import deepGnomeImg from './assets/deepGnome.jpeg'
 const CommonGnome = extendType<Partial<CharacterRace>>()({
   baseName: 'Гном',
   size: 'small',
-  languages: ['Общий', 'Гномий'],
   features: [
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения — 25 фт.',
-      effects: [
-        {
-          type: 'walkMovement',
-          speed: 25,
-        },
-      ],
+      effects: [{ type: 'walkMovement', absolute: 25 }],
     },
     {
       name: 'Размер',
@@ -28,18 +22,24 @@ const CommonGnome = extendType<Partial<CharacterRace>>()({
       name: 'Темное зрение',
       description:
         'Привыкнув к жизни под землёй, вы обладаете превосходным зрением в темноте и при тусклом освещении. На расстоянии в 60 фт. вы при тусклом освещении можете видеть так, как будто это яркое освещение, и в темноте так, как будто это тусклое освещение. В темноте вы не можете различать цвета, только оттенки серого.',
-      effects: [
-        {
-          type: 'darkVision',
-          distance: 60,
-        },
-      ],
+      effects: [{ type: 'darkVision', distance: 60 }],
     },
     {
       // todo: feature
       name: 'Гномья хитрость',
       description:
         'Вы совершаете с преимуществом спасброски Интеллекта, Мудрости и Харизмы против магии.',
+    },
+    {
+      name: 'Языки',
+      description:
+        'Вы можете говорить, читать и писать на Общем и Гномьем языках. Гномий язык, использующий дварфский алфавит, хорошо известен благодаря техническим трактатам и каталогам знаний об окружающем мире.',
+      effects: [
+        {
+          type: 'language',
+          languages: ['common', 'gnomish'],
+        },
+      ],
     },
   ],
 })
@@ -57,13 +57,7 @@ export const ForestGnome: CharacterRace = {
       description:
         'Значение вашего Интеллекта увеличивается на 2, а значение Ловкости увеличивается на 1.',
       effects: [
-        {
-          type: 'ability',
-          abilities: {
-            intelligence: 2,
-            dexterity: 1,
-          },
-        },
+        { type: 'ability', abilities: { intelligence: 2, dexterity: 1 } },
       ],
     },
     ...CommonGnome.features,
@@ -95,13 +89,7 @@ export const RockGnome: CharacterRace = {
       description:
         'Значение вашего Интеллекта увеличивается на 2, а значение Телосложения увеличивается на 1.',
       effects: [
-        {
-          type: 'ability',
-          abilities: {
-            intelligence: 2,
-            constitution: 1,
-          },
-        },
+        { type: 'ability', abilities: { intelligence: 2, constitution: 1 } },
       ],
     },
     ...CommonGnome.features,
@@ -130,7 +118,6 @@ export const DeepGnome: CharacterRace = {
   type: 'DeepGnome',
   baseName: 'Гном',
   name: 'Глубинный гном',
-  languages: ['Общий', 'Гномий', 'Подземный'],
   size: 'small',
   description:
     'Гномы очень энергичны, и кажется, что каждый сантиметр их крошечного тела излучает энтузиазм и жизнелюбие. Свирфнеблины известны как глубинные гномы потому что предпочитают жить глубоко под земной поверхностью.',
@@ -141,24 +128,13 @@ export const DeepGnome: CharacterRace = {
       description:
         'Значение вашего Интеллекта увеличивается на 2, а значение Ловкости увеличивается на 1.',
       effects: [
-        {
-          type: 'ability',
-          abilities: {
-            intelligence: 2,
-            dexterity: 1,
-          },
-        },
+        { type: 'ability', abilities: { intelligence: 2, dexterity: 1 } },
       ],
     },
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения — 25 фт.',
-      effects: [
-        {
-          type: 'walkMovement',
-          speed: 25,
-        },
-      ],
+      effects: [{ type: 'walkMovement', absolute: 25 }],
     },
     {
       name: 'Размер',
@@ -168,12 +144,7 @@ export const DeepGnome: CharacterRace = {
     {
       name: 'Превосходное тёмное зрение',
       description: 'Ваше тёмное зрение имеет радиус 120 фт.',
-      effects: [
-        {
-          type: 'darkVision',
-          distance: 60,
-        },
-      ],
+      effects: [{ type: 'darkVision', distance: 60 }],
     },
     {
       // todo: feature
@@ -186,6 +157,17 @@ export const DeepGnome: CharacterRace = {
       name: 'Каменный камуфляж',
       description:
         'Вы совершаете с преимуществом проверки Ловкости (Скрытность), когда пытаетесь спрятаться на каменистой местности.',
+    },
+    {
+      name: 'Языки',
+      description:
+        'Вы разговариваете, читаете и пишете на Общем, Гномьем и Подземном. Диалект Гномьего у свирфнеблинов более гортанный, чем у гномов с поверхности, а большинство свирфнеблинов знает Общий очень плохо, но те, кто имеет дело с посторонними (это относится и к вам, как искателю приключений) знают Общий достаточно хорошо, чтобы путешествовать.',
+      effects: [
+        {
+          type: 'language',
+          languages: ['common', 'gnomish', 'undercommon'],
+        },
+      ],
     },
   ],
 }

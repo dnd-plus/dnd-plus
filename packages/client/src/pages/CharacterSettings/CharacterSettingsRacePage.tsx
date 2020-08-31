@@ -140,7 +140,6 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
                     {raceInfo.description}
                   </Typography>
                 </Grid>
-                <Divider />
                 {raceInfo.features.map((feature, key) => (
                   <FeatureItem feature={feature} key={key} />
                 ))}
@@ -190,13 +189,13 @@ function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
           <Box mt={2} width={1}>
             <MapHooks
               hooks={feature.choices.map(({ hook }) => hook)}
-              render={(choices) => (
-                <Box mb={1}>
-                  {Object.entries(choices).map(([key, { node }]) => (
-                    <React.Fragment key={key}>{node}</React.Fragment>
-                  ))}
-                </Box>
-              )}
+              render={(choices) =>
+                Object.entries(choices).map(([key, { node }]) => (
+                  <Box mb={1} key={key}>
+                    {node}
+                  </Box>
+                ))
+              }
             />
           </Box>
         )}

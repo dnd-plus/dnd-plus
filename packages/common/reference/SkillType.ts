@@ -39,6 +39,31 @@ export const SKILL_TYPES = [
   ...CHARISMA_SKILL_TYPES,
 ] as const
 
+export const SkillTypeDict: Record<SkillType, string> = {
+  athletics: 'Атлетика',
+
+  acrobatics: 'Акробатика',
+  sleightOfHand: 'Ловкость рук',
+  stealth: 'Скрытность',
+
+  arcana: 'Магия',
+  history: 'История',
+  investigation: 'Анализ',
+  nature: 'Природа',
+  religion: 'Религия',
+
+  animalHandling: 'Уход за животными',
+  insight: 'Проницательность',
+  medicine: 'Медицина',
+  perception: 'Внимательность',
+  survival: 'Выживание',
+
+  deception: 'Обман',
+  intimidation: 'Запугивание',
+  performance: 'Выступление',
+  persuasion: 'Убеждение',
+}
+
 export type StrengthSkillType = typeof STRENGTH_SKILL_TYPES[number]
 export type DexteritySkillType = typeof DEXTERITY_SKILL_TYPES[number]
 export type IntelligenceSkillType = typeof INTELLIGENCE_SKILL_TYPES[number]

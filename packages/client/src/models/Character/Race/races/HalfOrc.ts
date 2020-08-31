@@ -7,7 +7,6 @@ export const HalfOrc: CharacterRace = {
   description:
     'Серый цвет кожи, плоский лоб, выступающая челюсть, торчащие клыки и могучее телосложение не оставляет сомнений в орочьем происхождении для любого, кто смотрит на полуорка.',
   image: halfOrcImg,
-  languages: ['Общий', 'Орочий'],
   size: 'medium',
   features: [
     {
@@ -15,13 +14,7 @@ export const HalfOrc: CharacterRace = {
       description:
         'Значение вашей Силы увеличивается на 2, а значение Телосложения увеличивается на 1.',
       effects: [
-        {
-          type: 'ability',
-          abilities: {
-            strength: 2,
-            constitution: 1,
-          },
-        },
+        { type: 'ability', abilities: { strength: 2, constitution: 1 } },
       ],
     },
     {
@@ -32,33 +25,18 @@ export const HalfOrc: CharacterRace = {
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения составляет 30 фт.',
-      effects: [
-        {
-          type: 'walkMovement',
-          speed: 30,
-        },
-      ],
+      effects: [{ type: 'walkMovement', absolute: 30 }],
     },
     {
       name: 'Тёмное зрение',
       description:
         'Благодаря орочьей крови, вы обладаете превосходным зрением в темноте и при тусклом освещении. На расстоянии в 60 фт. вы при тусклом освещении можете видеть так, как будто это яркое освещение, и в темноте так, как будто это тусклое освещение. В темноте вы не мо- жете различать цвета, только оттенки серого.',
-      effects: [
-        {
-          type: 'darkVision',
-          distance: 60,
-        },
-      ],
+      effects: [{ type: 'darkVision', distance: 60 }],
     },
     {
       name: 'Угрожающий вид',
       description: 'Вы владеете навыком Запугивание.',
-      effects: [
-        {
-          type: 'skillPossession',
-          skill: ['intimidation'],
-        },
-      ],
+      effects: [{ type: 'skillPossession', skills: ['intimidation'] }],
     },
     {
       name: 'Непоколебимая стойкость',
@@ -71,6 +49,17 @@ export const HalfOrc: CharacterRace = {
       // todo: effect
       description:
         'Если вы совершили критическое попадание рукопашной атакой оружием, вы можете добавить к урону ещё одну кость урона оружия.',
+    },
+    {
+      name: 'Языки',
+      description:
+        'Вы можете говорить, читать и писать на Общем и Орочьем языках. Орочий язык резкий и грубый, полный твёрдых согласных. Он не имеет собственного алфавита и использует дварфский.',
+      effects: [
+        {
+          type: 'language',
+          languages: ['common', 'orc'],
+        },
+      ],
     },
   ],
 }

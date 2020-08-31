@@ -1,4 +1,4 @@
-import { AbilityName } from 'common/types/base/character/Ability'
+import { AbilityName } from 'common/reference/AbilityType'
 
 export type Usages =
   /** fix usages */

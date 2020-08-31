@@ -62,6 +62,7 @@ export type AppState = ReturnType<AppStore['getState']>
 // }
 
 declare module 'react-redux' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultRootState extends AppState {}
 
   function useStore(): AppStore

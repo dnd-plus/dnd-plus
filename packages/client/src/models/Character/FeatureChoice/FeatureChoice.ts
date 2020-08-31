@@ -1,33 +1,50 @@
-import { SelectFeatureChoice } from 'models/Character/FeatureChoice/choices/SelectFeatureChoice'
-import { BaseModel } from 'models/Character/BaseModel'
-import { ReactNode } from 'react'
 import { CharacterModel } from 'models/Character/CharacterModel'
-import { AnyAction } from '@logux/core'
-import { DeepReadonly } from 'ts-essentials'
+import {
+  BaseFeatureChoiceModel,
+  FeatureChoiceAction,
+} from 'models/Character/FeatureChoice/BaseFeatureChoice'
+import { SelectFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectFeatureChoice'
+import {
+  SelectLanguageFeatureChoiceModel,
+  SelectSkillFeatureChoiceModel,
+} from 'models/Character/FeatureChoice/choices/SelectPossessionFeatureChoice'
 
-export type FeatureChoice = SelectFeatureChoice
+const choiceModelsMap = {
+  select: SelectFeatureChoiceModel,
+  selectSkill: SelectSkillFeatureChoiceModel,
+  selectLanguage: SelectLanguageFeatureChoiceModel,
+} as const
 
-export type FeatureChoiceAction<V = unknown> = (payload: {
-  _id: string
-  key: string
-  value: V
-}) => AnyAction
+type FeatureChoiceModelsMap = typeof choiceModelsMap
+export type FeatureChoice = {
+  [K in keyof FeatureChoiceModelsMap]: InstanceType<
+    FeatureChoiceModelsMap[K]
+  > extends BaseFeatureChoiceModel<infer R, any>
+    ? R
+    : null
+}[keyof FeatureChoiceModelsMap]
 
-export abstract class BaseFeatureChoiceModel<ST, R = any> implements BaseModel {
-  constructor(
-    protected readonly characterModel: CharacterModel,
-    public readonly state: unknown,
-    public readonly ref: R,
-    public readonly key: string,
-    protected readonly setChoiceAction: FeatureChoiceAction<ST>,
-  ) {}
+// eslint-disable-next-line unused-imports/no-unused-vars-ts
+const choiceModelsMapGuard: Record<
+  FeatureChoice['type'],
+  Function
+> = choiceModelsMap
 
-  abstract get knownState(): DeepReadonly<ST> | null
-
-  // abstract effects: () => Effect
-  abstract get chosen(): string | null
-
-  abstract get hook(): () => {
-    node: ReactNode
+export function featureChoiceFactory(
+  characterModel: CharacterModel,
+  state: unknown,
+  choice: FeatureChoice,
+  key: string,
+  setStateAction: FeatureChoiceAction,
+) {
+  if (choiceModelsMap[choice.type]) {
+    return new choiceModelsMap[choice.type](
+      characterModel,
+      state,
+      choice as any, // todo: understand and fix type error
+      key,
+      setStateAction,
+    )
   }
+  return null
 }

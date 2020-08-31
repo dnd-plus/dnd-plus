@@ -1,11 +1,11 @@
-import { Effect } from 'models/types/Effect'
-import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/FeatureChoice'
+import { Effect, effectFactory } from 'models/Character/Effect/Effect'
 import * as t from 'io-ts'
-import { rightOrValue } from 'utils/rightOrValue'
 import React from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { DeepReadonly } from 'ts-essentials'
+import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
+import { createKey } from 'models/utils/createKey'
 
 export type SelectFeatureChoice = DeepReadonly<{
   type: 'select'
@@ -20,11 +20,11 @@ const SelectFeatureChoiceState = t.type({
 })
 
 export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
-  t.TypeOf<typeof SelectFeatureChoiceState>,
-  SelectFeatureChoice
+  SelectFeatureChoice,
+  t.TypeOf<typeof SelectFeatureChoiceState>
 > {
   get knownState() {
-    return rightOrValue(SelectFeatureChoiceState.decode(this.state), null)
+    return SelectFeatureChoiceState.is(this.state) ? this.state : null
   }
 
   get selected() {
@@ -34,7 +34,18 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
   }
 
   get chosen() {
-    return this.selected ? this.selected.name : null
+    return !!this.selected
+  }
+
+  get effects() {
+    return (this.selected?.effects || []).flatMap(
+      (effect, index) =>
+        effectFactory(
+          this.characterModel,
+          effect,
+          createKey(this.key, this.knownState?.selected, index),
+        ) || [],
+    )
   }
 
   readonly hook = () => {
@@ -52,7 +63,6 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
             onChange={(e) =>
               dispatch.sync(
                 this.setChoiceAction({
-                  _id: this.characterModel.id,
                   key: this.key,
                   value: {
                     selected: Number(e.target.value),
@@ -62,7 +72,9 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
             }
           >
             {this.ref.options.map(({ name }, index) => (
-              <MenuItem value={index}>{name}</MenuItem>
+              <MenuItem key={index} value={index}>
+                {name}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>

@@ -20,7 +20,12 @@ const store = configureStore()
 badge(store.client, { messages: badgeRu, styles: badgeStyles })
 log(store.client)
 
-// @ts-ignore
+declare global {
+  interface Window {
+    store: any
+  }
+}
+
 window.store = store
 
 ReactDOM.render(

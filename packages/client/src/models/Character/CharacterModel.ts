@@ -5,6 +5,7 @@ import {
 import { AppState } from 'redux/configureStore'
 import { createUseSelector } from 'models/utils/createUseSelector'
 import { RaceModel } from 'models/Character/Race/Race'
+import { EffectsModel } from 'models/Character/EffectsModel'
 
 type CActions = typeof characterActions
 
@@ -13,7 +14,8 @@ export class CharacterModel {
 
   actions = Object.entries(characterActions).reduce(
     (actions, [key, action]) => {
-      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // @ts-ignore too hard to create typings
       actions[key] = (payload) => action({ ...payload, _id: this.id })
       return actions
     },
@@ -34,4 +36,6 @@ export class CharacterModel {
   name = createUseSelector(this.state, (state) => state.name)
 
   race = new RaceModel(this)
+
+  effects = new EffectsModel(this)
 }

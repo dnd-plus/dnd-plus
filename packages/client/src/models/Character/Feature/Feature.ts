@@ -1,13 +1,16 @@
-import { Effect } from 'models/types/Effect'
+import { Effect, effectFactory } from 'models/Character/Effect/Effect'
+import {
+  FeatureChoice,
+  featureChoiceFactory,
+} from 'models/Character/FeatureChoice/FeatureChoice'
+
+import { CharacterModel } from 'models/Character/CharacterModel'
+import { DeepReadonly } from 'ts-essentials'
 import {
   BaseFeatureChoiceModel,
-  FeatureChoice,
   FeatureChoiceAction,
-} from 'models/Character/FeatureChoice/FeatureChoice'
-import { BaseModel } from 'models/Character/BaseModel'
-import { CharacterModel } from 'models/Character/CharacterModel'
-import { featureChoiceFactory } from 'models/Character/FeatureChoice/featureChoiceFactory'
-import { DeepReadonly } from 'ts-essentials'
+} from 'models/Character/FeatureChoice/BaseFeatureChoice'
+import { createKey } from 'models/utils/createKey'
 
 export type Feature = DeepReadonly<{
   name: string
@@ -16,19 +19,19 @@ export type Feature = DeepReadonly<{
   choices?: FeatureChoice[]
 }>
 
-export class FeatureModel implements BaseModel {
+export class FeatureModel {
   constructor(
     private readonly characterModel: CharacterModel,
-    public readonly state: Feature,
+    public readonly ref: Feature,
     public readonly key: string,
     private readonly choicesState: Record<any, unknown>,
     private readonly setChoiceAction: FeatureChoiceAction,
   ) {}
 
   get choices() {
-    const resultModels: BaseFeatureChoiceModel<any>[] = []
-    this.state.choices?.forEach((choice, index) => {
-      const choiceKey = this.key + ':' + index
+    const resultModels: BaseFeatureChoiceModel<any, any>[] = []
+    this.ref.choices?.forEach((choice, index) => {
+      const choiceKey = createKey(this.key, 'choice', index)
       const choiceModel = featureChoiceFactory(
         this.characterModel,
         this.choicesState[choiceKey],
@@ -51,9 +54,24 @@ export class FeatureModel implements BaseModel {
     return this.neededChoices.length
   }
 
+  get effects() {
+    return [
+      ...(this.ref.effects || []).flatMap(
+        (effect, index) =>
+          effectFactory(
+            this.characterModel,
+            effect,
+            createKey(this.key, 'effect', index),
+            { race: this.ref.name },
+          ) || [],
+      ),
+      ...this.choices.flatMap((choice) => choice.effects),
+    ]
+  }
+
   get data() {
     return {
-      ...this.state,
+      ...this.ref,
       choices: this.choices,
     }
   }

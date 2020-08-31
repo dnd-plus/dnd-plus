@@ -7,19 +7,13 @@ import mountainDwarfImg from './assets/mountainDwarf.jpeg'
 const CommonDwarf = extendType<Partial<CharacterRace>>()({
   baseName: 'Дварф',
   size: 'medium',
-  languages: ['Общий', 'Дварфский'],
   features: [
     {
       name: 'Скорость',
       // todo: add feature
       description:
         'Ваша базовая скорость перемещения — 25 фт. Ношение тяжёлых доспехов не снижает вашу скорость.',
-      effects: [
-        {
-          type: 'walkMovement',
-          speed: 25,
-        },
-      ],
+      effects: [{ type: 'walkMovement', absolute: 25 }],
     },
     {
       name: 'Размер',
@@ -30,30 +24,15 @@ const CommonDwarf = extendType<Partial<CharacterRace>>()({
       name: 'Темное зрение',
       description:
         'Привыкнув к жизни под землёй, вы обладаете превосходным зрением в темноте и при тусклом освещении. На расстоянии в 60 фт. вы при тусклом освещении можете видеть так, как будто это яркое освещение, и в темноте так, как будто это тусклое освещение. В темноте вы не можете различать цвета, только оттенки серого.',
-      effects: [
-        {
-          type: 'darkVision',
-          distance: 60,
-        },
-      ],
+      effects: [{ type: 'darkVision', distance: 60 }],
     },
     {
       name: 'Дварфская устойчивость',
       description:
         'Вы совершаете с преимуществом спасброски от яда, и вы получаете сопротивление к урону ядом.',
       effects: [
-        {
-          type: 'defence',
-          damages: {
-            acid: 'resistance',
-          },
-        },
-        {
-          type: 'savingThrow',
-          damages: {
-            acid: 'advantage',
-          },
-        },
+        { type: 'defence', damages: { acid: 'resistance' } },
+        { type: 'savingThrow', damages: { acid: 'advantage' } },
       ],
     },
     {
@@ -98,6 +77,17 @@ const CommonDwarf = extendType<Partial<CharacterRace>>()({
       description:
         'Если вы совершаете проверку Интеллекта (История), связанную с происхождением работы по камню, вы считаетесь владеющим навыком История, и добавляете к проверке удвоенный бонус мастерства вместо обычного.',
     },
+    {
+      name: 'Языки',
+      description:
+        'Вы разговариваете, читаете и пишете на Общем и Дварфском языках. Дварфский язык состоит из твёрдых согласных и гортанных звуков, и этот акцент будет присутствовать в любом языке, на котором дварф будет говорить.',
+      effects: [
+        {
+          type: 'language',
+          languages: ['common', 'dwarvish'],
+        },
+      ],
+    },
   ],
 })
 
@@ -114,13 +104,7 @@ export const MountainDwarf: CharacterRace = {
       description:
         'Значение вашего Телосложения увеличивается на 2, а значение вашей Силы увеличивается на 2',
       effects: [
-        {
-          type: 'ability',
-          abilities: {
-            constitution: 2,
-            strength: 2,
-          },
-        },
+        { type: 'ability', abilities: { constitution: 2, strength: 2 } },
       ],
     },
     ...CommonDwarf.features,
@@ -149,15 +133,7 @@ export const HillDwarf: CharacterRace = {
       name: 'Увеличение характеристик',
       description:
         'Значение вашего Телосложения увеличивается на 2, а значение вашей Мудрости увеличивается на 1',
-      effects: [
-        {
-          type: 'ability',
-          abilities: {
-            constitution: 2,
-            wisdom: 1,
-          },
-        },
-      ],
+      effects: [{ type: 'ability', abilities: { constitution: 2, wisdom: 1 } }],
     },
     ...CommonDwarf.features,
     {

@@ -1064,8 +1064,10 @@ export function createUseSelector<S, P, R, T>(
   combiner: (...res: R[]) => T,
 ): OutputParametricSelector<S, P, T, (...res: R[]) => T>;
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 export function createUseSelector(...args) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   const selector = createSelector(...args)
   const selectorUse = selector as typeof selector & {
