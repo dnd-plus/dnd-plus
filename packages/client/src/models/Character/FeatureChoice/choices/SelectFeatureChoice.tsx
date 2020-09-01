@@ -53,7 +53,7 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
 
     return {
       node: (
-        <FormControl variant={'outlined'} fullWidth>
+        <FormControl margin={'dense'} variant={'outlined'} fullWidth>
           <InputLabel>{this.ref.label}</InputLabel>
           <Select
             fullWidth

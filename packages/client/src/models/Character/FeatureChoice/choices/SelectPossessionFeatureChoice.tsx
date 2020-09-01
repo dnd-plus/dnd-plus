@@ -83,7 +83,7 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
 
     return {
       node: (
-        <FormControl variant={'outlined'} fullWidth>
+        <FormControl margin={'dense'} variant={'outlined'} fullWidth>
           <InputLabel>{this.label}</InputLabel>
           <Select
             fullWidth

@@ -186,11 +186,11 @@ function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
       {'data' in feature &&
         Array.isArray(feature.choices) &&
         feature.choices?.length > 0 && (
-          <Box mt={2} width={1}>
+          <Box mt={1} width={1}>
             <MapHooks
               hooks={feature.choices.map(({ hook }) => hook)}
               render={(choices) =>
-                Object.entries(choices).map(([key, { node }]) => (
+                choices.map(({ node }, key) => (
                   <Box mb={1} key={key}>
                     {node}
                   </Box>
