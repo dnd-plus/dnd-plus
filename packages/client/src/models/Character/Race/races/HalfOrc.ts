@@ -36,7 +36,9 @@ export const HalfOrc: CharacterRace = {
     {
       name: 'Угрожающий вид',
       description: 'Вы владеете навыком Запугивание.',
-      effects: [{ type: 'skillPossession', skills: ['intimidation'] }],
+      effects: [
+        { type: 'skillPossession', skills: { intimidation: 'proficient' } },
+      ],
     },
     {
       name: 'Непоколебимая стойкость',

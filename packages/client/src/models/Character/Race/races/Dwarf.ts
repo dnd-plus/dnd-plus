@@ -32,7 +32,7 @@ const CommonDwarf = extendType<Partial<CharacterRace>>()({
         'Вы совершаете с преимуществом спасброски от яда, и вы получаете сопротивление к урону ядом.',
       effects: [
         { type: 'defence', damages: { acid: 'resistance' } },
-        { type: 'savingThrow', damages: { acid: 'advantage' } },
+        { type: 'savingThrowAdvantage', damages: { acid: 'advantage' } },
       ],
     },
     {

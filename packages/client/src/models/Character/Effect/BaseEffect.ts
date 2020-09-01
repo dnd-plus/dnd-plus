@@ -5,6 +5,7 @@ import { AppState } from 'redux/configureStore'
 export type EffectFrom = {
   race?: string
   feature?: string
+  choice?: string
   class?: string
 }
 

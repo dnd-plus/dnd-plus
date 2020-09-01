@@ -1,3 +1,5 @@
+import { BaseEffectModel, EffectFrom } from 'models/Character/Effect/BaseEffect'
+import { DeepReadonly, Tuple, Writable } from 'ts-essentials'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
 import {
   FlyMovementEffectModel,
@@ -6,7 +8,7 @@ import {
 } from 'models/Character/Effect/effects/MovementEffect'
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
 import { DefenceEffectModel } from 'models/Character/Effect/effects/DefenceEffect'
-import { SavingThrowEffectModel } from 'models/Character/Effect/effects/SavingThrowEffect'
+import { SavingThrowAdvantageEffectModel } from 'models/Character/Effect/effects/SavingThrowAdvantageEffect'
 import { SkillPossessionEffectModel } from 'models/Character/Effect/effects/SkillPossessionEffect'
 import {
   BlindsightVisionEffectModel,
@@ -14,10 +16,9 @@ import {
   TremorsenseVisionEffectModel,
   TruesightVisionEffectModel,
 } from 'models/Character/Effect/effects/VisionEffect'
-import { BaseEffectModel, EffectFrom } from 'models/Character/Effect/BaseEffect'
-import { DeepReadonly, Tuple, Writable } from 'ts-essentials'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
+import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
 
 const effectModelsMap = {
   ability: AbilityEffectModel,
@@ -26,7 +27,8 @@ const effectModelsMap = {
   walkMovement: WalkMovementEffectModel,
   flyMovement: FlyMovementEffectModel,
   swimMovement: SwimMovementEffectModel,
-  savingThrow: SavingThrowEffectModel,
+  savingThrowAdvantage: SavingThrowAdvantageEffectModel,
+  savingThrowPossession: SavingThrowPossessionEffectModel,
   skillPossession: SkillPossessionEffectModel,
   blindsightVision: BlindsightVisionEffectModel,
   darkVision: DarkVisionEffectModel,

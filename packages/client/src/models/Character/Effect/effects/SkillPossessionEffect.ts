@@ -4,16 +4,35 @@ import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 
 export type SkillPossessionEffect = DeepReadonly<{
   type: 'skillPossession'
-  skills: SkillType[]
+  skills: {
+    [K in SkillType]?: 'expertise' | 'proficient' | 'halfProficient' | null
+  }
 }>
 
+// noinspection JSConstantReassignment
 export class SkillPossessionEffectModel extends BaseEffectModel<
   SkillPossessionEffect
 > {
-  get skills() {
-    return this.ref.skills || []
-  }
   assign(effect: SkillPossessionEffect) {
-    this.ref.skills = [...new Set([...this.skills, ...(effect.skills || [])])]
+    const priority = [
+      undefined,
+      'halfProficient',
+      'proficient',
+      'expertise',
+      null,
+    ] as const
+
+    type Skills = SkillPossessionEffect['skills']
+    const skills = { ...this.ref.skills }
+
+    ;(Object.entries(effect.skills) as Array<
+      [keyof Skills, Skills[keyof Skills]]
+    >).forEach(([key, value]) => {
+      if (priority.indexOf(skills[key]) < priority.indexOf(value)) {
+        skills[key] = value
+      }
+    })
+
+    this.ref.skills = skills
   }
 }

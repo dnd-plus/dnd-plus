@@ -62,7 +62,7 @@ export class FeatureModel {
             this.characterModel,
             effect,
             createKey(this.key, 'effect', index),
-            { race: this.ref.name },
+            { feature: this.ref.name },
           ) || [],
       ),
       ...this.choices.flatMap((choice) => choice.effects),

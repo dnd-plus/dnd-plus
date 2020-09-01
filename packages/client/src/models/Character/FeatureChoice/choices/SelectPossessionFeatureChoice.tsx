@@ -140,13 +140,18 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
   protected readonly availableKey = 'availableSkills'
 
   protected get unavailableOptions() {
-    return this.characterModel.effects.type.skillPossession.use()?.skills || []
+    const skills =
+      this.characterModel.effects.type.skillPossession.use()?.data.skills || {}
+    return (
+      (Object.keys(skills) as SkillType[]).filter((skill) => !!skills[skill]) ||
+      []
+    )
   }
 
   get activeEffect(): EffectModel {
     return new SkillPossessionEffectModel(
       this.characterModel,
-      { type: 'skillPossession', skills: [this.selected] },
+      { type: 'skillPossession', skills: { [this.selected]: 'proficient' } },
       this.effectKey,
     )
   }

@@ -3,21 +3,23 @@ import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 
-export type SavingThrowEffect = DeepReadonly<
+export type SavingThrowAdvantageEffect = DeepReadonly<
   | {
-      type: 'savingThrow'
+      type: 'savingThrowAdvantage'
       abilities: { [k in AbilityName]?: 'advantage' | 'disadvantage' | null }
       damages?: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
     }
   | {
-      type: 'savingThrow'
+      type: 'savingThrowAdvantage'
       abilities?: { [k in AbilityName]?: 'advantage' | 'disadvantage' | null }
       damages: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
     }
 >
 
-export class SavingThrowEffectModel extends BaseEffectModel<SavingThrowEffect> {
-  assign(effect: SavingThrowEffect) {
+export class SavingThrowAdvantageEffectModel extends BaseEffectModel<
+  SavingThrowAdvantageEffect
+> {
+  assign(effect: SavingThrowAdvantageEffect) {
     ;(['abilities', 'damages'] as const).forEach((prop) => {
       const data = { ...this.ref[prop] }
       type Data = typeof data
