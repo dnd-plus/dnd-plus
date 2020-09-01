@@ -8,6 +8,10 @@ import {
 import { Dragonborn } from 'models/Character/Race/races/Dragonborn'
 import { HalfOrc } from 'models/Character/Race/races/HalfOrc'
 import { HalfElf } from 'models/Character/Race/races/HalfElf'
+import {
+  LighfootHalfling,
+  StoutHalfling,
+} from 'models/Character/Race/races/Halfling'
 
 export const racesList: CharacterRace[] = [
   MountainDwarf,
@@ -18,4 +22,6 @@ export const racesList: CharacterRace[] = [
   Dragonborn,
   HalfOrc,
   HalfElf,
+  StoutHalfling,
+  LighfootHalfling,
 ]
