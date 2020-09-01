@@ -1,6 +1,6 @@
 import { CharacterRace } from 'models/Character/Race/Race'
 import halfElfImg from './assets/halfElf.jpeg'
-import { ABILITY_TYPES, AbilityTypeDict } from 'common/reference/AbilityType'
+import { ABILITY_TYPES } from 'common/reference/AbilityType'
 
 export const HalfElf: CharacterRace = {
   type: 'HalfElf',
@@ -15,14 +15,13 @@ export const HalfElf: CharacterRace = {
       description:
         'Значение вашей Харизмы увеличивается на 2, а значения двух других характеристик на ваш выбор увеличиваются на 1',
       effects: [{ type: 'ability', abilities: { charisma: 2 } }],
-      choices: [1, 2].map(() => ({
-        type: 'select',
-        label: 'Выбор характеристики',
-        options: ABILITY_TYPES.map((type) => ({
-          name: AbilityTypeDict[type],
-          effects: [{ type: 'ability', abilities: { [type]: 1 } }],
-        })),
-      })),
+      choices: [
+        {
+          type: 'selectAbility',
+          count: 2,
+          available: ABILITY_TYPES.filter((ability) => ability !== 'charisma'),
+        },
+      ],
     },
     {
       name: 'Размер',

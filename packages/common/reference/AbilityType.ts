@@ -7,7 +7,7 @@ export const ABILITY_TYPES = [
   'charisma',
 ] as const
 
-export const AbilityTypeDict: Record<AbilityName, string> = {
+export const AbilityTypeDict: Record<AbilityType, string> = {
   strength: 'Сила',
   dexterity: 'Ловкость',
   constitution: 'Телосложение',
@@ -16,6 +16,6 @@ export const AbilityTypeDict: Record<AbilityName, string> = {
   charisma: 'Харизма',
 }
 
-export type AbilityName = typeof ABILITY_TYPES[number]
+export type AbilityType = typeof ABILITY_TYPES[number]
 
-export type AbilitiesMap = Record<AbilityName, number>
+export type AbilitiesMap = Record<AbilityType, number>

@@ -191,9 +191,7 @@ function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
               hooks={feature.choices.map(({ hook }) => hook)}
               render={(choices) =>
                 choices.map(({ node }, key) => (
-                  <Box mb={1} key={key}>
-                    {node}
-                  </Box>
+                  <React.Fragment key={key}>{node}</React.Fragment>
                 ))
               }
             />

@@ -6,13 +6,7 @@ import {
   SkillTypeDict,
 } from 'common/reference/SkillType'
 import { useDispatch } from 'react-redux'
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-} from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import React from 'react'
 import { SkillPossessionEffectModel } from 'models/Character/Effect/effects/SkillPossessionEffect'
 import { createKey } from 'models/utils/createKey'
@@ -23,18 +17,23 @@ import {
   LanguageTypeDict,
 } from 'common/reference/LanguageType'
 import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
+import { ChoiceSelect } from 'components/ChoiceSelect'
 
-const SelectSkillFeatureChoiceState = t.type({
-  selected: t.string,
-})
+const SelectSkillFeatureChoiceState = t.readonly(
+  t.type({
+    selected: t.string,
+  }),
+)
 
 type BaseSelectPossessionRefType<
   T extends string,
   K extends string,
   V extends string
-> = { type: T } & {
-  readonly [k in K]?: ReadonlyArray<V>
-}
+> = Readonly<
+  { type: T } & {
+    readonly [k in K]?: ReadonlyArray<V>
+  }
+>
 
 abstract class BaseSelectPossessionFeatureChoiceModel<
   T extends string,
@@ -83,30 +82,19 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
 
     return {
       node: (
-        <FormControl margin={'dense'} variant={'outlined'} fullWidth>
-          <InputLabel>{this.label}</InputLabel>
-          <Select
-            fullWidth
-            value={this.selected}
-            error={!this.selected}
-            label={this.label}
-            onChange={(e) =>
-              dispatch.sync(
-                this.setChoiceAction({
-                  key: this.key,
-                  value: {
-                    selected: String(e.target.value),
-                  },
-                }),
-              )
-            }
-          >
-            {options.map((option) => {
-              const isExist =
-                this.unavailableOptions.includes(option) &&
-                option !== this.selected
-              return (
-                <MenuItem key={option} value={option} disabled={isExist}>
+        <ChoiceSelect
+          label={this.label}
+          value={this.selected}
+          options={options.map((option) => {
+            const isExist =
+              this.unavailableOptions.includes(option) &&
+              option !== this.selected
+
+            return {
+              value: option,
+              disabled: isExist,
+              text: (
+                <>
                   <span
                     style={
                       isExist ? { textDecoration: 'line-through' } : undefined
@@ -115,15 +103,23 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
                     {this.dict[option]}
                   </span>
                   {isExist && (
-                    <Typography variant={'caption'}>
-                      &nbsp; уже владеете
-                    </Typography>
+                    <Typography variant={'caption'}>&nbsp; есть</Typography>
                   )}
-                </MenuItem>
-              )
-            })}
-          </Select>
-        </FormControl>
+                </>
+              ),
+            }
+          })}
+          onChange={(e) =>
+            dispatch.sync(
+              this.setChoiceAction({
+                key: this.key,
+                value: {
+                  selected: String(e.target.value),
+                },
+              }),
+            )
+          }
+        />
       ),
     }
   }

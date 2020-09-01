@@ -1,4 +1,4 @@
-import { AbilityName } from 'common/reference/AbilityType'
+import { AbilityType } from 'common/reference/AbilityType'
 import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
@@ -6,12 +6,12 @@ import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 export type SavingThrowAdvantageEffect = DeepReadonly<
   | {
       type: 'savingThrowAdvantage'
-      abilities: { [k in AbilityName]?: 'advantage' | 'disadvantage' | null }
+      abilities: { [k in AbilityType]?: 'advantage' | 'disadvantage' | null }
       damages?: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
     }
   | {
       type: 'savingThrowAdvantage'
-      abilities?: { [k in AbilityName]?: 'advantage' | 'disadvantage' | null }
+      abilities?: { [k in AbilityType]?: 'advantage' | 'disadvantage' | null }
       damages: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
     }
 >

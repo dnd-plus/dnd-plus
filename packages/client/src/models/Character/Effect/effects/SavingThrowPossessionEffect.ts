@@ -1,11 +1,11 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
-import { AbilityName } from 'common/reference/AbilityType'
+import { AbilityType } from 'common/reference/AbilityType'
 
 export type SavingThrowPossessionEffect = DeepReadonly<{
   type: 'savingThrowPossession'
   abilities: {
-    [K in AbilityName]?: 'expertise' | 'proficient' | 'halfProficient' | null
+    [K in AbilityType]?: 'expertise' | 'proficient' | 'halfProficient' | null
   }
 }>
 

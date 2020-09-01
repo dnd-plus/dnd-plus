@@ -8,9 +8,11 @@ import {
   SelectLanguageFeatureChoiceModel,
   SelectSkillFeatureChoiceModel,
 } from 'models/Character/FeatureChoice/choices/SelectPossessionFeatureChoice'
+import { SelectAbilityFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityFeatureChoice'
 
 const choiceModelsMap = {
   select: SelectFeatureChoiceModel,
+  selectAbility: SelectAbilityFeatureChoiceModel,
   selectSkill: SelectSkillFeatureChoiceModel,
   selectLanguage: SelectLanguageFeatureChoiceModel,
 } as const

@@ -1,11 +1,11 @@
 import { Effect, effectFactory } from 'models/Character/Effect/Effect'
 import * as t from 'io-ts'
 import React from 'react'
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
+import { ChoiceSelect } from 'components/ChoiceSelect'
 
 export type SelectFeatureChoice = DeepReadonly<{
   type: 'select'
@@ -15,9 +15,11 @@ export type SelectFeatureChoice = DeepReadonly<{
     effects: Effect[]
   }>
 }>
-const SelectFeatureChoiceState = t.type({
-  selected: t.number,
-})
+const SelectFeatureChoiceState = t.readonly(
+  t.type({
+    selected: t.number,
+  }),
+)
 
 export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
   SelectFeatureChoice,
@@ -53,31 +55,24 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
 
     return {
       node: (
-        <FormControl margin={'dense'} variant={'outlined'} fullWidth>
-          <InputLabel>{this.ref.label}</InputLabel>
-          <Select
-            fullWidth
-            value={this.knownState?.selected ?? ''}
-            label={this.ref.label}
-            error={!this.selected}
-            onChange={(e) =>
-              dispatch.sync(
-                this.setChoiceAction({
-                  key: this.key,
-                  value: {
-                    selected: Number(e.target.value),
-                  },
-                }),
-              )
-            }
-          >
-            {this.ref.options.map(({ name }, index) => (
-              <MenuItem key={index} value={index}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <ChoiceSelect
+          label={this.ref.label}
+          value={this.knownState?.selected}
+          options={this.ref.options.map(({ name }, index) => ({
+            text: name,
+            value: index,
+          }))}
+          onChange={(e) =>
+            dispatch.sync(
+              this.setChoiceAction({
+                key: this.key,
+                value: {
+                  selected: Number(e.target.value),
+                },
+              }),
+            )
+          }
+        />
       ),
     }
   }

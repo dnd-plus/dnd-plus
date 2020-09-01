@@ -1,4 +1,4 @@
-import { AbilityName } from 'common/reference/AbilityType'
+import { AbilityType } from 'common/reference/AbilityType'
 
 export type Usages =
   /** fix usages */
@@ -8,6 +8,6 @@ export type Usages =
   /** usages with ability score calculation */
   | {
       value?: number
-      abilityScore: AbilityName
+      abilityScore: AbilityType
       min?: number
     }
