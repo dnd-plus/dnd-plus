@@ -20,7 +20,7 @@ import { CharacterModel } from 'models/Character/CharacterModel'
 import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
 import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
 
-const effectModelsMap = {
+export const effectModelsMap = {
   ability: AbilityEffectModel,
   defence: DefenceEffectModel,
   equipmentPossession: EquipmentPossessionEffectModel,

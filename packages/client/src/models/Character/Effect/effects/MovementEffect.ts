@@ -1,17 +1,13 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 type MovementEffectCreator<T extends string> = DeepReadonly<
-  | {
-      type: T
-      absolute?: number
-      relative: number
-    }
-  | {
-      type: T
-      absolute: number
-      relative?: number
-    }
+  OneOfOptionalRequired<{
+    type: T
+    absolute?: number
+    relative?: number
+  }>
 >
 
 export type WalkMovementEffect = MovementEffectCreator<'walkMovement'>
@@ -44,12 +40,36 @@ abstract class MovementEffectModel<
 
 export class WalkMovementEffectModel extends MovementEffectModel<
   WalkMovementEffect
-> {}
+> {
+  get emptyRef() {
+    return {
+      type: 'walkMovement',
+      absolute: 0,
+      relative: 0,
+    } as const
+  }
+}
 
 export class FlyMovementEffectModel extends MovementEffectModel<
   FlyMovementEffect
-> {}
+> {
+  get emptyRef() {
+    return {
+      type: 'flyMovement',
+      absolute: 0,
+      relative: 0,
+    } as const
+  }
+}
 
 export class SwimMovementEffectModel extends MovementEffectModel<
   SwimMovementEffect
-> {}
+> {
+  get emptyRef() {
+    return {
+      type: 'swimMovement',
+      absolute: 0,
+      relative: 0,
+    } as const
+  }
+}

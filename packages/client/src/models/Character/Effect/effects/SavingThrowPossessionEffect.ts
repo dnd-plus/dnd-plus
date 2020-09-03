@@ -13,6 +13,17 @@ export type SavingThrowPossessionEffect = DeepReadonly<{
 export class SavingThrowPossessionEffectModel extends BaseEffectModel<
   SavingThrowPossessionEffect
 > {
+  get emptyRef() {
+    return {
+      type: 'savingThrowPossession',
+      abilities: {},
+    } as const
+  }
+
+  get abilities() {
+    return this.ref.abilities
+  }
+
   assign(effect: SavingThrowPossessionEffect) {
     const priority = [
       undefined,

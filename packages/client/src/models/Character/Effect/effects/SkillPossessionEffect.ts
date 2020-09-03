@@ -13,6 +13,17 @@ export type SkillPossessionEffect = DeepReadonly<{
 export class SkillPossessionEffectModel extends BaseEffectModel<
   SkillPossessionEffect
 > {
+  get emptyRef() {
+    return {
+      type: 'skillPossession',
+      skills: {},
+    } as const
+  }
+
+  get skills() {
+    return this.ref.skills
+  }
+
   assign(effect: SkillPossessionEffect) {
     const priority = [
       undefined,

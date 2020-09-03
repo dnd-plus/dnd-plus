@@ -10,6 +10,17 @@ export type DefenceEffect = DeepReadonly<{
 }>
 
 export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
+  get emptyRef() {
+    return {
+      type: 'defence',
+      damages: {},
+    } as const
+  }
+
+  get damages() {
+    return this.ref.damages
+  }
+
   assign(effect: DefenceEffect) {
     type Damages = DefenceEffect['damages']
     const damages = { ...this.ref.damages }

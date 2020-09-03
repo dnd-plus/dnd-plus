@@ -6,13 +6,15 @@ import {
 import {
   EFFECT_TYPES,
   EffectModel,
+  effectModelsMap,
   EffectModelsMap,
 } from 'models/Character/Effect/Effect'
 import { DeepReadonly } from 'ts-essentials'
+import { createKey } from 'models/utils/createKey'
 
-type EffectTypeSelector<
-  T extends keyof EffectModelsMap
-> = OutputAppSelector<InstanceType<EffectModelsMap[T]> | null> & {
+type EffectTypeSelector<T extends keyof EffectModelsMap> = OutputAppSelector<
+  InstanceType<EffectModelsMap[T]>
+> & {
   all: OutputAppSelector<InstanceType<EffectModelsMap[T]>[]>
 }
 
@@ -23,19 +25,40 @@ type EffectTypeSelectorsMap = {
 export class EffectsModel {
   constructor(private characterModel: CharacterModel) {}
 
-  readonly effectsAll = createUseSelector(
+  readonly effectsAllRaw = createUseSelector(
     this.characterModel.race.effects,
     (raceEffects) => [...raceEffects],
   )
 
+  readonly effectsAllStatic = createUseSelector(
+    this.effectsAllRaw,
+    (effectsRaw) =>
+      effectsRaw.flatMap((effect) =>
+        effect.fromState ? [] : effect.computed ? effect.computed() : effect,
+      ),
+  )
+
+  readonly effectsAllFromState = createUseSelector(
+    this.effectsAllRaw,
+    (state) => state,
+    (effectsRaw, state) =>
+      effectsRaw.flatMap((effect) =>
+        effect.fromState ? effect.fromState(state) : [],
+      ),
+  )
+
+  readonly effectsAll = createUseSelector(
+    this.effectsAllStatic,
+    this.effectsAllFromState,
+    (staticEffects, fromStateEffects) => [
+      ...staticEffects,
+      ...fromStateEffects,
+    ],
+  )
+
   private createEffectSelector<T extends keyof EffectModelsMap>(type: T) {
-    const selectorAll = createUseSelector(
-      this.effectsAll,
-      (effects) =>
-        effects.filter(
-          (effect) => effect.type === type,
-          // change type from array of union to union of arrays to correct reduce
-        ) as InstanceType<EffectModelsMap[T]>[],
+    const selectorAll = createUseSelector(this.effectsAll, (effects) =>
+      effects.filter((effect) => effect.type === type),
     )
 
     const selector = createUseSelector(selectorAll, (effects) =>
@@ -44,7 +67,11 @@ export class EffectsModel {
             a.assignModel(b as any)
             return a
           })
-        : null,
+        : new effectModelsMap[type](
+            this.characterModel,
+            effectModelsMap[type].emptyRef,
+            createKey(type, 'empty'),
+          ),
     )
 
     const selectorWithAll = selector as typeof selector & {

@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { createSelectorCreator, defaultMemoize } from 'reselect'
 import { useSelector } from 'react-redux'
 import { AppState } from 'redux/configureStore'
 
@@ -1069,7 +1069,7 @@ export function createUseSelector<S, P, R, T>(
 export function createUseSelector(...args) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  const selector = createSelector(...args)
+  const selector = createArraySelector(...args)
   const selectorUse = selector as typeof selector & {
     use: () => ReturnType<typeof selector>
   }
@@ -1078,3 +1078,19 @@ export function createUseSelector(...args) {
   }
   return selectorUse
 }
+
+const createArraySelector = createSelectorCreator(
+  defaultMemoize,
+  function compareArrays(a, b) {
+    if (Object.is(a, b)) return true
+
+    if (Array.isArray(a) && Array.isArray(b)) {
+      return (
+        a.length === b.length &&
+        a.every((value, index) => Object.is(value, b[index]))
+      )
+    }
+
+    return false
+  },
+)

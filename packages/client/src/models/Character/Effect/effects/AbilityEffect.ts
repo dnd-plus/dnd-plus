@@ -8,6 +8,17 @@ export type AbilityEffect = DeepReadonly<{
 }>
 
 export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
+  get emptyRef() {
+    return {
+      type: 'ability',
+      abilities: {},
+    } as const
+  }
+
+  get abilities() {
+    return this.ref.abilities
+  }
+
   assign(effect: AbilityEffect) {
     type Abilities = AbilityEffect['abilities']
     const abilities = { ...this.ref.abilities }

@@ -2,23 +2,35 @@ import { AbilityType } from 'common/reference/AbilityType'
 import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 export type SavingThrowAdvantageEffect = DeepReadonly<
-  | {
-      type: 'savingThrowAdvantage'
-      abilities: { [k in AbilityType]?: 'advantage' | 'disadvantage' | null }
-      damages?: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
-    }
-  | {
-      type: 'savingThrowAdvantage'
-      abilities?: { [k in AbilityType]?: 'advantage' | 'disadvantage' | null }
-      damages: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
-    }
+  OneOfOptionalRequired<{
+    type: 'savingThrowAdvantage'
+    abilities?: { [k in AbilityType]?: 'advantage' | 'disadvantage' | null }
+    damages?: { [k in DamageType]?: 'advantage' | 'disadvantage' | null }
+  }>
 >
 
 export class SavingThrowAdvantageEffectModel extends BaseEffectModel<
   SavingThrowAdvantageEffect
 > {
+  get emptyRef() {
+    return {
+      type: 'savingThrowAdvantage',
+      abilities: {},
+      damages: {},
+    } as const
+  }
+
+  get abilities() {
+    return this.ref.abilities || {}
+  }
+
+  get damages() {
+    return this.ref.damages || {}
+  }
+
   assign(effect: SavingThrowAdvantageEffect) {
     ;(['abilities', 'damages'] as const).forEach((prop) => {
       const data = { ...this.ref[prop] }

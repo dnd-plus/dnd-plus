@@ -27,6 +27,10 @@ export type VisionEffect =
 abstract class VisionEffectModel<
   R extends VisionEffect
 > extends BaseEffectModel<R> {
+  get distance() {
+    return this.ref.distance
+  }
+
   assign(effect: R) {
     this.ref.distance = Math.max(this.ref.distance, effect.distance)
   }
@@ -34,16 +38,42 @@ abstract class VisionEffectModel<
 
 export class BlindsightVisionEffectModel extends VisionEffectModel<
   BlindsightVisionEffect
-> {}
+> {
+  get emptyRef() {
+    return {
+      type: 'blindsightVision',
+      distance: 0,
+    } as const
+  }
+}
 
-export class DarkVisionEffectModel extends VisionEffectModel<
-  DarkVisionEffect
-> {}
+export class DarkVisionEffectModel extends VisionEffectModel<DarkVisionEffect> {
+  get emptyRef() {
+    return {
+      type: 'darkVision',
+      distance: 0,
+    } as const
+  }
+}
 
 export class TremorsenseVisionEffectModel extends VisionEffectModel<
   TremorsenseVisionEffect
-> {}
+> {
+  get emptyRef() {
+    return {
+      type: 'tremorsenseVision',
+      distance: 0,
+    } as const
+  }
+}
 
 export class TruesightVisionEffectModel extends VisionEffectModel<
   TruesightVisionEffect
-> {}
+> {
+  get emptyRef() {
+    return {
+      type: 'truesightVision',
+      distance: 0,
+    } as const
+  }
+}

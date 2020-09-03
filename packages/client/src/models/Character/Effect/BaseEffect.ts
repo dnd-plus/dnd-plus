@@ -1,11 +1,11 @@
 import { Writable } from 'ts-essentials'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { AppState } from 'redux/configureStore'
+import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 export type EffectFrom = {
   race?: string
   feature?: string
-  choice?: string
   class?: string
 }
 
@@ -16,21 +16,23 @@ export abstract class BaseEffectModel<
     protected characterModel: CharacterModel,
     ref: R,
     public readonly key: string,
-    public from: EffectFrom = {},
+    public from?: EffectFrom,
   ) {
     this.ref = { ...ref }
     this.type = this.ref.type
   }
 
+  abstract get emptyRef(): R
+
+  static get emptyRef() {
+    return this.prototype.emptyRef
+  }
+
   protected ref: Writable<R>
   readonly type: R['type']
 
-  get data(): R {
-    return this.ref
-  }
-
-  withFrom(from: EffectFrom): this {
-    Object.assign(this.from, from)
+  withFrom(from: OneOfOptionalRequired<EffectFrom>): this {
+    this.from = { ...this.from, ...from }
     return this
   }
 
@@ -40,5 +42,7 @@ export abstract class BaseEffectModel<
     this.assign(effectModel.ref)
   }
 
-  fromState?: (state: AppState) => BaseEffectModel<any>[]
+  readonly fromState?: (state: AppState) => BaseEffectModel<any>[]
+
+  readonly computed?: () => BaseEffectModel<any>[]
 }

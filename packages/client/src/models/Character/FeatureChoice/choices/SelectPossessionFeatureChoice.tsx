@@ -137,7 +137,7 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
 
   protected get unavailableOptions() {
     const skills =
-      this.characterModel.effects.type.skillPossession.use()?.data.skills || {}
+      this.characterModel.effects.type.skillPossession.use()?.skills || {}
     return (
       (Object.keys(skills) as SkillType[]).filter((skill) => !!skills[skill]) ||
       []
