@@ -22,14 +22,14 @@ export abstract class BaseEffectModel<
     this.type = this.ref.type
   }
 
+  protected ref: Writable<R>
+  readonly type: R['type']
+
   abstract get emptyRef(): R
 
   static get emptyRef() {
     return this.prototype.emptyRef
   }
-
-  protected ref: Writable<R>
-  readonly type: R['type']
 
   withFrom(from: OneOfOptionalRequired<EffectFrom>): this {
     this.from = { ...this.from, ...from }

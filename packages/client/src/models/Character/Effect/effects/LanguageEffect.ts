@@ -8,6 +8,13 @@ export type LanguageEffect = DeepReadonly<{
 }>
 
 export class LanguageEffectModel extends BaseEffectModel<LanguageEffect> {
+  get emptyRef() {
+    return {
+      type: 'language',
+      languages: [],
+    } as const
+  }
+
   get languages() {
     return [...(this.ref.languages || [])]
   }
