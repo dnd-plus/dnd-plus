@@ -4,6 +4,7 @@ import stoutHalflingImg from 'models/Character/Race/races/assets/stoutHalfling.j
 import lightfootHalflingImg from 'models/Character/Race/races/assets/lightfootHalfling.jpeg'
 
 const CommonHalfling = extendType<Partial<CharacterRace>>()({
+  baseType: 'Halfling',
   baseName: 'Халфлинг',
   size: 'small',
   features: [

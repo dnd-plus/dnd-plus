@@ -13,6 +13,7 @@ import {
   StoutHalfling,
 } from 'models/Character/Race/races/Halfling'
 import { Tiefling } from 'models/Character/Race/races/Tiefling'
+import { EladrinElf, HighElf, WoodElf } from 'models/Character/Race/races/Elf'
 
 export const racesList: CharacterRace[] = [
   MountainDwarf,
@@ -26,4 +27,7 @@ export const racesList: CharacterRace[] = [
   StoutHalfling,
   LighfootHalfling,
   Tiefling,
+  HighElf,
+  WoodElf,
+  EladrinElf,
 ]

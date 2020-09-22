@@ -4,13 +4,13 @@ import { ToolTypeDict } from 'common/reference/equipment/ToolType'
 import hillDwarfImg from './assets/hillDwarf.jpeg'
 import mountainDwarfImg from './assets/mountainDwarf.jpeg'
 
-const CommonDwarf = extendType<Partial<CharacterRace>>()({
+const BaseDwarf = extendType<Partial<CharacterRace>>()({
+  baseType: 'Dwarf',
   baseName: 'Дварф',
   size: 'medium',
   features: [
     {
       name: 'Скорость',
-      // todo: add feature
       description:
         'Ваша базовая скорость перемещения — 25 фт. Ношение тяжёлых доспехов не снижает вашу скорость.',
       effects: [{ type: 'walkMovement', absolute: 25 }],
@@ -92,7 +92,7 @@ const CommonDwarf = extendType<Partial<CharacterRace>>()({
 })
 
 export const MountainDwarf: CharacterRace = {
-  ...CommonDwarf,
+  ...BaseDwarf,
   type: 'MountainDwarf',
   image: mountainDwarfImg,
   name: 'Горный дварф',
@@ -107,7 +107,7 @@ export const MountainDwarf: CharacterRace = {
         { type: 'ability', abilities: { constitution: 2, strength: 2 } },
       ],
     },
-    ...CommonDwarf.features,
+    ...BaseDwarf.features,
     {
       name: 'Владение доспехами дварфов',
       description: 'Вы владеете лёгкими и средними доспехами.',
@@ -122,7 +122,7 @@ export const MountainDwarf: CharacterRace = {
 }
 
 export const HillDwarf: CharacterRace = {
-  ...CommonDwarf,
+  ...BaseDwarf,
   type: 'HillDwarf',
   image: hillDwarfImg,
   name: 'Холмовой дварф',
@@ -135,7 +135,7 @@ export const HillDwarf: CharacterRace = {
         'Значение вашего Телосложения увеличивается на 2, а значение вашей Мудрости увеличивается на 1',
       effects: [{ type: 'ability', abilities: { constitution: 2, wisdom: 1 } }],
     },
-    ...CommonDwarf.features,
+    ...BaseDwarf.features,
     {
       name: 'Дварфская выдержка',
       // todo: add effect for this

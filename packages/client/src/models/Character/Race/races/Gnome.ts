@@ -4,7 +4,8 @@ import forestGnomeImg from './assets/forestGnome.jpeg'
 import rockGnomeImg from './assets/rockGnome.jpeg'
 import deepGnomeImg from './assets/deepGnome.jpeg'
 
-const CommonGnome = extendType<Partial<CharacterRace>>()({
+const BaseGnome = extendType<Partial<CharacterRace>>()({
+  baseType: 'Gnome',
   baseName: 'Гном',
   size: 'small',
   features: [
@@ -45,7 +46,7 @@ const CommonGnome = extendType<Partial<CharacterRace>>()({
 })
 
 export const ForestGnome: CharacterRace = {
-  ...CommonGnome,
+  ...BaseGnome,
   type: 'ForestGnome',
   name: 'Лесной гном',
   image: forestGnomeImg,
@@ -60,7 +61,7 @@ export const ForestGnome: CharacterRace = {
         { type: 'ability', abilities: { intelligence: 2, dexterity: 1 } },
       ],
     },
-    ...CommonGnome.features,
+    ...BaseGnome.features,
     {
       name: 'Природная иллюзия',
       // todo: feature
@@ -77,7 +78,7 @@ export const ForestGnome: CharacterRace = {
 }
 
 export const RockGnome: CharacterRace = {
-  ...CommonGnome,
+  ...BaseGnome,
   type: 'RockGnome',
   name: 'Скальный гном',
   image: rockGnomeImg,
@@ -92,7 +93,7 @@ export const RockGnome: CharacterRace = {
         { type: 'ability', abilities: { intelligence: 2, constitution: 1 } },
       ],
     },
-    ...CommonGnome.features,
+    ...BaseGnome.features,
     {
       name: 'Ремесленные знания',
       // todo: feature
@@ -116,6 +117,7 @@ export const RockGnome: CharacterRace = {
 
 export const DeepGnome: CharacterRace = {
   type: 'DeepGnome',
+  baseType: 'Gnome',
   baseName: 'Гном',
   name: 'Глубинный гном',
   size: 'small',

@@ -7,16 +7,44 @@ import { DeepReadonly } from 'ts-essentials'
 import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
 
-export type CharacterRace = DeepReadonly<{
-  type: string
-  image: string
-  baseName?: string
-  name: string
-  variant?: boolean
-  description: string
-  size: CreatureSize
-  features: Feature[]
-}>
+export type CharacterRace = DeepReadonly<
+  {
+    type: CharacterRaceType
+    image: string
+    name: string
+    variant?: boolean
+    description: string
+    size: CreatureSize
+    features: Feature[]
+  } & (
+    | {
+        baseType: CharacterRaceBaseType
+        baseName: string
+      }
+    | {
+        baseType?: never
+        baseName?: never
+      }
+  )
+>
+
+export type CharacterRaceBaseType = 'Dwarf' | 'Gnome' | 'Halfling' | 'Elf'
+
+export type CharacterRaceType =
+  | 'MountainDwarf'
+  | 'HillDwarf'
+  | 'ForestGnome'
+  | 'RockGnome'
+  | 'DeepGnome'
+  | 'Dragonborn'
+  | 'HalfOrc'
+  | 'HalfElf'
+  | 'StoutHalfling'
+  | 'LighfootHalfling'
+  | 'Tiefling'
+  | 'HighElf'
+  | 'WoodElf'
+  | 'EladrinElf'
 
 export class RaceModel {
   constructor(private characterModel: CharacterModel) {}

@@ -2,7 +2,7 @@ import { CharacterRace } from 'models/Character/Race/Race'
 import halfOrcImg from './assets/halfOrc.jpeg'
 
 export const HalfOrc: CharacterRace = {
-  type: 'HalfOrk',
+  type: 'HalfOrc',
   name: 'Полуорк',
   description:
     'Серый цвет кожи, плоский лоб, выступающая челюсть, торчащие клыки и могучее телосложение не оставляет сомнений в орочьем происхождении для любого, кто смотрит на полуорка.',
