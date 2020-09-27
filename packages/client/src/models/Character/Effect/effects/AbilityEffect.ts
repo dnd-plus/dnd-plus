@@ -16,7 +16,7 @@ export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
   }
 
   get abilities() {
-    return this.ref.abilities
+    return this.ref.abilities || {}
   }
 
   assign(effect: AbilityEffect) {

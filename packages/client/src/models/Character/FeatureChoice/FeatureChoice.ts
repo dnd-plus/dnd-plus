@@ -9,12 +9,14 @@ import {
   SelectSkillFeatureChoiceModel,
 } from 'models/Character/FeatureChoice/choices/SelectPossessionFeatureChoice'
 import { SelectAbilityFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityFeatureChoice'
+import { SelectFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectFeatFeatureChoice'
 
 const choiceModelsMap = {
   select: SelectFeatureChoiceModel,
   selectAbility: SelectAbilityFeatureChoiceModel,
   selectSkill: SelectSkillFeatureChoiceModel,
   selectLanguage: SelectLanguageFeatureChoiceModel,
+  selectFeat: SelectFeatFeatureChoiceModel,
 } as const
 
 type FeatureChoiceModelsMap = typeof choiceModelsMap

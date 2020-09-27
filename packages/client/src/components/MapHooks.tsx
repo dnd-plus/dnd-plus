@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from 'react'
 
-function Runner<DataItem, Arg>({
+const Runner = React.memo(function Runner<DataItem, Arg>({
   dataRef,
   index,
   hook,
@@ -23,11 +23,14 @@ function Runner<DataItem, Arg>({
   updateParent: () => void
 }) {
   dataRef.current[index] = hook(arg)
-  if (!isParentRenderRef.current) {
-    updateParent()
-  }
+  const isParentRender = isParentRenderRef.current
+  useLayoutEffect(() => {
+    if (!isParentRender) {
+      updateParent()
+    }
+  })
   return null
-}
+})
 
 function Renderer<Data>({
   dataRef,

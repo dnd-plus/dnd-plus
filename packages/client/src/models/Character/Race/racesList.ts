@@ -14,20 +14,27 @@ import {
 } from 'models/Character/Race/races/Halfling'
 import { Tiefling } from 'models/Character/Race/races/Tiefling'
 import { EladrinElf, HighElf, WoodElf } from 'models/Character/Race/races/Elf'
+import { Human, VariantHuman } from './races/Human'
+import { sortBy } from 'lodash-es'
 
-export const racesList: CharacterRace[] = [
-  MountainDwarf,
-  HillDwarf,
-  ForestGnome,
-  RockGnome,
-  DeepGnome,
-  Dragonborn,
-  HalfOrc,
-  HalfElf,
-  StoutHalfling,
-  LighfootHalfling,
-  Tiefling,
-  HighElf,
-  WoodElf,
-  EladrinElf,
-]
+export const racesList: CharacterRace[] = sortBy(
+  [
+    MountainDwarf,
+    HillDwarf,
+    ForestGnome,
+    RockGnome,
+    DeepGnome,
+    Dragonborn,
+    HalfOrc,
+    HalfElf,
+    StoutHalfling,
+    LighfootHalfling,
+    Tiefling,
+    HighElf,
+    WoodElf,
+    EladrinElf,
+    Human,
+    VariantHuman,
+  ],
+  ['baseName', 'name'],
+)

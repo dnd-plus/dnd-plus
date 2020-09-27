@@ -59,7 +59,10 @@ export function CharacterSettingsRacePage() {
           </Box>
           <div>
             <Box mb={1}>
-              <Typography variant={'h5'}>{race.name.toUpperCase()}</Typography>
+              <Typography variant={'h5'}>
+                {race.name.toUpperCase()}
+                {race.variant && ' (альтернатива)'}
+              </Typography>
             </Box>
             <Box mb={1}>
               <Typography variant={'body1'}>{race.description}</Typography>
@@ -107,7 +110,12 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
               <Avatar src={raceRef.image} alt={raceRef.name} />
             </ListItemAvatar>
             <ListItemText
-              primary={<Typography variant={'h6'}>{raceRef.name}</Typography>}
+              primary={
+                <Typography variant={'h6'}>
+                  {raceRef.name}
+                  {raceRef.variant && ' (альтернатива)'}
+                </Typography>
+              }
             />
             <ListItemSecondaryAction>
               <IconButton edge={'end'} onClick={() => setRaceInfo(raceRef)}>

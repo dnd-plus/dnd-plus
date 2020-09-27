@@ -28,7 +28,12 @@ export type CharacterRace = DeepReadonly<
   )
 >
 
-export type CharacterRaceBaseType = 'Dwarf' | 'Gnome' | 'Halfling' | 'Elf'
+export type CharacterRaceBaseType =
+  | 'Dwarf'
+  | 'Gnome'
+  | 'Halfling'
+  | 'Elf'
+  | 'Human'
 
 export type CharacterRaceType =
   | 'MountainDwarf'
@@ -45,6 +50,8 @@ export type CharacterRaceType =
   | 'HighElf'
   | 'WoodElf'
   | 'EladrinElf'
+  | 'Human'
+  | 'VariantHuman'
 
 export class RaceModel {
   constructor(private characterModel: CharacterModel) {}

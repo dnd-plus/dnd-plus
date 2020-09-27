@@ -21,6 +21,9 @@ const SMarkdownToJsx = styled(MarkdownToJsx)`
   *:last-child {
     margin-bottom: 0;
   }
+  li {
+    font-size: inherit;
+  }
 `
 
 const overrides: MarkdownOptions['overrides'] = {
@@ -28,6 +31,11 @@ const overrides: MarkdownOptions['overrides'] = {
     <Box my={2}>
       <Typography variant={'body1'} {...props} />
     </Box>
+  ),
+  li: (props: any) => (
+    <li {...props}>
+      <Typography variant={'body1'} {...props} />
+    </li>
   ),
   button: Button,
   table: (props: any) => (
