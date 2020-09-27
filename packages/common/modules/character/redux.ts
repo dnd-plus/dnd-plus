@@ -2,6 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { createObjectId } from 'common/utils/createObjectId'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
 import { IdPayloadAction } from 'common/modules/redux/IdPayloadAction'
+import { AbilitiesMap } from 'common/reference/AbilityType'
+
+export type BaseAbilitiesStateType = 'standardArray' | 'pointBuy' | 'manual'
+
+export type BaseAbilitiesState = {
+  type: BaseAbilitiesStateType
+  abilities: Partial<AbilitiesMap>
+  createdAt: number
+  updatedAt: number
+}
 
 export interface CharacterState {
   _id: string
@@ -9,6 +19,7 @@ export interface CharacterState {
   userId: string
   createdAt: number
   updatedAt: number
+  baseAbilities?: BaseAbilitiesState
   race?: {
     type: string
     createdAt: number
@@ -31,16 +42,12 @@ export const {
     },
     create: {
       prepare({ name, userId }: { name: string; userId: string }) {
-        const UTCNow = dateUTCNow()
-
         return {
-          payload: {
+          payload: withDate({
             name,
             userId,
-            createdAt: UTCNow,
-            updatedAt: UTCNow,
             _id: createObjectId(),
-          },
+          }),
         }
       },
       reducer(state, { payload }: PayloadAction<CharacterState>) {
@@ -50,23 +57,51 @@ export const {
     delete(state, { payload }: IdPayloadAction) {
       delete state[payload._id]
     },
+
+    // NAME
     setName: checkCharacter(
       (character, { payload }: IdPayloadAction<{ name: string }>) => {
         if (payload.name) character.name = payload.name
       },
     ),
+
+    // BASE ABILITIES
+    setBaseAbilitiesType: checkCharacter(
+      (
+        character,
+        { payload }: IdPayloadAction<{ type: BaseAbilitiesStateType }>,
+      ) => {
+        if (payload.type === character.baseAbilities?.type) return
+
+        character.baseAbilities = withDate({
+          type: payload.type,
+          abilities: {},
+        })
+      },
+    ),
+    setBaseAbilities: checkCharacter(
+      (
+        character,
+        { payload }: IdPayloadAction<{ abilities: Partial<AbilitiesMap> }>,
+      ) => {
+        if (character.baseAbilities) {
+          character.baseAbilities = withDate({
+            ...character.baseAbilities,
+            abilities: payload.abilities,
+          })
+        }
+      },
+    ),
+
+    // RACE
     setRace: checkCharacter(
       (character, { payload }: IdPayloadAction<{ type: string }>) => {
         if (character.race?.type === payload.type) return
 
-        const UTCNow = dateUTCNow()
-
-        character.race = {
+        character.race = withDate({
           type: payload.type,
-          createdAt: UTCNow,
-          updatedAt: UTCNow,
           choices: {},
-        }
+        })
       },
     ),
     setRaceChoice: checkCharacter(
@@ -82,6 +117,12 @@ export const {
     ),
   },
 })
+
+function withDate<T extends {}>(data: T) {
+  const UTCNow = dateUTCNow()
+
+  return Object.assign({ createdAt: UTCNow }, data, { updatedAt: UTCNow })
+}
 
 function checkCharacter<A extends IdPayloadAction>(
   reducer: (state: CharacterState, action: A) => CharacterState | null | void,

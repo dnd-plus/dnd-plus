@@ -6,6 +6,7 @@ import { AppState } from 'redux/configureStore'
 import { createUseSelector } from 'models/utils/createUseSelector'
 import { RaceModel } from 'models/Character/Race/Race'
 import { EffectsModel } from 'models/Character/EffectsModel'
+import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
 
 type CActions = typeof characterActions
 
@@ -35,7 +36,20 @@ export class CharacterModel {
 
   name = createUseSelector(this.state, (state) => state.name)
 
+  baseAbilities = createUseSelector(this.state, (state) => state.baseAbilities)
+
+  baseAbilitiesEffect = createUseSelector(
+    this.baseAbilities,
+    (baseAbilities) =>
+      new AbilityEffectModel(
+        this,
+        { type: 'ability', abilities: baseAbilities?.abilities || {} },
+        'baseAbilities',
+      ),
+  )
+
   race = new RaceModel(this)
 
+  // must be last
   effects = new EffectsModel(this)
 }

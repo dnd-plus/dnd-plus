@@ -26,8 +26,9 @@ export class EffectsModel {
   constructor(private characterModel: CharacterModel) {}
 
   readonly effectsAllRaw = createUseSelector(
+    this.characterModel.baseAbilitiesEffect,
     this.characterModel.race.effects,
-    (raceEffects) => [...raceEffects],
+    (baseAbilitiesEffect, raceEffects) => [baseAbilitiesEffect, ...raceEffects],
   )
 
   readonly effectsAllStatic = createUseSelector(

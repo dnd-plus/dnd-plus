@@ -10,6 +10,7 @@ import uniqueValidator from 'mongoose-unique-validator'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
 import { UserSchema } from 'modules/user/user.schema'
 import { RaceSchema } from 'modules/character/race/race.schema'
+import { BaseAbilitiesSchema } from 'modules/character/baseAbilities/baseAbilities.schema'
 
 @modelOptions({
   options: {
@@ -28,6 +29,9 @@ export class CharacterSchema {
 
   @prop({ required: true })
   name!: string
+
+  @prop()
+  baseAbilities?: BaseAbilitiesSchema
 
   @prop()
   createdAt!: number

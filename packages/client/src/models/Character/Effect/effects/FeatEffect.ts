@@ -5,7 +5,7 @@ import { effectFactory, EffectModel } from 'models/Character/Effect/Effect'
 import { createKey } from 'models/utils/createKey'
 import { feats } from 'models/Character/Feat/feats'
 import { checkFeatConditions } from 'models/Character/Feat/Feat'
-import { createSelector } from 'reselect'
+import { createUseSelector } from 'models/utils/createUseSelector'
 
 export type FeatEffect = DeepReadonly<{
   type: 'feat'
@@ -20,7 +20,7 @@ export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
     } as const
   }
 
-  fromState = createSelector(
+  fromState = createUseSelector(
     this.characterModel.effects.type.ability,
     this.characterModel.effects.type.equipmentPossession,
     this.characterModel.race.ref,
