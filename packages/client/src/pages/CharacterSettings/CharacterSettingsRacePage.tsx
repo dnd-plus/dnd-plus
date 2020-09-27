@@ -16,13 +16,14 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core'
 import React, { useState } from 'react'
 import { racesList } from 'models/Character/Race/racesList'
 import { CharacterRace } from 'models/Character/Race/Race'
 import { Info as InfoIcon } from '@material-ui/icons'
 import { useDispatch } from 'react-redux'
-import styled, { css } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 import { MapHooks } from 'components/MapHooks'
 import { useToggle } from 'react-use'
 import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
@@ -130,6 +131,7 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
         onClose={() => setRaceInfo(null)}
         fullWidth
         maxWidth={'md'}
+        fullScreen={useMediaQuery(useTheme().breakpoints.down('sm'))}
       >
         {raceInfo && (
           <>

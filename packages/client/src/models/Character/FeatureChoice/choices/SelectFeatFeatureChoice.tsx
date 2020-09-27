@@ -23,12 +23,14 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  Grid,
   Typography,
+  useMediaQuery,
 } from '@material-ui/core'
-import styled, { css } from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { checkFeatConditions, Feat } from 'models/Character/Feat/Feat'
-import { AddCircleOutline, CheckCircle, HighlightOff } from '@material-ui/icons'
+import { AddCircleOutline, CheckCircle, ErrorOutline } from '@material-ui/icons'
 import { Markdown } from 'components/Markdown'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
@@ -155,7 +157,13 @@ function FeatsListModal<F extends () => void>({
   const raceRef = characterModel.race.ref.use()
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth={'md'}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth={'md'}
+      fullScreen={useMediaQuery(useTheme().breakpoints.down('sm'))}
+    >
       <DialogTitle>Выбор черты</DialogTitle>
       <DialogContent>
         {feats
@@ -180,33 +188,52 @@ function FeatsListModal<F extends () => void>({
             return (
               <Accordion key={feat.id}>
                 <AccordionSummary>
-                  <Box
-                    width={0.05}
-                    color={
-                      feat.selected
-                        ? 'primary.main'
-                        : feat.active
-                        ? 'success.main'
-                        : feat.available
-                        ? 'text.main'
-                        : 'error.dark'
-                    }
-                  >
-                    {React.createElement(
-                      feat.active
-                        ? CheckCircle
-                        : feat.available
-                        ? AddCircleOutline
-                        : HighlightOff,
-                      { fontSize: 'small', color: 'inherit' },
-                    )}
-                  </Box>
-                  <Box width={0.33}>
-                    <Typography variant={'body1'}>{feat.name}</Typography>
-                  </Box>
-                  <Box color={feat.available ? 'text.secondary' : 'error.dark'}>
-                    {feat.demands?.text}
-                  </Box>
+                  <Grid container alignItems={'center'} wrap={'nowrap'}>
+                    <Box
+                      display={'inline-flex'}
+                      color={
+                        feat.selected
+                          ? 'primary.main'
+                          : feat.active
+                          ? 'success.main'
+                          : feat.available
+                          ? 'text.main'
+                          : 'error.dark'
+                      }
+                      mr={1}
+                    >
+                      {React.createElement(
+                        feat.active
+                          ? CheckCircle
+                          : feat.available
+                          ? AddCircleOutline
+                          : ErrorOutline,
+                        { fontSize: 'small', color: 'inherit' },
+                      )}
+                    </Box>
+                    <Grid
+                      item
+                      xs={'auto'}
+                      container
+                      alignItems={'center'}
+                      justify={'space-between'}
+                    >
+                      <Grid item xs={12} md={'auto'}>
+                        <Typography variant={'body1'}>{feat.name}</Typography>
+                      </Grid>
+                      {feat.demands?.text && (
+                        <Grid item xs={12} md={'auto'}>
+                          <Box
+                            color={
+                              feat.available ? 'text.secondary' : 'error.dark'
+                            }
+                          >
+                            {feat.demands?.text}
+                          </Box>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Grid>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Markdown>{feat.description}</Markdown>

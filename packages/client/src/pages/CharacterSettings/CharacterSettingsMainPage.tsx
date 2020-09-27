@@ -1,10 +1,14 @@
 import { useCharacterModel } from 'models/Character/CharacterModelContext'
 import {
+  Box,
   Button,
   FormControl,
+  FormControlLabel,
+  FormLabel,
   Grid,
-  InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Typography,
 } from '@material-ui/core'
@@ -65,12 +69,6 @@ export function CharacterSettingsMainPage() {
   )
 }
 
-const baseAbilitiesTypeMap: Record<BaseAbilitiesStateType, string> = {
-  standardArray: 'Стандартный массив',
-  pointBuy: 'Покупка за поинты',
-  manual: 'Вручную',
-}
-
 const standardValuesArray = [8, 10, 12, 13, 14, 15]
 
 const maxPoints = 27
@@ -101,8 +99,6 @@ function BaseAbilities() {
   }
   const dispatch = useDispatch()
 
-  console.log(characterModel.baseAbilities.use())
-
   const abilityValues = Object.values(abilities as Record<string, number>)
 
   const valuesArray = type ? valuesArrayMap[type] : []
@@ -120,12 +116,11 @@ function BaseAbilities() {
         <Typography variant={'h4'}>Значения характеристик</Typography>
       </Grid>
       <Grid item>
-        <FormControl variant={'outlined'} fullWidth>
-          <InputLabel>Вариант значений характеристик</InputLabel>
-          <Select
-            fullWidth
+        <FormControl fullWidth>
+          <FormLabel>Метод выбора значений</FormLabel>
+          <RadioGroup
+            name='type'
             value={type || ''}
-            label={'Вариант значений характеристик'}
             onChange={(e) =>
               dispatch.sync(
                 characterModel.actions.setBaseAbilitiesType({
@@ -134,20 +129,53 @@ function BaseAbilities() {
               )
             }
           >
-            {Object.entries(baseAbilitiesTypeMap).map(([value, label]) => (
-              <MenuItem key={value} value={value}>
-                {label}
-              </MenuItem>
-            ))}
-          </Select>
+            <Box mt={2}>
+              <FormControlLabel
+                value='standardArray'
+                control={<Radio />}
+                label={
+                  <>
+                    <div>Стандартный набор</div>
+                    <Typography variant={'caption'}>
+                      Выбор из стандартного набора значений -{' '}
+                      {standardValuesArray.join(', ')}
+                    </Typography>
+                  </>
+                }
+              />
+            </Box>
+            <Box mt={1}>
+              <FormControlLabel
+                value='pointBuy'
+                control={<Radio />}
+                label={
+                  <>
+                    <div>Покупка за поинты</div>
+                    <Typography variant={'caption'}>
+                      Покупка значений за поинты
+                    </Typography>
+                  </>
+                }
+              />
+            </Box>
+            <Box mt={1}>
+              <FormControlLabel
+                value='manual'
+                control={<Radio />}
+                label='Вручную'
+              />
+            </Box>
+          </RadioGroup>
         </FormControl>
       </Grid>
       {type === 'pointBuy' && (
-        <Grid item>
-          <Typography variant={'subtitle1'}>
-            Осталось поинтов: {availablePoints}/{maxPoints}
-          </Typography>
-        </Grid>
+        <>
+          <Grid item>
+            <Typography variant={'h6'}>
+              Осталось поинтов: {availablePoints} / {maxPoints}
+            </Typography>
+          </Grid>
+        </>
       )}
       {type && (
         <Grid item container spacing={1}>
@@ -156,12 +184,13 @@ function BaseAbilities() {
             const abilityValue = abilities[abilityType]
             const abilityCost =
               (abilityValue && pointBuyCost[abilityValue]) || 0
-            console.log(abilityCost)
 
             return (
-              <Grid item xs={4} md={2}>
+              <Grid item xs={4} lg={2}>
                 <div>
-                  <Typography variant={'subtitle2'}>{label}</Typography>
+                  <Typography variant={'caption'}>
+                    <b>{label}</b>
+                  </Typography>
                 </div>
                 <Select
                   variant={'outlined'}
@@ -178,21 +207,30 @@ function BaseAbilities() {
                     )
                   }
                 >
-                  <MenuItem value={0}>-</MenuItem>
+                  {type === 'standardArray' && <MenuItem value={0}>-</MenuItem>}
                   {valuesArray.map((value) => {
-                    const disabled =
-                      value === abilityValue
-                        ? false
-                        : type === 'standardArray'
-                        ? abilityValues.includes(value)
-                        : type === 'pointBuy'
-                        ? Number(pointBuyCost[value]) - abilityCost >
-                          availablePoints
-                        : false
+                    const cost = Number(pointBuyCost[value]) - abilityCost
+                    const selected = value === abilityValue
+                    const disabled = selected
+                      ? false
+                      : type === 'standardArray'
+                      ? abilityValues.includes(value)
+                      : type === 'pointBuy'
+                      ? cost > availablePoints
+                      : false
 
                     return (
                       <MenuItem key={value} value={value} disabled={disabled}>
                         {value}
+                        {type === 'pointBuy' && !selected && (
+                          <Typography
+                            variant={'caption'}
+                            style={{ marginLeft: 'auto' }}
+                          >
+                            &nbsp;({cost < 0 ? '+' : ''}
+                            {-cost} п.)
+                          </Typography>
+                        )}
                       </MenuItem>
                     )
                   })}

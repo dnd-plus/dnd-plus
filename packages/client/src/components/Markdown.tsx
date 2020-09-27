@@ -15,14 +15,16 @@ import {
 import styled from 'styled-components'
 
 const SMarkdownToJsx = styled(MarkdownToJsx)`
+  ${({ theme }) => theme.typography.body1 as {}}
   *:first-child {
     margin-top: 0;
   }
   *:last-child {
     margin-bottom: 0;
   }
-  li {
-    font-size: inherit;
+  ul,
+  ol {
+    padding-left: ${({ theme }) => theme.spacing(2)}px;
   }
 `
 

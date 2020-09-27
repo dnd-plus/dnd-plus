@@ -19,6 +19,7 @@ export type FeatCondition = OneOfOptionalRequired<{
   size?: CreatureSize
 }>
 
+// todo: add choices
 export type Feat = {
   id: number
   nameEn: string
@@ -48,7 +49,7 @@ export function checkFeatConditions(
   if (!feat.demands) return true
 
   return feat.demands.conditions.some(
-    ({ abilities, armorPossession, race, size }) =>
+    ({ abilities, armorPossession, race, size, spellCasting }) =>
       // abilities
       (!abilities ||
         (Object.keys(abilities) as AbilityType[]).every(
@@ -61,6 +62,8 @@ export function checkFeatConditions(
       // race
       (!race || raceRef?.baseType === race || raceRef?.type === race) &&
       // size
-      (!size || size === raceRef?.size),
+      (!size || size === raceRef?.size) &&
+      // spell casting
+      !spellCasting,
   )
 }
