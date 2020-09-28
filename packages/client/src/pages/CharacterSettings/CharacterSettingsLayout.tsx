@@ -57,7 +57,7 @@ export function CharacterSettingsLayout() {
 
   const characterName = characterModel.name.use()
   const isEmptyRace = characterModel.race.isEmpty.use()
-  const raceNeededChoicesCount = characterModel.race.neededChoicesCount.use()
+  const raceChoicesCount = characterModel.race.choicesCount.use()
 
   const settingPages = useMemo(() => {
     const create = (title: string, link: string, icon: ReactElement) => ({
@@ -71,10 +71,7 @@ export function CharacterSettingsLayout() {
       create(
         'Раса',
         characterSettingsRaceRoute.link(id),
-        <Badge
-          color={'error'}
-          badgeContent={+isEmptyRace || raceNeededChoicesCount}
-        >
+        <Badge color={'error'} badgeContent={+isEmptyRace || raceChoicesCount}>
           <GameUiPlayerBody />
         </Badge>,
       ),
@@ -89,7 +86,7 @@ export function CharacterSettingsLayout() {
         <GameUiBookSkill />,
       ),
     ]
-  }, [id, isEmptyRace, raceNeededChoicesCount])
+  }, [id, isEmptyRace, raceChoicesCount])
 
   return (
     <>

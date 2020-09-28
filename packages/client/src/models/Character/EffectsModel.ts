@@ -6,11 +6,10 @@ import {
 import {
   EFFECT_TYPES,
   EffectModel,
-  effectModelsMap,
   EffectModelsMap,
 } from 'models/Character/Effect/Effect'
 import { DeepReadonly } from 'ts-essentials'
-import { createKey } from 'models/utils/createKey'
+import { unionEffectModels } from 'models/utils/unionEffectModels'
 
 type EffectTypeSelector<T extends keyof EffectModelsMap> = OutputAppSelector<
   InstanceType<EffectModelsMap[T]>
@@ -41,7 +40,7 @@ export class EffectsModel {
 
   readonly effectsAllFromState = createUseSelector(
     this.effectsAllRaw,
-    (state) => state,
+    this.characterModel.globalCharacterState,
     (effectsRaw, state) =>
       effectsRaw.flatMap((effect) =>
         effect.fromState ? effect.fromState(state) : [],
@@ -62,18 +61,9 @@ export class EffectsModel {
       effects.filter((effect) => effect.type === type),
     )
 
-    const selector = createUseSelector(selectorAll, (effects) =>
-      effects.length
-        ? effects.reduce((a, b) => {
-            a.assignModel(b as any)
-            return a
-          })
-        : new effectModelsMap[type](
-            this.characterModel,
-            effectModelsMap[type].emptyRef,
-            createKey(type, 'empty'),
-          ),
-    )
+    const selector = createUseSelector(selectorAll, (effects) => {
+      return unionEffectModels(this.characterModel, type, effects)
+    })
 
     const selectorWithAll = selector as typeof selector & {
       all: typeof selectorAll

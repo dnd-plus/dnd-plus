@@ -32,6 +32,8 @@ import { CharacterModel } from 'models/Character/CharacterModel'
 import { checkFeatConditions, Feat } from 'models/Character/Feat/Feat'
 import { AddCircleOutline, CheckCircle, ErrorOutline } from '@material-ui/icons'
 import { Markdown } from 'components/Markdown'
+import { createSelector } from 'reselect'
+import { createUseSelector } from 'models/utils/createUseSelector'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
@@ -58,9 +60,27 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     )
   }
 
-  get chosen() {
-    return !!this.selected
-  }
+  checkOptionsSelector = createUseSelector(
+    this.characterModel.effects.type.ability,
+    this.characterModel.effects.type.equipmentPossession,
+    this.characterModel.race.ref,
+    (abilityEffect, equipmentPossessionEffect, raceRef) => ({
+      abilityEffect,
+      equipmentPossessionEffect,
+      raceRef,
+    }),
+  )
+
+  isAvailableSelector = createUseSelector(
+    this.checkOptionsSelector,
+    (checkOptions) =>
+      this.selected && checkFeatConditions(this.selected, checkOptions),
+  )
+
+  choicesCountSelector = createSelector(
+    this.isAvailableSelector,
+    (isAvailable) => (isAvailable ? 0 : 1),
+  )
 
   get effects() {
     return (this.selected?.effects || []).flatMap(
@@ -77,22 +97,12 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     const [isOpen, toggleIsOpen] = useToggle(false)
     const dispatch = useDispatch()
 
-    const abilityEffect = this.characterModel.effects.type.ability.use()
-    const equipmentPossessionEffect = this.characterModel.effects.type.equipmentPossession.use()
-    const raceRef = this.characterModel.race.ref.use()
-
-    const isAvailable =
-      this.selected &&
-      checkFeatConditions(this.selected, {
-        abilityEffect,
-        equipmentPossessionEffect,
-        raceRef,
-      })
+    const isAvailable = this.isAvailableSelector.use()
 
     return {
       node: (
         <>
-          {this.selected && isAvailable && (
+          {this.selected && (
             <Card>
               <CardContent>
                 <Typography gutterBottom variant={'h5'}>
@@ -101,15 +111,30 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
                 <Box mb={1}>
                   <Markdown>{this.selected.description}</Markdown>
                 </Box>
+                {!isAvailable && (
+                  <Box color={'error.dark'}>
+                    <Typography variant={'h6'}>
+                      Не выполнено условие:
+                    </Typography>
+                    <Typography variant={'body1'}>
+                      {this.selected.demands?.text}
+                    </Typography>
+                  </Box>
+                )}
               </CardContent>
               <CardActions>
-                <Button onClick={toggleIsOpen}>Сменить</Button>
+                <Button
+                  color={isAvailable ? 'default' : 'primary'}
+                  onClick={toggleIsOpen}
+                >
+                  Сменить
+                </Button>
               </CardActions>
             </Card>
           )}
-          {!isAvailable && (
+          {!this.selected && (
             <SDangerButton
-              variant={'contained'}
+              variant={'outlined'}
               color={'inherit'}
               onClick={toggleIsOpen}
             >
@@ -267,11 +292,10 @@ function FeatsListModal<F extends () => void>({
 
 const SDangerButton = styled(Button)(
   ({ theme }) => css`
-    color: ${theme.palette.error.contrastText};
-    background-color: ${theme.palette.error.dark};
+    border-color: ${theme.palette.error.dark};
 
     &:hover {
-      background-color: ${theme.palette.error.main};
+      border-color: ${theme.palette.error.main};
     }
   `,
 )

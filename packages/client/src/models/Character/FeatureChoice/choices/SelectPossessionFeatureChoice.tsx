@@ -61,9 +61,7 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
       : ('' as V)
   }
 
-  get chosen() {
-    return !!this.selected
-  }
+  choicesCountSelector = () => (this.selected ? 0 : 1)
 
   get effectKey() {
     return createKey(this.key, this.knownState?.selected)

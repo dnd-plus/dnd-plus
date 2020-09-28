@@ -1079,18 +1079,17 @@ export function createUseSelector(...args) {
   return selectorUse
 }
 
-const createArraySelector = createSelectorCreator(
-  defaultMemoize,
-  function compareArrays(a, b) {
-    if (Object.is(a, b)) return true
+export function compareArrays(a: unknown, b: unknown) {
+  if (Object.is(a, b)) return true
 
-    if (Array.isArray(a) && Array.isArray(b)) {
-      return (
-        a.length === b.length &&
-        a.every((value, index) => Object.is(value, b[index]))
-      )
-    }
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return (
+      a.length === b.length &&
+      a.every((value, index) => Object.is(value, b[index]))
+    )
+  }
 
-    return false
-  },
-)
+  return false
+}
+
+const createArraySelector = createSelectorCreator(defaultMemoize, compareArrays)

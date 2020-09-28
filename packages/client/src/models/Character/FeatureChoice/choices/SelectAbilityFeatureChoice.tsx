@@ -13,6 +13,8 @@ import {
 import { DeepReadonly } from 'ts-essentials'
 import { ChoiceSelect } from 'components/ChoiceSelect'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
+import { defaultMemoize } from 'reselect'
+import { compareArrays } from 'models/utils/createUseSelector'
 
 export type SelectAbilityFeatureChoice = DeepReadonly<{
   type: 'selectAbility'
@@ -51,6 +53,11 @@ export class SelectAbilityFeatureChoiceModel extends BaseFeatureChoiceModel<
   get selected() {
     return this.items
   }
+
+  choicesCountSelector = defaultMemoize(
+    () => this.selected.reduce((sum, item) => sum + (item ? 0 : 1), 0),
+    compareArrays,
+  )
 
   get chosen() {
     return this.selected.every(Boolean)

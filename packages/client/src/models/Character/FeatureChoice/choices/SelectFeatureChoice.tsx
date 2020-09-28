@@ -35,9 +35,7 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
     )
   }
 
-  get chosen() {
-    return !!this.selected
-  }
+  choicesCountSelector = () => (this.selected ? 0 : 1)
 
   get effects() {
     return (this.selected?.effects || []).flatMap(

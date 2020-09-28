@@ -32,6 +32,11 @@ export class CharacterModel {
     (state) => state,
   )
 
+  globalCharacterState = createUseSelector(this.state, (state) => ({
+    characters: { [this.id]: state },
+    user: null,
+  }))
+
   hasState = createUseSelector(this.state, (state) => !!state)
 
   name = createUseSelector(this.state, (state) => state.name)

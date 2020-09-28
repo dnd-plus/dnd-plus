@@ -11,6 +11,7 @@ import {
   FeatureChoiceAction,
 } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
+import { createUseSelector } from 'models/utils/createUseSelector'
 
 export type Feature = DeepReadonly<{
   name: string
@@ -46,13 +47,10 @@ export class FeatureModel {
     return resultModels
   }
 
-  get neededChoices() {
-    return this.choices.filter((choice) => !choice.chosen)
-  }
-
-  get neededChoicesCount() {
-    return this.neededChoices.length
-  }
+  choicesCountSelector = createUseSelector(
+    this.choices.map((choice) => choice.choicesCountSelector),
+    (...choicesCount) => choicesCount.reduce((a, b) => a + b, 0),
+  )
 
   get effects() {
     return [

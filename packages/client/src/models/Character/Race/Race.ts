@@ -4,7 +4,6 @@ import { CharacterModel } from 'models/Character/CharacterModel'
 import { createUseSelector } from 'models/utils/createUseSelector'
 import { racesList } from 'models/Character/Race/racesList'
 import { DeepReadonly } from 'ts-essentials'
-import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
 
 export type CharacterRace = DeepReadonly<
@@ -88,15 +87,13 @@ export class RaceModel {
       ) || [],
   )
 
-  neededChoices = createUseSelector(this.features, (features) =>
-    features.reduce((neededChoices, feature) => {
-      return neededChoices.concat(feature.neededChoices)
-    }, [] as BaseFeatureChoiceModel<any, any>[]),
-  )
-
-  neededChoicesCount = createUseSelector(
-    this.neededChoices,
-    (neededChoices) => neededChoices.length,
+  choicesCount = createUseSelector(
+    this.features,
+    this.characterModel.globalCharacterState,
+    (features, state) =>
+      features.reduce((sum, feature) => {
+        return sum + feature.choicesCountSelector(state)
+      }, 0),
   )
 
   data = createUseSelector(this.ref, this.features, (ref, features) =>
