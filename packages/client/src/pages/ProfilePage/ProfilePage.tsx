@@ -5,7 +5,6 @@ import { useDispatch, useSelector, useStore } from 'react-redux'
 import { parseId } from '@logux/core'
 import {
   Avatar,
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -38,6 +37,7 @@ import {
 } from 'common/modules/character/redux'
 import stc from 'string-to-color'
 import { DefaultContainer } from 'components/DefaultContainer'
+import { SBox } from 'components/SBox'
 
 const SFab = styled(Fab)(
   ({ theme }) => css`
@@ -86,20 +86,20 @@ export function ProfilePage() {
 
   return (
     <DefaultContainer>
-      <Box mt={5} mb={8}>
+      <SBox mt={5} mb={8}>
         <SCharList>
-          <Box my={3}>
+          <SBox my={3}>
             <Typography variant={'h3'}>Мои персонажи</Typography>
-          </Box>
+          </SBox>
           {characters.length === 0 && !isSubscribing && (
-            <Box my={3}>
+            <SBox my={3}>
               <Typography variant={'body1'} color={'textSecondary'}>
                 Самое время создать персонажа!
               </Typography>
-            </Box>
+            </SBox>
           )}
           {characters.length > 0 && (
-            <Box my={3}>
+            <SBox my={3}>
               <List>
                 {characters.map((character) => (
                   <ListItem
@@ -146,7 +146,7 @@ export function ProfilePage() {
                   </ListItem>
                 ))}
               </List>
-            </Box>
+            </SBox>
           )}
           <Tooltip title={'Добавить персонажа'}>
             <SFab color='primary' onClick={toggleIsOpenForm}>
@@ -175,7 +175,7 @@ export function ProfilePage() {
                   >
                     Отмена
                   </Button>
-                  <Box color={'error.main'}>
+                  <SBox color={'error.main'}>
                     <Button
                       type={'submit'}
                       color={'inherit'}
@@ -190,13 +190,13 @@ export function ProfilePage() {
                     >
                       Удалить
                     </Button>
-                  </Box>
+                  </SBox>
                 </DialogActions>
               </SDialogInner>
             )}
           </Dialog>
         </SCharList>
-      </Box>
+      </SBox>
     </DefaultContainer>
   )
 }

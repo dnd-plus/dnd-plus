@@ -1,5 +1,4 @@
 import {
-  Box,
   FormControl,
   InputLabel,
   MenuItem,
@@ -7,6 +6,7 @@ import {
   SelectProps,
 } from '@material-ui/core'
 import React, { ReactNode } from 'react'
+import { SBox } from './SBox'
 
 export function ChoiceSelect<T extends string | number | undefined>({
   label,
@@ -20,7 +20,7 @@ export function ChoiceSelect<T extends string | number | undefined>({
   onChange: SelectProps['onChange']
 }) {
   return (
-    <Box mb={1}>
+    <SBox mb={1}>
       <FormControl margin={'dense'} variant={'outlined'} fullWidth>
         <InputLabel>{label}</InputLabel>
         <Select
@@ -37,6 +37,6 @@ export function ChoiceSelect<T extends string | number | undefined>({
           ))}
         </Select>
       </FormControl>
-    </Box>
+    </SBox>
   )
 }

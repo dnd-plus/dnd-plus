@@ -6,7 +6,6 @@ import { useSubscription } from '@logux/redux'
 import { currentUserChannel } from 'common/modules/user/channels'
 import {
   AppBar,
-  Box,
   Button,
   ListItemIcon,
   Menu,
@@ -22,6 +21,7 @@ import {
 import { Link } from 'react-router-dom'
 import { homeRoute, loginRoute, profileRoute } from 'constants/routes'
 import { useToggle } from 'react-use'
+import { SBox } from './SBox'
 
 export function Header() {
   const { userId } = parseId(useStore().client.nodeId)
@@ -38,12 +38,12 @@ export function Header() {
   return (
     <AppBar position={'static'}>
       <Toolbar>
-        {/*<Box mr={2}>*/}
+        {/*<SBox mr={2}>*/}
         {/*  <IconButton edge='start' color='inherit' aria-label='menu'>*/}
         {/*    <MenuIcon />*/}
         {/*  </IconButton>*/}
-        {/*</Box>*/}
-        <Box mr={'auto'}>
+        {/*</SBox>*/}
+        <SBox mr={'auto'}>
           <Typography
             component={Link}
             to={homeRoute.path}
@@ -53,7 +53,7 @@ export function Header() {
           >
             DnD+
           </Typography>
-        </Box>
+        </SBox>
         {isGuest ? (
           <Button component={Link} to={loginRoute.path} color='inherit'>
             Вход

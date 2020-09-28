@@ -1,6 +1,5 @@
 import { useCharacterModel } from 'models/Character/CharacterModelContext'
 import {
-  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -22,6 +21,7 @@ import {
   ABILITY_TYPES,
   AbilityTypeDict,
 } from 'common/reference/AbilityType'
+import { SBox } from 'components/SBox'
 
 export function CharacterSettingsMainPage() {
   const characterModel = useCharacterModel()
@@ -129,7 +129,7 @@ function BaseAbilities() {
               )
             }
           >
-            <Box mt={2}>
+            <SBox mt={2}>
               <FormControlLabel
                 value='standardArray'
                 control={<Radio />}
@@ -143,8 +143,8 @@ function BaseAbilities() {
                   </>
                 }
               />
-            </Box>
-            <Box mt={1}>
+            </SBox>
+            <SBox mt={1}>
               <FormControlLabel
                 value='pointBuy'
                 control={<Radio />}
@@ -157,14 +157,14 @@ function BaseAbilities() {
                   </>
                 }
               />
-            </Box>
-            <Box mt={1}>
+            </SBox>
+            <SBox mt={1}>
               <FormControlLabel
                 value='manual'
                 control={<Radio />}
                 label='Вручную'
               />
-            </Box>
+            </SBox>
           </RadioGroup>
         </FormControl>
       </Grid>

@@ -1,7 +1,6 @@
 import React from 'react'
 import MarkdownToJsx, { MarkdownOptions, MarkdownProps } from 'markdown-to-jsx'
 import {
-  Box,
   Button,
   Paper,
   Table,
@@ -13,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import styled from 'styled-components'
+import { SBox } from 'components/SBox'
 
 const SMarkdownToJsx = styled(MarkdownToJsx)`
   ${({ theme }) => theme.typography.body1 as {}}
@@ -30,9 +30,9 @@ const SMarkdownToJsx = styled(MarkdownToJsx)`
 
 const overrides: MarkdownOptions['overrides'] = {
   p: (props: any) => (
-    <Box my={2}>
+    <SBox my={2}>
       <Typography variant={'body1'} {...props} />
-    </Box>
+    </SBox>
   ),
   li: (props: any) => (
     <li {...props}>

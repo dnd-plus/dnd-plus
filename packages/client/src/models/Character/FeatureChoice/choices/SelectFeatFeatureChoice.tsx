@@ -13,7 +13,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Button,
   Card,
   CardActions,
@@ -34,6 +33,7 @@ import { AddCircleOutline, CheckCircle, ErrorOutline } from '@material-ui/icons'
 import { Markdown } from 'components/Markdown'
 import { createSelector } from 'reselect'
 import { createUseSelector } from 'models/utils/createUseSelector'
+import { SBox } from 'components/SBox'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
@@ -108,18 +108,18 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
                 <Typography gutterBottom variant={'h5'}>
                   {this.selected.name}
                 </Typography>
-                <Box mb={1}>
+                <SBox mb={1}>
                   <Markdown>{this.selected.description}</Markdown>
-                </Box>
+                </SBox>
                 {!isAvailable && (
-                  <Box color={'error.dark'}>
+                  <SBox color={'error.dark'}>
                     <Typography variant={'h6'}>
                       Не выполнено условие:
                     </Typography>
                     <Typography variant={'body1'}>
                       {this.selected.demands?.text}
                     </Typography>
-                  </Box>
+                  </SBox>
                 )}
               </CardContent>
               <CardActions>
@@ -214,7 +214,7 @@ function FeatsListModal<F extends () => void>({
               <Accordion key={feat.id}>
                 <AccordionSummary>
                   <Grid container alignItems={'center'} wrap={'nowrap'}>
-                    <Box
+                    <SBox
                       display={'inline-flex'}
                       color={
                         feat.selected
@@ -235,7 +235,7 @@ function FeatsListModal<F extends () => void>({
                           : ErrorOutline,
                         { fontSize: 'small', color: 'inherit' },
                       )}
-                    </Box>
+                    </SBox>
                     <Grid
                       item
                       xs={'auto'}
@@ -248,13 +248,13 @@ function FeatsListModal<F extends () => void>({
                       </Grid>
                       {feat.demands?.text && (
                         <Grid item xs={12} md={'auto'}>
-                          <Box
+                          <SBox
                             color={
                               feat.available ? 'text.secondary' : 'error.dark'
                             }
                           >
                             {feat.demands?.text}
-                          </Box>
+                          </SBox>
                         </Grid>
                       )}
                     </Grid>

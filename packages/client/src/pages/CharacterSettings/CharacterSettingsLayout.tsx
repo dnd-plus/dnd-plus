@@ -11,7 +11,6 @@ import {
   Badge,
   BottomNavigation,
   BottomNavigationAction,
-  Box,
   Hidden,
   Tab,
   Tabs,
@@ -25,6 +24,7 @@ import {
   GameUiPlayerBody,
   GameUiStats,
 } from 'components/DndIcons'
+import { SBox } from 'components/SBox'
 
 const SBottomNavigation = styled(BottomNavigation)`
   position: fixed;
@@ -90,16 +90,16 @@ export function CharacterSettingsLayout() {
 
   return (
     <>
-      <Box mt={3} />
+      <SBox mt={3} />
       <DefaultContainer relative>
-        <Box mb={3}>
+        <SBox mb={3}>
           <Typography variant={'h4'}>
             <Typography variant={'h5'} component={'div'}>
               параметры
             </Typography>
             <b>{characterName}</b>
           </Typography>
-        </Box>
+        </SBox>
         <Hidden smDown>
           <STabsWrap>
             <STabs
@@ -124,12 +124,12 @@ export function CharacterSettingsLayout() {
             </STabs>
           </STabsWrap>
         </Hidden>
-        <Box my={5}>
+        <SBox my={5}>
           <Outlet />
-        </Box>
+        </SBox>
       </DefaultContainer>
       <Hidden mdUp>
-        <Box pt={7} />
+        <SBox pt={7} />
         <SBottomNavigation value={pathname} showLabels>
           {settingPages.map(({ title, link, icon }) => (
             <BottomNavigationAction

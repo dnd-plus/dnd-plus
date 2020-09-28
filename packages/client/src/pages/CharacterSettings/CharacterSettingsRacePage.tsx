@@ -1,7 +1,6 @@
 import { useCharacterModel } from 'models/Character/CharacterModelContext'
 import {
   Avatar,
-  Box,
   Button,
   Dialog,
   DialogActions,
@@ -28,6 +27,7 @@ import { MapHooks } from 'components/MapHooks'
 import { useToggle } from 'react-use'
 import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
 import { Markdown } from 'components/Markdown'
+import { SBox } from 'components/SBox'
 
 const SBigAvatar = styled(Avatar)(
   ({ theme }) => css`
@@ -45,34 +45,34 @@ export function CharacterSettingsRacePage() {
   if (!race) {
     return (
       <>
-        <Box my={3}>
+        <SBox my={3}>
           <Typography variant={'h5'}>Выбор расы</Typography>
-        </Box>
+        </SBox>
         <SelectRaceList />
       </>
     )
   } else {
     return (
       <React.Fragment key={race.type}>
-        <Box display={'flex'} my={3}>
-          <Box mr={2}>
+        <SBox display={'flex'} my={3}>
+          <SBox mr={2}>
             <SBigAvatar src={race.image} alt={race.name} />
-          </Box>
+          </SBox>
           <div>
-            <Box mb={1}>
+            <SBox mb={1}>
               <Typography variant={'h5'}>
                 {race.name.toUpperCase()}
                 {race.variant && ' (альтернатива)'}
               </Typography>
-            </Box>
-            <Box mb={1}>
+            </SBox>
+            <SBox mb={1}>
               <Typography variant={'body1'}>{race.description}</Typography>
-            </Box>
+            </SBox>
             <Button onClick={() => toggleReselectRace()}>
               {reselectRace ? 'Оставить' : 'Cменить'}
             </Button>
           </div>
-        </Box>
+        </SBox>
         {!reselectRace && (
           <Grid container direction={'column'} spacing={2}>
             {race.features.map((feature) => (
@@ -136,12 +136,12 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
         {raceInfo && (
           <>
             <DialogTitle>
-              <Box display={'flex'} alignItems={'center'}>
-                <Box mr={2}>
+              <SBox display={'flex'} alignItems={'center'}>
+                <SBox mr={2}>
                   <Avatar src={raceInfo.image} alt={raceInfo.name} />
-                </Box>
+                </SBox>
                 <div>{raceInfo.name}</div>
-              </Box>
+              </SBox>
             </DialogTitle>
             <DialogContent>
               <Grid container direction={'column'} spacing={2}>
@@ -184,19 +184,19 @@ function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
   const data = 'data' in feature ? feature.data : feature
   return (
     <Grid item>
-      <Box mb={1}>
+      <SBox mb={1}>
         <Typography variant={'subtitle1'}>
           <b>{data.name}</b>
         </Typography>
         <Divider />
-      </Box>
+      </SBox>
       <Typography variant={'body1'}>
         <Markdown>{data.description}</Markdown>
       </Typography>
       {'data' in feature &&
         Array.isArray(feature.choices) &&
         feature.choices?.length > 0 && (
-          <Box mt={1} width={1}>
+          <SBox mt={1}>
             <MapHooks
               hooks={feature.choices.map(({ hook }) => hook)}
               render={(choices) =>
@@ -205,7 +205,7 @@ function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
                 ))
               }
             />
-          </Box>
+          </SBox>
         )}
     </Grid>
   )

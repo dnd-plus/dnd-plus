@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { Field, Form } from 'react-final-form'
 import {
-  Box,
   Button,
   ButtonGroup,
   ClickAwayListener,
@@ -30,6 +29,7 @@ import {
 import { FORM_ERROR } from 'final-form'
 import { MuiField } from 'components/MuiField'
 import { DefaultContainer } from 'components/DefaultContainer'
+import { SBox } from 'components/SBox'
 
 const requiredValidator = (value: string) => {
   if (!value) {
@@ -88,7 +88,7 @@ export function LoginPage() {
           submitError,
           dirtySinceLastSubmit,
         }) => (
-          <Box my={5}>
+          <SBox my={5}>
             <form onSubmit={handleSubmit}>
               <Grid container item direction={'column'} spacing={3}>
                 <Grid container item>
@@ -212,7 +212,7 @@ export function LoginPage() {
                 </Grid>
               </Grid>
             </form>
-          </Box>
+          </SBox>
         )}
       />
     </DefaultContainer>
