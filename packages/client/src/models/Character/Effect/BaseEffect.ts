@@ -22,7 +22,7 @@ export abstract class BaseEffectModel<
     this.type = this.ref.type
   }
 
-  protected ref: Writable<R>
+  readonly ref: Writable<R>
   readonly type: R['type']
 
   abstract get emptyRef(): R

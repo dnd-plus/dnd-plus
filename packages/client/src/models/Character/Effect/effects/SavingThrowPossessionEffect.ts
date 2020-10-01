@@ -9,7 +9,6 @@ export type SavingThrowPossessionEffect = DeepReadonly<{
   }
 }>
 
-// noinspection JSConstantReassignment
 export class SavingThrowPossessionEffectModel extends BaseEffectModel<
   SavingThrowPossessionEffect
 > {

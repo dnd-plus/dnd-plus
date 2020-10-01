@@ -10,6 +10,7 @@ import {
 import { Effect } from 'models/Character/Effect/Effect'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
+import { FeatureChoice } from 'models/Character/FeatureChoice/FeatureChoice'
 
 export type FeatCondition = OneOfOptionalRequired<{
   abilities?: Partial<AbilitiesMap>
@@ -32,6 +33,7 @@ export type Feat = {
     conditions: FeatCondition[]
   }
   effects?: Effect[]
+  choices?: FeatureChoice[]
 }
 
 export function checkFeatConditions(

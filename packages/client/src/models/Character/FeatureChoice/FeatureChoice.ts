@@ -20,12 +20,11 @@ const choiceModelsMap = {
 } as const
 
 type FeatureChoiceModelsMap = typeof choiceModelsMap
+export type FeatureChoiceModel = BaseFeatureChoiceModel<any, any>
 export type FeatureChoice = {
   [K in keyof FeatureChoiceModelsMap]: InstanceType<
     FeatureChoiceModelsMap[K]
-  > extends BaseFeatureChoiceModel<infer R, any>
-    ? R
-    : null
+  >['ref']
 }[keyof FeatureChoiceModelsMap]
 
 // eslint-disable-next-line unused-imports/no-unused-vars-ts

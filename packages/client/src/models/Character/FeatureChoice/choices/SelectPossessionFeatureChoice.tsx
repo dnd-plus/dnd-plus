@@ -18,6 +18,10 @@ import {
 } from 'common/reference/LanguageType'
 import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
 import { ChoiceSelect } from 'components/ChoiceSelect'
+import {
+  createUseSelector,
+  OutputAppSelector,
+} from 'models/utils/createUseSelector'
 
 const SelectSkillFeatureChoiceState = t.readonly(
   t.type({
@@ -47,7 +51,9 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
   protected abstract readonly dict: Readonly<Record<V, string>>
   protected abstract readonly options: ReadonlyArray<V>
   protected abstract readonly availableKey: K
-  protected abstract get unavailableOptions(): ReadonlyArray<V>
+  protected abstract unavailableOptionsSelector: OutputAppSelector<
+    ReadonlyArray<V>
+  >
   protected abstract get activeEffect(): EffectModel
 
   get knownState() {
@@ -78,6 +84,8 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
       (skill) => this.ref[this.availableKey]?.includes(skill) ?? true,
     )
 
+    const unavailableOptions = this.unavailableOptionsSelector.use()
+
     return {
       node: (
         <ChoiceSelect
@@ -85,8 +93,7 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
           value={this.selected}
           options={options.map((option) => {
             const isExist =
-              this.unavailableOptions.includes(option) &&
-              option !== this.selected
+              unavailableOptions.includes(option) && option !== this.selected
 
             return {
               value: option,
@@ -133,14 +140,12 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
   protected readonly options = SKILL_TYPES
   protected readonly availableKey = 'availableSkills'
 
-  protected get unavailableOptions() {
-    const skills =
-      this.characterModel.effects.type.skillPossession.use()?.skills || {}
-    return (
+  protected unavailableOptionsSelector = createUseSelector(
+    this.characterModel.effects.type.skillPossession,
+    ({ skills }) =>
       (Object.keys(skills) as SkillType[]).filter((skill) => !!skills[skill]) ||
-      []
-    )
-  }
+      [],
+  )
 
   get activeEffect(): EffectModel {
     return new SkillPossessionEffectModel(
@@ -161,9 +166,10 @@ export class SelectLanguageFeatureChoiceModel extends BaseSelectPossessionFeatur
   protected readonly options = LANGUAGE_TYPES
   protected readonly availableKey = 'availableLanguages'
 
-  protected get unavailableOptions() {
-    return this.characterModel.effects.type.language.use()?.languages || []
-  }
+  protected unavailableOptionsSelector = createUseSelector(
+    this.characterModel.effects.type.language,
+    ({ languages }) => languages,
+  )
 
   get activeEffect(): EffectModel {
     return new LanguageEffectModel(

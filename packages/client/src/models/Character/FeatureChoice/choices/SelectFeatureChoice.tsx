@@ -11,6 +11,7 @@ export type SelectFeatureChoice = DeepReadonly<{
   type: 'select'
   label: string
   options: Array<{
+    group?: string
     name: string
     effects: Effect[]
   }>
@@ -56,7 +57,8 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
         <ChoiceSelect
           label={this.ref.label}
           value={this.knownState?.selected}
-          options={this.ref.options.map(({ name }, index) => ({
+          options={this.ref.options.map(({ name, group }, index) => ({
+            group,
             text: name,
             value: index,
           }))}

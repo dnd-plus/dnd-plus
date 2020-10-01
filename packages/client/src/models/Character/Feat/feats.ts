@@ -1,4 +1,14 @@
 import { Feat } from 'models/Character/Feat/Feat'
+import { ABILITY_TYPES, AbilityTypeDict } from 'common/reference/AbilityType'
+import { SKILL_TYPES, SkillTypeDict } from 'common/reference/SkillType'
+import {
+  ARTISAN_TOOL_TYPES,
+  ToolTypeDict,
+} from 'common/reference/equipment/ToolType'
+import {
+  WEAPON_TYPES,
+  WeaponTypeDict,
+} from 'common/reference/equipment/WeaponType'
 
 export const feats: Feat[] = [
   {
@@ -14,6 +24,7 @@ export const feats: Feat[] = [
 *   Вы совершаете с преимуществом проверки Харизмы (Выступление) и Харизма (Обман), когда пытаетесь выдать себя за кого-то другого.
 *   Вы можете подражать речи кого-то другого, а также звукам, издаваемым другими существами. Перед этим вы должны как минимум в течение 1 минуты слышать чужую речь или звуки существа. Успешная проверка Мудрости (Проницательность), противопоставленная вашей проверке Харизмы (Обман), позволяет слушающему понять, что источник звука не настоящий.
 `,
+    effects: [{ type: 'ability', abilities: { charisma: 1 } }],
   },
   {
     id: 2,
@@ -29,6 +40,7 @@ export const feats: Feat[] = [
 *   Лазание не заставляет вас тратить дополнительное перемещение.
 *   Вы можете совершать прыжок в длину или высоту с разбега, переместившись только на 5 футов, а не на 10.
 `,
+    choices: [{ type: 'selectAbility', available: ['strength', 'dexterity'] }],
   },
   {
     id: 3,
@@ -110,20 +122,68 @@ export const feats: Feat[] = [
 *   Увеличьте значение Телосложения на 1, при максимуме 20.
 *   Когда вы бросаете Кость Хитов для восстановления хитов, минимум равен удвоенному модификатору Телосложения (минимум 2).
 `,
+    effects: [{ type: 'ability', abilities: { constitution: 1 } }],
   },
   {
-    id: 9,
-    nameEn: 'Elemental Adept',
-    name: 'Стихийный адепт',
+    id: 1001,
+    nameEn: 'Elemental Adept (thunder)',
+    name: 'Стихийный адепт (звук)',
     source: 'PHB',
     type: 'general',
-    description: `
-Когда вы получаете эту черту, выберите один из видов урона: звук, кислота, огонь, холод или электричество.
-
-Накладываемые вами заклинания игнорируют сопротивление к выбранному виду урона. Кроме того, когда вы определяете урон от наложенного вами заклинания, причиняющего урон этого вида, вы можете считать все выпавшие на костях «1» как «2».
-
-Вы можете брать эту черту несколько раз. Каждый раз, когда вы это делаете, вы выбираете новый вид урона.
-`,
+    description:
+      'Накладываемые вами заклинания игнорируют сопротивление к урону звуком. Кроме того, когда вы определяете урон от наложенного вами заклинания, причиняющего урон этого вида, вы можете считать все выпавшие на костях «1» как «2».',
+    demands: {
+      text: 'Способность накладывать хотя бы одно заклинание',
+      conditions: [{ spellCasting: true }],
+    },
+  },
+  {
+    id: 1002,
+    nameEn: 'Elemental Adept (acid)',
+    name: 'Стихийный адепт (кислота)',
+    source: 'PHB',
+    type: 'general',
+    description:
+      'Накладываемые вами заклинания игнорируют сопротивление к урону кислотой. Кроме того, когда вы определяете урон от наложенного вами заклинания, причиняющего урон этого вида, вы можете считать все выпавшие на костях «1» как «2».',
+    demands: {
+      text: 'Способность накладывать хотя бы одно заклинание',
+      conditions: [{ spellCasting: true }],
+    },
+  },
+  {
+    id: 1003,
+    nameEn: 'Elemental Adept (fire)',
+    name: 'Стихийный адепт (огонь)',
+    source: 'PHB',
+    type: 'general',
+    description:
+      'Накладываемые вами заклинания игнорируют сопротивление к урону огнем. Кроме того, когда вы определяете урон от наложенного вами заклинания, причиняющего урон этого вида, вы можете считать все выпавшие на костях «1» как «2».',
+    demands: {
+      text: 'Способность накладывать хотя бы одно заклинание',
+      conditions: [{ spellCasting: true }],
+    },
+  },
+  {
+    id: 1004,
+    nameEn: 'Elemental Adept (cold)',
+    name: 'Стихийный адепт (холод)',
+    source: 'PHB',
+    type: 'general',
+    description:
+      'Накладываемые вами заклинания игнорируют сопротивление к урону холодом. Кроме того, когда вы определяете урон от наложенного вами заклинания, причиняющего урон этого вида, вы можете считать все выпавшие на костях «1» как «2».',
+    demands: {
+      text: 'Способность накладывать хотя бы одно заклинание',
+      conditions: [{ spellCasting: true }],
+    },
+  },
+  {
+    id: 1005,
+    nameEn: 'Elemental Adept (lightning)',
+    name: 'Стихийный адепт (электричество)',
+    source: 'PHB',
+    type: 'general',
+    description:
+      'Накладываемые вами заклинания игнорируют сопротивление к урону электричеством. Кроме того, когда вы определяете урон от наложенного вами заклинания, причиняющего урон этого вида, вы можете считать все выпавшие на костях «1» как «2».',
     demands: {
       text: 'Способность накладывать хотя бы одно заклинание',
       conditions: [{ spellCasting: true }],
@@ -199,6 +259,7 @@ export const feats: Feat[] = [
 *   Вы всегда знаете, через сколько часов наступит следующий закат или восход.
 *   Вы можете с точностью вспомнить всё, что видели или слышали за последний месяц.
 `,
+    effects: [{ type: 'ability', abilities: { intelligence: 1 } }],
   },
   {
     id: 15,
@@ -213,6 +274,12 @@ export const feats: Feat[] = [
 *   Вы узнаёте три языка на свой выбор.
 *   Вы можете писать шифрованные письма. Другие не могут расшифровать код, пока либо вы не научите их, либо они не преуспеют в проверке Интеллекта (Сл равна вашему значению Интеллекта + ваш бонус Мастерства), либо они не используют для расшифровки магию.
 `,
+    effects: [{ type: 'ability', abilities: { intelligence: 1 } }],
+    choices: [
+      { type: 'selectLanguage' },
+      { type: 'selectLanguage' },
+      { type: 'selectLanguage' },
+    ],
   },
   {
     id: 16,
@@ -286,6 +353,7 @@ export const feats: Feat[] = [
 *   Когда вы используете действие Рывок, труднопроходимая местность в этом ходу не замедляет ваше перемещение.
 *   Если вы совершаете рукопашную атак по существу, вы до конца этого хода не провоцируете от него атаки, вне зависимости от того, попадёте или нет.
 `,
+    effects: [{ type: 'walkMovement', relative: 10 }],
   },
   {
     id: 21,
@@ -314,6 +382,7 @@ export const feats: Feat[] = [
 *   Если вы видите рот существа, когда оно говорит на языке, который вы понимаете, вы можете прочитать по его губам, что оно говорит.
 *   Вы получаете бонус +5 к пассивной проверке Мудрости (Внимательность) и пассивной проверке Интеллекта (Анализ).
 `,
+    choices: [{ type: 'selectAbility', available: ['intelligence', 'wisdom'] }],
   },
   {
     id: 23,
@@ -328,6 +397,22 @@ export const feats: Feat[] = [
 
 Вы получаете владение спасбросками этой характеристики.
 `,
+    choices: [
+      {
+        type: 'select',
+        label: 'Выбор характеристики',
+        options: ABILITY_TYPES.map((abilityType) => ({
+          name: AbilityTypeDict[abilityType],
+          effects: [
+            { type: 'ability', abilities: { intelligence: 1 } },
+            {
+              type: 'savingThrowPossession',
+              abilities: { intelligence: 'expertise' },
+            },
+          ],
+        })),
+      },
+    ],
   },
   {
     id: 24,
@@ -393,6 +478,33 @@ export const feats: Feat[] = [
     type: 'general',
     description:
       'Вы получаете владение любой комбинацией из трёх навыков и инструментов на ваш выбор.',
+    choices: [1, 2, 3].map(() => ({
+      type: 'select',
+      label: 'Выбор навыка или инструмента',
+      options: [
+        ...SKILL_TYPES.map(
+          (skillType) =>
+            ({
+              group: 'Навыки',
+              name: SkillTypeDict[skillType],
+              effects: [
+                {
+                  type: 'skillPossession',
+                  skills: { [skillType]: 'proficient' },
+                },
+              ],
+            } as const),
+        ),
+        ...ARTISAN_TOOL_TYPES.map(
+          (toolType) =>
+            ({
+              group: 'Инструменты',
+              name: ToolTypeDict[toolType],
+              effects: [{ type: 'equipmentPossession', tool: [toolType] }],
+            } as const),
+        ),
+      ],
+    })),
   },
   {
     id: 29,
@@ -438,6 +550,7 @@ export const feats: Feat[] = [
     type: 'general',
     description:
       'Максимум ваших хитов увеличивается на количество, равное удвоенному уровню, на котором берётся эта черта. Каждый раз, когда вы впоследствии будете получать уровень, максимум ваших хитов будет дополнительно увеличиваться на 2.',
+    effects: [{ type: 'hitPoint', increaseByLevel: 2 }],
   },
   {
     id: 32,
@@ -512,6 +625,13 @@ export const feats: Feat[] = [
 *   Ваш безоружный удар использует для урона к4.
 *   Если вы в свой ход попадаете по существу безоружным ударом или импровизированным оружием, вы можете бонусным действием попытаться захватить цель.
 `,
+    choices: [
+      {
+        type: 'selectAbility',
+
+        available: ['strength', 'constitution'],
+      },
+    ],
   },
   {
     id: 37,
@@ -525,6 +645,25 @@ export const feats: Feat[] = [
 *   Увеличьте значение Силы или Ловкости на 1, при максимуме 20.
 *   Вы получаете владение четырьмя выбранными видами оружия. Выбранное оружие должно быть или простым или воинским.
 `,
+    choices: [
+      { type: 'selectAbility', available: ['strength', 'dexterity'] },
+      ...[1, 2, 3].map(
+        () =>
+          ({
+            type: 'select',
+            label: 'Владение оружием',
+            options: WEAPON_TYPES.map(
+              (weaponType) =>
+                ({
+                  name: WeaponTypeDict[weaponType],
+                  effects: [
+                    { type: 'equipmentPossession', weapon: [weaponType] },
+                  ],
+                } as const),
+            ),
+          } as const),
+      ),
+    ],
   },
   {
     id: 38,
@@ -538,6 +677,8 @@ export const feats: Feat[] = [
 *   Увеличьте значение Силы или Ловкости на 1, при максимуме 20.
 *   Вы получаете владение лёгкими доспехами.
 `,
+    effects: [{ type: 'equipmentPossession', armor: ['light'] }],
+    choices: [{ type: 'selectAbility', available: ['strength', 'dexterity'] }],
   },
   {
     id: 39,
@@ -555,6 +696,8 @@ export const feats: Feat[] = [
       text: 'Владение лёгкими доспехами',
       conditions: [{ armorPossession: 'light' }],
     },
+    effects: [{ type: 'equipmentPossession', armor: ['medium', 'shield'] }],
+    choices: [{ type: 'selectAbility', available: ['strength', 'dexterity'] }],
   },
   {
     id: 40,
@@ -589,6 +732,10 @@ export const feats: Feat[] = [
       text: 'Владение средними доспехами',
       conditions: [{ armorPossession: 'medium' }],
     },
+    effects: [
+      { type: 'ability', abilities: { strength: 1 } },
+      { type: 'equipmentPossession', armor: ['heavy'] },
+    ],
   },
   {
     id: 42,
@@ -606,6 +753,7 @@ export const feats: Feat[] = [
       text: 'Владение тяжёлыми доспехами',
       conditions: [{ armorPossession: 'heavy' }],
     },
+    effects: [{ type: 'ability', abilities: { strength: 1 } }],
   },
   {
     id: 43,
@@ -641,6 +789,12 @@ export const feats: Feat[] = [
       text: 'Драконорожденный',
       conditions: [{ race: 'Dragonborn' }],
     },
+    choices: [
+      {
+        type: 'selectAbility',
+        available: ['strength', 'constitution', 'charisma'],
+      },
+    ],
   },
   {
     id: 45,
@@ -659,6 +813,12 @@ export const feats: Feat[] = [
       text: 'Драконорожденный',
       conditions: [{ race: 'Dragonborn' }],
     },
+    choices: [
+      {
+        type: 'selectAbility',
+        available: ['strength', 'constitution', 'charisma'],
+      },
+    ],
   },
   {
     id: 46,
@@ -692,6 +852,7 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Дварф',
       conditions: [{ race: 'Dwarf' }],
     },
+    effects: [{ type: 'ability', abilities: { constitution: 1 } }],
   },
   {
     id: 48,
@@ -709,6 +870,12 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Эльф или полуэльф',
       conditions: [{ race: 'Elf' }, { race: 'HalfElf' }],
     },
+    choices: [
+      {
+        type: 'selectAbility',
+        available: ['dexterity', 'intelligence', 'wisdom'],
+      },
+    ],
   },
   {
     id: 49,
@@ -726,6 +893,9 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Гном',
       conditions: [{ race: 'Gnome' }],
     },
+    choices: [
+      { type: 'selectAbility', available: ['dexterity', 'intelligence'] },
+    ],
   },
   {
     id: 50,
@@ -744,6 +914,9 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Эльф (высший)',
       conditions: [{ race: 'HighElf' }],
     },
+    choices: [
+      { type: 'selectAbility', available: ['intelligence', 'charisma'] },
+    ],
   },
   {
     id: 51,
@@ -762,6 +935,9 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Тифлинг',
       conditions: [{ race: 'Tiefling' }],
     },
+    choices: [
+      { type: 'selectAbility', available: ['intelligence', 'charisma'] },
+    ],
   },
   {
     id: 52,
@@ -780,6 +956,7 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Тифлинг',
       conditions: [{ race: 'Tiefling' }],
     },
+    effects: [{ type: 'ability', abilities: { constitution: 1 } }],
   },
   {
     id: 53,
@@ -798,6 +975,9 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Полуорк',
       conditions: [{ race: 'HalfOrc' }],
     },
+    choices: [
+      { type: 'selectAbility', available: ['strength', 'constitution'] },
+    ],
   },
   {
     id: 54,
@@ -815,6 +995,9 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Полуэльф, Полуорк или Человек',
       conditions: [{ race: 'HalfElf' }, { race: 'HalfOrc' }, { race: 'Human' }],
     },
+    choices: [
+      { type: 'selectAbility', available: ['strength', 'constitution'] },
+    ],
   },
   {
     id: 55,
@@ -832,6 +1015,12 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Полурослик',
       conditions: [{ race: 'Halfling' }],
     },
+    choices: [
+      {
+        type: 'selectAbility',
+        available: ['dexterity', 'constitution', 'charisma'],
+      },
+    ],
   },
   {
     id: 56,
@@ -851,6 +1040,11 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Дварф или Маленькая раса',
       conditions: [{ race: 'Dwarf' }, { size: 'small' }],
     },
+    effects: [{ type: 'walkMovement', relative: 5 }],
+    choices: [
+      { type: 'selectAbility', available: ['strength', 'dexterity'] },
+      { type: 'selectSkill', availableSkills: ['acrobatics', 'athletics'] },
+    ],
   },
   {
     id: 57,

@@ -20,6 +20,7 @@ import { CharacterModel } from 'models/Character/CharacterModel'
 import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
 import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
 import { FeatEffectModel } from 'models/Character/Effect/effects/FeatEffect'
+import { HitPointEffectModel } from 'models/Character/Effect/effects/HitPointEffect'
 
 export const effectModelsMap = {
   ability: AbilityEffectModel,
@@ -37,6 +38,7 @@ export const effectModelsMap = {
   truesightVision: TruesightVisionEffectModel,
   language: LanguageEffectModel,
   feat: FeatEffectModel,
+  hitPoint: HitPointEffectModel,
 } as const
 
 export const EFFECT_TYPES = Object.keys(effectModelsMap) as Tuple<

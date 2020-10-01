@@ -35,6 +35,12 @@ import { createSelector } from 'reselect'
 import { createUseSelector } from 'models/utils/createUseSelector'
 import { SBox } from 'components/SBox'
 
+import {
+  featureChoiceFactory,
+  FeatureChoiceModel,
+} from 'models/Character/FeatureChoice/FeatureChoice'
+import { MapHooks } from 'components/MapHooks'
+
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
 }>
@@ -46,7 +52,9 @@ const SelectFeatureChoiceState = t.readonly(
 
 export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
   SelectFeatFeatureChoice,
-  t.TypeOf<typeof SelectFeatureChoiceState>
+  t.TypeOf<typeof SelectFeatureChoiceState> & {
+    choices?: Record<string, unknown>
+  }
 > {
   get knownState() {
     return SelectFeatureChoiceState.is(this.state) ? this.state : null
@@ -71,27 +79,70 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     }),
   )
 
+  choiceModels: FeatureChoiceModel[] = (() => {
+    const state = this.state as any
+    const selected = this.selected
+
+    if (selected && selected.choices) {
+      return selected.choices.flatMap(
+        (choice, index) =>
+          featureChoiceFactory(
+            this.characterModel,
+            (this.state as any)?.choices?.[index],
+            choice,
+            createKey(this.key, selected.id, index),
+            ({ value }) =>
+              this.setChoiceAction({
+                key: this.key,
+                value: {
+                  ...state,
+                  choices: {
+                    ...state?.choices,
+                    [index]: value,
+                  },
+                },
+              }),
+          ) || [],
+      )
+    }
+    return []
+  })()
+
+  get effects() {
+    const choiceEffects =
+      this.choiceModels?.flatMap((choice) => choice.effects) || []
+
+    const featEffects =
+      this.selected?.effects?.flatMap(
+        (effect, index) =>
+          effectFactory(
+            this.characterModel,
+            effect,
+            createKey(this.key, this.knownState?.selected, index),
+          ) || [],
+      ) || []
+
+    return [...featEffects, ...choiceEffects]
+  }
+
   isAvailableSelector = createUseSelector(
     this.checkOptionsSelector,
     (checkOptions) =>
       this.selected && checkFeatConditions(this.selected, checkOptions),
   )
 
-  choicesCountSelector = createSelector(
-    this.isAvailableSelector,
-    (isAvailable) => (isAvailable ? 0 : 1),
+  innerChoicesCountSelector = createSelector(
+    this.choiceModels.map(({ choicesCountSelector }) => choicesCountSelector),
+    (...choicesCountArray) =>
+      choicesCountArray.reduce((sum, num) => sum + num, 0),
   )
 
-  get effects() {
-    return (this.selected?.effects || []).flatMap(
-      (effect, index) =>
-        effectFactory(
-          this.characterModel,
-          effect,
-          createKey(this.key, this.knownState?.selected, index),
-        ) || [],
-    )
-  }
+  choicesCountSelector = createSelector(
+    this.isAvailableSelector,
+    this.innerChoicesCountSelector,
+    (isAvailable, innerChoicesCount) =>
+      (isAvailable ? 0 : 1) + innerChoicesCount,
+  )
 
   readonly hook = () => {
     const [isOpen, toggleIsOpen] = useToggle(false)
@@ -119,6 +170,19 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
                     <Typography variant={'body1'}>
                       {this.selected.demands?.text}
                     </Typography>
+                  </SBox>
+                )}
+                {!!this.choiceModels.length && (
+                  <SBox mt={1}>
+                    <MapHooks
+                      key={this.selected.id}
+                      hooks={this.choiceModels.map(({ hook }) => hook)}
+                      render={(choices) =>
+                        choices.map(({ node }, key) => (
+                          <React.Fragment key={key}>{node}</React.Fragment>
+                        ))
+                      }
+                    />
                   </SBox>
                 )}
               </CardContent>
