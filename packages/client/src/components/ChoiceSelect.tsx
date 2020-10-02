@@ -36,7 +36,9 @@ export function ChoiceSelect<T extends string | number | undefined>({
         >
           {Object.entries(groupOptions).map(([label, options]) =>
             [
-              label && <ListSubheader key={label}>{label}</ListSubheader>,
+              label && label !== 'undefined' && (
+                <ListSubheader key={label}>{label}</ListSubheader>
+              ),
               options.map(({ text, value, disabled }) => (
                 <MenuItem key={value} value={value} disabled={disabled}>
                   {text}
