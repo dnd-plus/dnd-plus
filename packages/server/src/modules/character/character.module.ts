@@ -14,8 +14,13 @@ import {
   characterQueue,
   createCharacterType,
 } from 'modules/character/createCharacterType'
+import { dateUTCNow } from 'common/utils/dateUTCNow'
 
 module.exports = function characterModule(server: Server) {
+  server.on('preadd', (action, meta) => {
+    meta.time = dateUTCNow()
+  })
+
   server.channel(currentUserCharactersChannel.path, {
     access(ctx) {
       return ctx.userId !== GUEST_USER

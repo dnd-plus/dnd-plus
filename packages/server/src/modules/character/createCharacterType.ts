@@ -6,7 +6,6 @@ import {
 } from 'modules/character/character.schema'
 import { GUEST_USER } from 'common/modules/user/redux'
 import { characterChannel } from 'common/modules/character/channels'
-import { OLD_ACTION } from 'common/modules/commonErrors'
 import { EntityQueue } from 'modules/EntityQueue'
 
 export const characterQueue = new EntityQueue()
@@ -63,11 +62,6 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
           return false
         }
 
-        if (character && character.updatedAt > meta.time) {
-          server.undo(meta, OLD_ACTION)
-          return false
-        }
-
         ctx.data.character = character
 
         return access ? await access(ctx, action, meta) : true
@@ -102,7 +96,7 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
         return to
       },
       async finally(ctx, action, meta) {
-        ctx.data.doneTask()
+        ctx.data?.doneTask()
 
         return finallyCallback && finallyCallback(ctx, action, meta)
       },
