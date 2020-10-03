@@ -1,22 +1,22 @@
-import { Dice } from 'common/types/base/Dice'
+import { DamageDice } from 'common/types/base/Dice'
 
 export type DamageType =
-  | 'slashing'
-  | 'piercing'
-  | 'bludgeoning'
-  | 'poison'
-  | 'acid'
-  | 'fire'
-  | 'cold'
-  | 'radiant'
-  | 'necrotic'
-  | 'lightning'
-  | 'thunder'
-  | 'force'
-  | 'psychic'
+  | 'slashing' // рубящий
+  | 'piercing' // колющий
+  | 'bludgeoning' // дробящий
+  | 'poison' // ядом
+  | 'acid' // кислотой
+  | 'fire' // огнем
+  | 'cold' // холодом
+  | 'radiant' // излучением
+  | 'necrotic' // некротическая энергия
+  | 'lightning' // электрический
+  | 'thunder' // звуком
+  | 'force' // силовое поле
+  | 'psychic' // психическая энергия
 
 export type Damage = Array<
   {
     damageType: DamageType
-  } & ({ dice: Dice } | { value: number })
+  } & ({ dice: DamageDice } | { value: number })
 >

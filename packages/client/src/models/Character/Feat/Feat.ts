@@ -11,6 +11,7 @@ import { Effect } from 'models/Character/Effect/Effect'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
 import { FeatureChoice } from 'models/Character/FeatureChoice/FeatureChoice'
+import { RuleSource } from 'common/types/RuleSource'
 
 export type FeatCondition = OneOfOptionalRequired<{
   abilities?: Partial<AbilitiesMap>
@@ -25,7 +26,7 @@ export type Feat = {
   id: number
   nameEn: string
   name: string
-  source: 'PHB' | 'XGTE'
+  source: RuleSource
   description: string
   type: 'general' | 'armor' | 'weapon' | 'racial'
   demands?: {

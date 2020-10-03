@@ -1,4 +1,4 @@
 export interface Target {
-  type: 'self' | 'ally' | 'enemy' | 'any'
-  count: number
+  type: 'self' | 'notSelf' | 'ally' | 'enemy' | 'any'
+  count?: number
 }

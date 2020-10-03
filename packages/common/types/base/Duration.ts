@@ -1,4 +1,4 @@
-interface Duration {
+export interface Duration {
   type: 'round' | 'minute' | 'hour' | 'day'
   value: number
 }
@@ -6,7 +6,11 @@ interface Duration {
 export type CastDuration =
   | Duration
   | {
-      type: 'action' | 'bonusAction' | 'reaction'
+      type: 'action' | 'bonusAction'
+    }
+  | {
+      type: 'reaction'
+      to: string
     }
 
 export type CastFeatureDuration =

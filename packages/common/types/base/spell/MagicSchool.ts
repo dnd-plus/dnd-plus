@@ -1,0 +1,9 @@
+export type MagicSchool =
+  | 'evocation' // воплощение
+  | 'conjuration' // вызов
+  | 'illusion' // иллюзия
+  | 'necromancy' // некромантия
+  | 'abjuration' // ограждения
+  | 'enchantment' // очарование
+  | 'transmutation' // преобразование
+  | 'divination' // прорицание
