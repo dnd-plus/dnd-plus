@@ -6,6 +6,7 @@ import {
 } from 'modules/character/character.schema'
 import { GUEST_USER } from 'common/modules/user/redux'
 import { characterChannel } from 'common/modules/character/channels'
+import { OLD_ACTION } from 'common/modules/commonErrors'
 
 type ChData = { character: CharacterDocument }
 type ChDataMaybe = { character: CharacterDocument | null }
@@ -52,6 +53,11 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
           const character = await Character.findById(action.payload._id)
 
           if (checkUser && character?.userId?.toString() !== ctx.userId) {
+            return false
+          }
+
+          if (character && character.updatedAt > meta.time) {
+            server.undo(meta, OLD_ACTION)
             return false
           }
 

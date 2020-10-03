@@ -15,7 +15,7 @@ export const configureStore = () => {
     subprotocol: '1.0.0',
     server:
       process.env.NODE_ENV === 'development'
-        ? 'ws://localhost:31337'
+        ? `ws://${window.location.hostname}:31337`
         : `ws://${process.env.REACT_APP_LOGUX_URL}`,
     allowDangerousProtocol: true,
     userId: localStorage.getItem('userId') || GUEST_USER,
