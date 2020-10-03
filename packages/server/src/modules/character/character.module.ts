@@ -10,7 +10,10 @@ import {
 } from 'modules/character/character.schema'
 import { characterActions } from 'common/modules/character/redux'
 import { mongoose } from '@typegoose/typegoose'
-import { createCharacterType } from 'modules/character/createCharacterType'
+import {
+  characterQueue,
+  createCharacterType,
+} from 'modules/character/createCharacterType'
 
 module.exports = function characterModule(server: Server) {
   server.channel(currentUserCharactersChannel.path, {
@@ -18,7 +21,14 @@ module.exports = function characterModule(server: Server) {
       return ctx.userId !== GUEST_USER
     },
     async load(ctx) {
-      const characters = await Character.find({ userId: ctx.userId })
+      const params = { userId: ctx.userId }
+
+      const characterIds = await Character.find(params, { _id: 1 }).exec()
+      await Promise.all(
+        characterIds.map(({ _id }) => characterQueue.waitCurrentTasks(_id)),
+      )
+
+      const characters = await Character.find(params)
         .sort({ updatedAt: -1 })
         .exec()
 
@@ -33,6 +43,8 @@ module.exports = function characterModule(server: Server) {
     {
       async access(ctx) {
         if (ctx.userId === GUEST_USER) return false
+
+        await characterQueue.waitCurrentTasks(ctx.params.id)
 
         const character = await Character.findById(ctx.params.id).exec()
         ctx.data.character = character
