@@ -1,4 +1,4 @@
-export const spells: any[] = [
+export const spells = [
   {
     id: 1,
     name: 'Адское возмездие',
@@ -7,6 +7,8 @@ export const spells: any[] = [
     school: 'evocation',
     ritual: false,
     concentration: false,
+    needModel: true,
+    target: { type: 'enemy' },
     description: `
 Вы указываете пальцем, и существо, причинившее вам урон, мгновенно окружается пламенем. Существо должно совершить спасбросок Ловкости. Оно получает урон огнём 2d10 при провале, или половину этого урона при успехе.
 
@@ -19,23 +21,25 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'reaction',
-      to: 'MANUAL_reaction',
+      to:
+        'в ответ на получение урона от существа, находящегося в пределах 60 фт. от вас и видимого вами',
     },
     spellRange: 60,
     saveThrow: 'dexterity',
-    attack: true,
-    nextLevelDamage: [
-      {
-        damageType: 'fire',
-        dice: {
-          count: 1,
-          value: 10,
+    attackRoll: false,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 10,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'fire',
@@ -49,9 +53,10 @@ export const spells: any[] = [
   },
   {
     id: 2,
-    name: 'Антипатия/симпатия ',
+    name: 'Антипатия/симпатия',
     nameEn: 'Antipathy/sympathy',
     level: 8,
+    needModel: true,
     school: 'enchantment',
     ritual: false,
     concentration: false,
@@ -87,17 +92,19 @@ export const spells: any[] = [
       size: 200,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: false,
     tags: ['Control', 'Warding'],
   },
   {
     id: 3,
-    name: 'Аура живучести ',
+    name: 'Аура живучести',
     nameEn: 'Aura of vitality',
     level: 3,
     school: 'evocation',
     ritual: false,
     concentration: true,
+    target: { type: 'self' },
+    needModel: true,
     description:
       'От вас исходит аура живительной энергии с радиусом 30 фт.. Пока заклинание активно, аура перемещается вместе с вами, оставаясь с центром на вас. Вы можете бонусным действием восстанавливать одному любому существу в ауре (включая себя) 2d6 хитов.',
     source: 'PHB',
@@ -107,17 +114,18 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
     },
     duration: {
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 4,
@@ -127,6 +135,7 @@ export const spells: any[] = [
     school: 'abjuration',
     ritual: false,
     concentration: true,
+    needModel: true,
     description:
       'От вас исходит защищающая жизнь аура с радиусом 30 фт.. Пока заклинание активно, аура перемещается вместе с вами, оставаясь с центром на вас. Все невраждебные существа в ауре (включая вас) обладают сопротивлением к урону некротической энергией, и максимум их хитов не может уменьшаться. Кроме того, невраждебные живые существа восстанавливают 1 хит, когда начинают ход в этой ауре с 0 хитов.',
     source: 'PHB',
@@ -136,21 +145,23 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
+    },
+    target: { type: 'self' },
+    area: {
+      type: 'sphere',
+      size: 30,
     },
     duration: {
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 5,
-    name: 'Аура очищения ',
+    name: 'Аура очищения',
     nameEn: 'Aura of purity',
     level: 4,
     school: 'abjuration',
@@ -165,7 +176,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
+    target: { type: 'self' },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     castTime: {
       type: 'action',
     },
@@ -173,16 +188,17 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 6,
-    name: 'Аура святости ',
+    name: 'Аура святости',
     nameEn: 'Holy aura',
     level: 8,
     school: 'abjuration',
+    target: {
+      type: 'self',
+    },
     ritual: false,
     concentration: true,
     description:
@@ -203,15 +219,11 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 30,
     },
-    saveThrow: 'constitution',
-    attack: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    attackRoll: false,
     tags: ['Buff', 'Debuff'],
   },
   {
@@ -249,17 +261,21 @@ export const spells: any[] = [
       type: 'cube',
       size: 15,
     },
-    attack: true,
+    attackRoll: false,
     tags: ['Control'],
   },
   {
     id: 8,
-    name: 'Бесследное передвижение ',
+    name: 'Бесследное передвижение',
     nameEn: 'Pass without trace',
     level: 2,
     school: 'abjuration',
     ritual: false,
     concentration: true,
+    target: {
+      type: 'ally',
+      inRange: true,
+    },
     description:
       'От вас начинает исходить покров теней и тишины, скрывающий вас и ваших спутников от обнаружения. Пока заклинание активно, все существа, выбранные вами в пределах 30 фт. (включая вас) получают бонус +10 к проверкам Ловкости (Скрытность), и их нельзя выследить без помощи магии. Существо, получившее этот бонус, не оставляет за собой следов.',
     source: 'PHB',
@@ -277,9 +293,8 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    spellRange: 30,
+    attackRoll: false,
     tags: ['Buff', 'Exploration'],
   },
   {
@@ -290,6 +305,15 @@ export const spells: any[] = [
     school: 'enchantment',
     ritual: false,
     concentration: true,
+    target: {
+      type: 'ally',
+      count: 3,
+    },
+    nextLevel: {
+      target: {
+        count: 1,
+      },
+    },
     description: `
 Вы благословляете до трёх существ на свой выбор в пределах дистанции. Каждый раз, когда до окончания заклинания цель совершает бросок атаки или спасбросок, она может бросить d4 и добавить выпавшее число к результату.
 
@@ -311,8 +335,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    attackRoll: false,
     tags: ['Buff'],
   },
   {
@@ -323,6 +346,9 @@ export const spells: any[] = [
     school: 'evocation',
     ritual: false,
     concentration: true,
+    target: {
+      type: 'self',
+    },
     description:
       'Ваша молитва наполняет вас божественной энергией. Пока заклинание активно, ваши атаки оружием причиняют при попадании дополнительный урон 1d4.',
     source: 'PHB',
@@ -332,7 +358,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -340,9 +365,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: false,
     damage: [
       {
         damageType: 'radiant',
@@ -356,7 +379,7 @@ export const spells: any[] = [
   },
   {
     id: 11,
-    name: 'Божественное оружие ',
+    name: 'Божественное оружие',
     nameEn: 'Spiritual weapon',
     level: 2,
     school: 'evocation',
@@ -378,7 +401,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -387,11 +409,23 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
-    nextLevelDamage: 'MANUAL_nextLeveldmg_notlevel1',
+    attackRoll: false,
+    nextLevel: {
+      everyLevel: 2,
+      damage: [
+        {
+          damageType: 'force',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
+    },
     damage: [
       {
         damageType: 'force',
+        baseModifier: true,
         dice: {
           count: 1,
           value: 8,
@@ -408,6 +442,10 @@ export const spells: any[] = [
     school: 'evocation',
     ritual: false,
     concentration: false,
+    target: {
+      type: 'enemy',
+      inRange: true,
+    },
     description: `
 Вы произносите божественное слово, наделённое силой, сформировавшей мир на заре творения. Выберите любое количество существ, которых вы видите в пределах дистанции. Все эти существа, слышащие вас, должны совершить спасбросок Харизмы. При провале существо попадает под действие эффекта, основанного на текущем количестве хитов:
 
@@ -425,13 +463,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
     spellRange: 30,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff', 'Banishment'],
   },
   {
@@ -454,12 +491,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 14,
@@ -489,8 +525,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 15,
@@ -521,7 +556,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 16,
@@ -559,7 +594,7 @@ export const spells: any[] = [
     area: {
       type: 'cube',
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Utility', 'Exploration'],
   },
   {
@@ -593,7 +628,7 @@ export const spells: any[] = [
       value: 8,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'piercing',
@@ -630,8 +665,7 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -668,7 +702,7 @@ export const spells: any[] = [
       value: 8,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Damage', 'Communication'],
   },
   {
@@ -696,9 +730,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -745,7 +777,7 @@ export const spells: any[] = [
     },
     spellRange: 300,
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -871,13 +903,11 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 26400,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Environment'],
   },
   {
@@ -913,7 +943,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Social'],
   },
   {
@@ -937,8 +967,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     heal: {
       value: 1,
     },
@@ -966,18 +995,15 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cube',
       size: 15,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'thunder',
@@ -1020,7 +1046,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1029,7 +1054,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 27,
@@ -1051,12 +1076,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'force',
@@ -1101,7 +1125,7 @@ export const spells: any[] = [
       text: 'пока не рассеется',
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication'],
   },
   {
@@ -1133,8 +1157,7 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility', 'Warding'],
   },
   {
@@ -1175,10 +1198,8 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -1216,7 +1237,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cube',
       size: 10,
@@ -1242,7 +1263,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1252,7 +1272,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'psychic',
@@ -1305,8 +1325,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -1331,7 +1350,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1345,7 +1363,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'fire',
@@ -1387,7 +1405,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -1423,7 +1441,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation', 'Control'],
   },
   {
@@ -1446,7 +1464,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -1455,7 +1472,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 38,
@@ -1474,7 +1491,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1482,8 +1498,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff'],
   },
   {
@@ -1514,8 +1529,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -1549,9 +1563,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Foreknowledge'],
   },
   {
@@ -1584,8 +1596,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Movement'],
   },
@@ -1609,7 +1620,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1617,8 +1627,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing', 'Buff'],
   },
@@ -1644,7 +1653,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1653,7 +1661,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -1691,7 +1699,7 @@ export const spells: any[] = [
       size: 30,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control'],
   },
@@ -1715,7 +1723,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1725,7 +1732,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     tags: ['Debuff'],
   },
   {
@@ -1745,7 +1752,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -1753,9 +1759,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 47,
@@ -1786,7 +1790,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 150,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -1821,9 +1825,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: 'MANUAL_nextLeveldmg_notlevel1',
     damage: [
       {
@@ -1868,7 +1870,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
@@ -1892,7 +1894,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -1900,9 +1901,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 51,
@@ -1932,7 +1931,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -1941,7 +1939,7 @@ export const spells: any[] = [
       value: 1,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Debuff'],
   },
@@ -1962,7 +1960,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -1970,9 +1967,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 53,
@@ -2010,7 +2005,7 @@ export const spells: any[] = [
       value: 2,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -2039,8 +2034,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -2063,7 +2057,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -2072,7 +2065,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -2095,12 +2088,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 57,
@@ -2143,7 +2135,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -2168,7 +2160,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -2181,7 +2172,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 60,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -2212,9 +2203,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 60,
@@ -2241,8 +2230,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Warding'],
   },
   {
@@ -2278,8 +2266,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication', 'Social'],
   },
   {
@@ -2322,7 +2309,7 @@ export const spells: any[] = [
       size: 10,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'thunder',
@@ -2363,12 +2350,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 64,
@@ -2392,7 +2378,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -2400,9 +2385,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation', 'Buff'],
   },
   {
@@ -2425,7 +2408,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -2433,9 +2415,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation', 'Movement'],
   },
   {
@@ -2458,12 +2438,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 67,
@@ -2497,7 +2475,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -2542,8 +2520,7 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation', 'Detection'],
   },
   {
@@ -2572,7 +2549,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Warding'],
   },
   {
@@ -2592,7 +2569,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'reaction',
       to: 'MANUAL_reaction',
@@ -2601,9 +2577,7 @@ export const spells: any[] = [
       type: 'round',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Warding'],
   },
   {
@@ -2632,9 +2606,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 72,
@@ -2666,7 +2638,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Social'],
   },
   {
@@ -2694,8 +2666,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 74,
@@ -2722,8 +2693,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Warding'],
   },
   {
@@ -2756,10 +2726,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
@@ -2780,7 +2748,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -2788,8 +2755,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 77,
@@ -2821,7 +2787,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 20,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Damage', 'Control'],
   },
   {
@@ -2845,8 +2811,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     heal: {
       value: 1,
     },
@@ -2882,7 +2847,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff'],
   },
   {
@@ -2912,7 +2877,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -2921,7 +2885,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 81,
@@ -2954,7 +2918,7 @@ export const spells: any[] = [
       value: 8,
     },
     spellRange: 5,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 82,
@@ -2994,7 +2958,7 @@ export const spells: any[] = [
       type: 'cube',
       size: 30,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -3035,7 +2999,7 @@ export const spells: any[] = [
       size: 40,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
@@ -3056,7 +3020,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -3065,7 +3028,7 @@ export const spells: any[] = [
       type: 'round',
       value: 6,
     },
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -3085,7 +3048,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -3094,7 +3056,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 86,
@@ -3121,7 +3083,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 87,
@@ -3159,7 +3121,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -3189,7 +3151,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -3226,12 +3188,11 @@ export const spells: any[] = [
       type: 'day',
       value: 1,
     },
-    spellRange: 0,
     area: {
       type: 'squareFeet',
       size: 40000,
     },
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control'],
   },
@@ -3262,7 +3223,7 @@ export const spells: any[] = [
       value: 8,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Movement'],
   },
@@ -3293,7 +3254,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3302,7 +3262,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 10,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 92,
@@ -3338,7 +3298,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3346,9 +3305,8 @@ export const spells: any[] = [
       type: 'day',
       value: 7,
     },
-    spellRange: 0,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Debuff'],
   },
@@ -3369,7 +3327,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3377,9 +3334,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Deception'],
   },
   {
@@ -3399,12 +3354,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 95,
@@ -3428,9 +3381,8 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation', 'Banishment'],
   },
   {
@@ -3453,13 +3405,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'necrotic',
@@ -3524,7 +3475,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -3560,7 +3511,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 20,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -3592,8 +3543,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Debuff', 'Warding'],
   },
@@ -3623,7 +3573,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
@@ -3644,7 +3594,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3652,9 +3601,7 @@ export const spells: any[] = [
       type: 'round',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 102,
@@ -3673,7 +3620,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3687,7 +3633,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Social'],
   },
   {
@@ -3730,8 +3676,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
@@ -3757,7 +3702,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3765,8 +3709,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Warding'],
   },
   {
@@ -3786,7 +3729,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3794,8 +3736,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 106,
@@ -3822,7 +3763,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3830,8 +3770,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Warding'],
   },
@@ -3865,7 +3804,7 @@ export const spells: any[] = [
       type: 'cube',
     },
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -3888,7 +3827,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -3896,8 +3834,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Warding'],
   },
@@ -3926,14 +3863,12 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cone',
       size: 30,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff'],
   },
   {
@@ -3966,7 +3901,7 @@ export const spells: any[] = [
     },
     spellRange: 90,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4005,7 +3940,7 @@ export const spells: any[] = [
     },
     spellRange: 500,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -4037,12 +3972,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 113,
@@ -4080,7 +4014,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4133,12 +4067,11 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется или не сработает',
     },
-    spellRange: 0,
     area: {
       type: 'sphere',
       size: 60,
     },
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
@@ -4168,9 +4101,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -4215,7 +4146,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Banishment'],
   },
   {
@@ -4235,7 +4166,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -4243,9 +4173,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 118,
@@ -4269,7 +4197,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 10,
@@ -4278,7 +4205,7 @@ export const spells: any[] = [
     area: {
       type: 'cube',
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -4309,7 +4236,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -4319,7 +4245,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4358,7 +4284,7 @@ export const spells: any[] = [
       size: 50,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4383,8 +4309,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4418,8 +4343,7 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Deception'],
   },
   {
@@ -4445,12 +4369,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 124,
@@ -4480,13 +4403,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation', 'Healing', 'Buff'],
   },
   {
@@ -4517,8 +4437,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -4547,8 +4466,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -4595,7 +4513,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Buff', 'Shapechanging'],
   },
   {
@@ -4643,7 +4561,7 @@ export const spells: any[] = [
     area: {
       type: 'cube',
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4679,8 +4597,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
@@ -4721,7 +4638,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -4744,7 +4661,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -4752,9 +4668,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'radiant',
@@ -4795,13 +4709,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'reaction',
       to: 'MANUAL_reaction',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Negation'],
   },
   {
@@ -4830,14 +4743,12 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cone',
       size: 60,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'cold',
@@ -4880,7 +4791,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -4889,7 +4799,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 135,
@@ -4908,7 +4818,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -4916,9 +4825,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 136,
@@ -4951,7 +4858,7 @@ export const spells: any[] = [
       size: 60,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'necrotic',
@@ -5005,7 +4912,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -5030,7 +4937,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5039,7 +4945,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Banishment'],
   },
   {
@@ -5075,7 +4981,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -5100,7 +5006,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5109,7 +5014,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 141,
@@ -5145,7 +5050,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
@@ -5176,8 +5081,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -5211,13 +5115,11 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 10,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -5240,12 +5142,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     heal: {
       dice: {
         count: 1,
@@ -5274,12 +5175,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     heal: {
       dice: {
         count: 1,
@@ -5329,7 +5228,7 @@ export const spells: any[] = [
       size: 5,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'radiant',
@@ -5370,12 +5269,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 148,
@@ -5397,7 +5295,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5407,7 +5304,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     tags: ['Debuff'],
   },
   {
@@ -5430,12 +5327,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 150,
@@ -5459,7 +5355,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5468,7 +5363,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 500,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 151,
@@ -5501,7 +5396,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -5546,7 +5441,7 @@ export const spells: any[] = [
       size: 10,
     },
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
@@ -5570,7 +5465,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -5578,8 +5472,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
@@ -5624,7 +5517,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 155,
@@ -5643,12 +5536,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -5668,7 +5559,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5676,9 +5566,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 157,
@@ -5700,7 +5588,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5708,9 +5595,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Shapechanging'],
   },
   {
@@ -5730,7 +5615,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5739,7 +5623,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff'],
   },
   {
@@ -5767,7 +5651,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -5800,7 +5684,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication'],
   },
   {
@@ -5823,7 +5707,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5831,9 +5714,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -5872,7 +5753,7 @@ export const spells: any[] = [
       size: 40,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -5895,7 +5776,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5904,7 +5784,7 @@ export const spells: any[] = [
       type: 'sphere',
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -5928,7 +5808,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -5937,7 +5816,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
@@ -5958,7 +5837,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -5967,7 +5845,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 166,
@@ -5999,7 +5877,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 167,
@@ -6035,7 +5913,7 @@ export const spells: any[] = [
       type: 'cube',
       size: 150,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -6058,12 +5936,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 169,
@@ -6102,7 +5979,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Social'],
   },
   {
@@ -6125,12 +6002,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     heal: {
       dice: {
         count: 1,
@@ -6159,7 +6035,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -6168,7 +6043,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 30,
     },
-    attack: true,
+    attackRoll: true,
     heal: {
       dice: {
         count: 1,
@@ -6194,12 +6069,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     heal: {
       value: 700,
     },
@@ -6225,13 +6099,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 10,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     heal: {
       dice: {
         count: 1,
@@ -6264,7 +6137,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -6272,9 +6144,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 175,
@@ -6302,14 +6172,12 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'line',
       size: 100,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'lightning',
@@ -6390,10 +6258,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -6416,12 +6282,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'necrotic',
@@ -6462,7 +6326,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -6471,7 +6334,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Buff'],
   },
@@ -6492,7 +6355,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -6500,9 +6362,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Social'],
   },
   {
@@ -6541,7 +6401,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'piercing',
@@ -6592,7 +6452,7 @@ export const spells: any[] = [
       size: 10,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -6630,8 +6490,7 @@ export const spells: any[] = [
       type: 'day',
       value: 10,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication'],
   },
   {
@@ -6662,8 +6521,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff'],
   },
   {
@@ -6697,7 +6555,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -6726,8 +6584,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Deception'],
   },
   {
@@ -6759,8 +6616,7 @@ export const spells: any[] = [
       type: 'day',
       value: 10,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Warding'],
   },
   {
@@ -6783,7 +6639,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -6793,7 +6648,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
@@ -6829,8 +6684,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 24,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 189,
@@ -6856,7 +6710,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -6867,7 +6720,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -6899,7 +6752,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cube',
       size: 5,
@@ -6929,7 +6782,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -6943,7 +6795,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'poison',
@@ -6984,7 +6836,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -6998,7 +6849,7 @@ export const spells: any[] = [
       size: 15,
     },
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -7029,13 +6880,11 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 30,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -7058,7 +6907,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -7066,13 +6914,11 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 30,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -7104,7 +6950,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -7112,13 +6957,11 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 30,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -7155,10 +6998,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Social', 'Detection'],
   },
   {
@@ -7198,7 +7039,7 @@ export const spells: any[] = [
       type: 'cube',
       size: 20,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -7232,9 +7073,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Foreknowledge'],
   },
   {
@@ -7263,14 +7102,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility', 'Environment', 'Exploration', 'Foreknowledge'],
   },
   {
@@ -7290,7 +7126,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -7298,9 +7133,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 201,
@@ -7322,13 +7155,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 150,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'fire',
@@ -7374,7 +7206,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'fire',
@@ -7417,18 +7249,15 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cone',
       size: 15,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'fire',
@@ -7469,12 +7298,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 205,
@@ -7506,7 +7334,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'fire',
@@ -7557,9 +7385,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Buff'],
   },
@@ -7583,7 +7409,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -7597,7 +7422,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Debuff'],
   },
@@ -7631,8 +7456,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -7669,7 +7493,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff'],
   },
   {
@@ -7697,8 +7521,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -7723,7 +7546,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -7737,7 +7559,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -7762,7 +7584,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -7770,9 +7591,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 213,
@@ -7794,7 +7613,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -7802,9 +7620,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 214,
@@ -7826,13 +7642,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -7869,7 +7682,7 @@ export const spells: any[] = [
       size: 60,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'cold',
@@ -7928,7 +7741,7 @@ export const spells: any[] = [
       type: 'sphere',
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -7955,12 +7768,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -7989,7 +7801,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -7997,9 +7808,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Deception', 'Warding'],
   },
   {
@@ -8044,9 +7853,8 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не будут рассеяны или пока не сработают',
     },
-    spellRange: 0,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Warding'],
   },
@@ -8079,8 +7887,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Warding'],
   },
@@ -8112,7 +7919,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -8122,7 +7928,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Social'],
   },
   {
@@ -8142,7 +7948,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -8151,7 +7956,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 5,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -8181,7 +7986,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility', 'Exploration'],
   },
   {
@@ -8204,7 +8009,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -8212,9 +8016,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 225,
@@ -8238,12 +8040,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'fire',
@@ -8280,8 +8081,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Movement'],
   },
   {
@@ -8324,7 +8124,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -8349,12 +8149,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 500,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -8374,13 +8173,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'necrotic',
@@ -8419,7 +8217,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing', 'Buff', 'Social'],
   },
@@ -8457,7 +8255,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -8490,13 +8288,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 10,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -8528,7 +8325,7 @@ export const spells: any[] = [
     },
     spellRange: 150,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'lightning',
@@ -8569,7 +8366,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 235,
@@ -8597,7 +8394,7 @@ export const spells: any[] = [
       value: 24,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff'],
   },
   {
@@ -8629,7 +8426,7 @@ export const spells: any[] = [
       value: 8,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     heal: {
       value: 5,
     },
@@ -8672,8 +8469,7 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility', 'Deception'],
   },
   {
@@ -8709,7 +8505,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 5280,
-    attack: true,
+    attackRoll: true,
     tags: ['Scrying', 'Detection', 'Utility'],
   },
   {
@@ -8738,7 +8534,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -8748,7 +8543,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -8771,7 +8566,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -8781,7 +8575,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -8806,7 +8600,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -8816,7 +8609,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -8840,9 +8633,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -8862,12 +8653,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -8904,9 +8694,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -8936,9 +8724,7 @@ export const spells: any[] = [
       type: 'day',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -8958,13 +8744,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 10,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9001,9 +8786,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -9030,7 +8813,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9061,8 +8844,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -9085,12 +8867,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     heal: {
       value: 70,
     },
@@ -9125,9 +8906,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Shapechanging'],
   },
   {
@@ -9155,9 +8934,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Social'],
   },
   {
@@ -9177,13 +8954,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
@@ -9217,7 +8993,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Debuff'],
   },
   {
@@ -9245,10 +9021,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -9276,7 +9050,7 @@ export const spells: any[] = [
       type: 'round',
       value: 1,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Communication'],
   },
   {
@@ -9296,7 +9070,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -9304,9 +9077,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -9339,8 +9110,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 259,
@@ -9371,7 +9141,7 @@ export const spells: any[] = [
       value: 24,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication', 'Social'],
   },
   {
@@ -9401,7 +9171,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Shapechanging'],
   },
   {
@@ -9421,7 +9191,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -9430,7 +9199,7 @@ export const spells: any[] = [
       value: 24,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Shapechanging'],
   },
   {
@@ -9450,7 +9219,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -9458,13 +9226,11 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 10,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -9507,13 +9273,11 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 10,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Negation', 'Warding'],
   },
   {
@@ -9542,8 +9306,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Debuff', 'Foreknowledge'],
   },
@@ -9574,9 +9337,7 @@ export const spells: any[] = [
       type: 'day',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -9601,9 +9362,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Foreknowledge'],
   },
   {
@@ -9633,7 +9392,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -9642,7 +9400,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9666,9 +9424,7 @@ export const spells: any[] = [
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cone',
       size: 60,
@@ -9696,7 +9452,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 150,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cylinder',
       size: 40,
@@ -9738,7 +9494,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9768,7 +9524,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -9778,7 +9533,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9801,7 +9556,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -9815,7 +9569,7 @@ export const spells: any[] = [
       size: 60,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -9839,7 +9593,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -9849,7 +9602,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9872,7 +9625,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -9882,7 +9634,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9916,7 +9668,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning'],
   },
   {
@@ -9949,7 +9701,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -9959,7 +9710,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -9982,7 +9733,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -9990,9 +9740,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing', 'Damage'],
   },
@@ -10013,7 +9761,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10023,7 +9770,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -10043,7 +9790,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -10053,7 +9799,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -10081,8 +9827,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 281,
@@ -10101,7 +9846,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10111,7 +9855,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -10136,8 +9880,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -10167,7 +9910,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 500,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -10201,7 +9944,7 @@ export const spells: any[] = [
       text: 'особая',
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -10231,7 +9974,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10239,9 +9981,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Debuff'],
   },
   {
@@ -10269,8 +10010,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -10301,9 +10041,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -10323,7 +10061,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10332,7 +10069,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -10369,7 +10106,7 @@ export const spells: any[] = [
       size: 5,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'fire',
@@ -10422,7 +10159,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10432,7 +10168,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
@@ -10470,18 +10206,15 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cone',
       size: 60,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
@@ -10502,7 +10235,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10510,9 +10242,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication', 'Social'],
   },
   {
@@ -10541,7 +10271,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication', 'Social'],
   },
   {
@@ -10561,7 +10291,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10569,9 +10298,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication', 'Social'],
   },
   {
@@ -10591,7 +10318,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10599,9 +10325,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Deception', 'Warding'],
   },
@@ -10622,13 +10346,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -10655,7 +10376,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10663,10 +10383,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Debuff'],
   },
@@ -10699,7 +10417,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
@@ -10729,7 +10447,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'force',
@@ -10780,10 +10498,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
@@ -10817,12 +10533,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -10851,8 +10566,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing'],
   },
@@ -10873,7 +10587,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -10883,7 +10596,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -10903,12 +10616,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 150,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -10931,13 +10643,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 306,
@@ -10968,13 +10677,11 @@ export const spells: any[] = [
       type: 'round',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cone',
       size: 15,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -11002,8 +10709,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 308,
@@ -11031,8 +10737,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Movement'],
   },
   {
@@ -11052,7 +10757,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -11061,9 +10765,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Communication', 'Foreknowledge'],
   },
   {
@@ -11120,13 +10822,12 @@ export const spells: any[] = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    spellRange: 0,
     area: {
       type: 'sphere',
       size: 60,
     },
     saveThrow: 'charisma',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Buff', 'Debuff', 'Environment'],
   },
   {
@@ -11149,12 +10850,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 312,
@@ -11185,7 +10885,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 313,
@@ -11214,7 +10914,7 @@ export const spells: any[] = [
       value: 8,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Detection'],
   },
   {
@@ -11243,7 +10943,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -11277,7 +10977,7 @@ export const spells: any[] = [
       size: 10,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -11308,8 +11008,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Movement'],
   },
   {
@@ -11336,7 +11035,7 @@ export const spells: any[] = [
     },
     spellRange: 150,
     saveThrow: 'intelligence',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'psychic',
@@ -11365,7 +11064,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -11373,8 +11071,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement'],
   },
   {
@@ -11394,12 +11091,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 5,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -11419,12 +11115,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 321,
@@ -11443,12 +11137,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -11468,12 +11161,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Damage', 'Control'],
   },
   {
@@ -11500,7 +11192,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -11508,9 +11199,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Shapechanging'],
   },
   {
@@ -11530,7 +11219,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -11544,7 +11232,7 @@ export const spells: any[] = [
       size: 30,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'psychic',
@@ -11598,7 +11286,7 @@ export const spells: any[] = [
       size: 10,
     },
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -11618,12 +11306,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff'],
   },
   {
@@ -11652,7 +11338,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -11672,7 +11358,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -11680,8 +11365,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 24,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
@@ -11710,14 +11394,12 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'line',
       size: 60,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'radiant',
@@ -11756,7 +11438,7 @@ export const spells: any[] = [
       size: 60,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'radiant',
@@ -11794,7 +11476,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 332,
@@ -11821,8 +11503,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 333,
@@ -11858,7 +11539,7 @@ export const spells: any[] = [
       type: 'cube',
       size: 30,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -11888,7 +11569,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation', 'Control'],
   },
   {
@@ -11908,12 +11589,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -11936,7 +11616,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -11944,9 +11623,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 337,
@@ -11975,7 +11652,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -12004,7 +11681,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12014,7 +11690,7 @@ export const spells: any[] = [
     },
     spellRange: 90,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'slashing',
@@ -12046,7 +11722,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12054,8 +11729,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 340,
@@ -12074,7 +11748,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12084,7 +11757,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Summoning', 'Control'],
   },
   {
@@ -12133,12 +11806,11 @@ export const spells: any[] = [
       type: 'hour',
       value: 24,
     },
-    spellRange: 0,
     area: {
       type: 'squareFeet',
       size: 2500,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -12170,13 +11842,11 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 10,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Negation', 'Warding'],
   },
   {
@@ -12196,7 +11866,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 10,
@@ -12209,7 +11878,7 @@ export const spells: any[] = [
       type: 'square',
       size: 5280,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -12234,7 +11903,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12243,7 +11911,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Movement'],
   },
   {
@@ -12271,7 +11939,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 24,
     },
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 346,
@@ -12299,7 +11967,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     tags: ['Movement', 'Utility'],
   },
   {
@@ -12332,7 +12000,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
@@ -12361,7 +12029,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 349,
@@ -12380,7 +12048,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12393,7 +12060,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 20,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -12421,8 +12088,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Utility'],
   },
   {
@@ -12445,7 +12111,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12458,7 +12123,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 20,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Environment'],
   },
   {
@@ -12478,13 +12143,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -12517,7 +12179,7 @@ export const spells: any[] = [
       type: 'sphere',
       size: 15,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -12547,7 +12209,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Buff', 'Warding'],
   },
   {
@@ -12582,7 +12244,7 @@ export const spells: any[] = [
     },
     spellRange: 30,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
@@ -12626,7 +12288,7 @@ export const spells: any[] = [
     },
     spellRange: 60,
     saveThrow: 'wisdom',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -12727,7 +12389,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -12736,7 +12397,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     tags: ['Creation', 'Damage'],
   },
   {
@@ -12827,8 +12488,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Healing'],
   },
   {
@@ -12894,7 +12554,7 @@ export const spells: any[] = [
       type: 'cube',
       size: 5,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Creation'],
   },
   {
@@ -13019,12 +12679,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 10,
-    attack: true,
+    attackRoll: true,
     tags: ['Teleportation'],
   },
   {
@@ -13060,8 +12719,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     tags: ['Buff'],
   },
   {
@@ -13084,7 +12742,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13093,7 +12750,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'sphere',
       size: 30,
@@ -13123,7 +12780,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13137,7 +12793,7 @@ export const spells: any[] = [
       size: 100,
     },
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -13165,12 +12821,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 451,
@@ -13199,7 +12854,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -13240,7 +12895,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Warding'],
   },
   {
@@ -13283,7 +12938,7 @@ export const spells: any[] = [
       size: 5,
     },
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     tags: ['Control'],
   },
   {
@@ -13306,7 +12961,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -13314,8 +12968,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 455,
@@ -13337,7 +12990,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13346,7 +12998,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 456,
@@ -13374,7 +13026,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13383,7 +13034,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -13408,12 +13059,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 458,
@@ -13432,7 +13082,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -13440,9 +13089,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 459,
@@ -13473,7 +13120,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 460,
@@ -13495,13 +13142,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 10,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'bludgeoning',
@@ -13552,8 +13198,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cone',
       size: 15,
@@ -13589,7 +13234,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -13619,7 +13264,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13627,13 +13271,11 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'sphere',
       size: 10,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff', 'Warding'],
   },
   {
@@ -13661,8 +13303,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Communication', 'Buff'],
   },
@@ -13699,7 +13340,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -13734,7 +13375,7 @@ export const spells: any[] = [
       size: 20,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'bludgeoning',
@@ -13775,7 +13416,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13784,7 +13424,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 468,
@@ -13810,7 +13450,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13819,7 +13458,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cone',
       size: 60,
@@ -13865,7 +13504,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 90,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 470,
@@ -13889,7 +13528,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -13899,7 +13537,7 @@ export const spells: any[] = [
     },
     spellRange: 90,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -13927,7 +13565,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -13936,7 +13573,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 472,
@@ -13960,13 +13597,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'bludgeoning',
@@ -14027,7 +13663,7 @@ export const spells: any[] = [
       value: 8,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 474,
@@ -14053,7 +13689,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14061,9 +13696,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 475,
@@ -14091,7 +13724,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14101,7 +13733,7 @@ export const spells: any[] = [
       size: 30,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -14139,7 +13771,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 1,
@@ -14148,8 +13779,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 477,
@@ -14181,7 +13811,7 @@ export const spells: any[] = [
       size: 5,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
@@ -14209,12 +13839,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 479,
@@ -14244,10 +13873,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'fire',
@@ -14279,7 +13906,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14288,7 +13914,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -14326,7 +13952,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 120,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 482,
@@ -14364,7 +13990,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 5280,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 483,
@@ -14391,7 +14017,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 484,
@@ -14410,7 +14036,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14418,7 +14043,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Communication'],
   },
   {
@@ -14446,9 +14071,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 486,
@@ -14472,7 +14095,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14481,7 +14103,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 487,
@@ -14505,7 +14127,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14513,14 +14134,12 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cube',
       size: 15,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Movement', 'Warding'],
   },
@@ -14546,7 +14165,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14554,10 +14172,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Movement', 'Warding'],
   },
   {
@@ -14583,7 +14199,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14591,14 +14206,12 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     area: {
       type: 'cone',
       size: 15,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Warding'],
   },
@@ -14624,7 +14237,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14632,10 +14244,8 @@ export const spells: any[] = [
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Warding'],
   },
@@ -14668,9 +14278,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 492,
@@ -14692,12 +14300,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 493,
@@ -14728,7 +14335,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 150,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'sphere',
       size: 60,
@@ -14754,7 +14361,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14763,7 +14369,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 495,
@@ -14790,7 +14396,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'line',
       size: 5,
@@ -14816,13 +14422,10 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 497,
@@ -14844,7 +14447,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14852,9 +14454,7 @@ export const spells: any[] = [
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Warding'],
   },
@@ -14878,12 +14478,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 499,
@@ -14911,7 +14510,7 @@ export const spells: any[] = [
       value: 10,
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff'],
   },
   {
@@ -14936,7 +14535,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14946,7 +14544,7 @@ export const spells: any[] = [
       size: 5,
     },
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff'],
   },
   {
@@ -14975,7 +14573,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -14984,7 +14581,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 502,
@@ -15006,7 +14603,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'reaction',
       to: 'MANUAL_reaction',
@@ -15015,9 +14611,7 @@ export const spells: any[] = [
       type: 'round',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Warding'],
   },
@@ -15041,12 +14635,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -15079,13 +14672,12 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'minute',
       value: 10,
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 505,
@@ -15112,7 +14704,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -15155,7 +14747,7 @@ export const spells: any[] = [
       size: 40,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -15204,7 +14796,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 508,
@@ -15239,7 +14831,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 509,
@@ -15264,7 +14856,7 @@ export const spells: any[] = [
     },
     spellRange: 120,
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -15296,7 +14888,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -15306,7 +14897,7 @@ export const spells: any[] = [
     },
     spellRange: 90,
     saveThrow: 'constitution',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
@@ -15330,7 +14921,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -15339,7 +14929,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 512,
@@ -15363,12 +14953,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 513,
@@ -15392,7 +14981,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -15400,8 +14988,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'fire',
@@ -15451,7 +15038,7 @@ export const spells: any[] = [
       size: 5,
     },
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     nextLevelDamage: [
       {
         damageType: 'bludgeoning',
@@ -15492,12 +15079,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 5,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 516,
@@ -15516,12 +15102,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 517,
@@ -15554,7 +15139,7 @@ export const spells: any[] = [
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cylinder',
       size: 30,
@@ -15608,8 +15193,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 24,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 519,
@@ -15633,7 +15217,6 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -15641,8 +15224,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -15680,8 +15262,7 @@ export const spells: any[] = [
       type: 'hour',
       value: 8,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 521,
@@ -15703,12 +15284,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'sphere',
       size: 20,
@@ -15736,12 +15316,11 @@ export const spells: any[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 60,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 523,
@@ -15768,7 +15347,7 @@ export const spells: any[] = [
       type: 'action',
     },
     spellRange: 5,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 524,
@@ -15806,7 +15385,7 @@ export const spells: any[] = [
       size: 10,
     },
     saveThrow: 'dexterity',
-    attack: true,
+    attackRoll: true,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -15876,12 +15455,11 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -15909,7 +15487,7 @@ d8
       type: 'action',
     },
     spellRange: 90,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'sphere',
       size: 5,
@@ -15947,8 +15525,7 @@ d8
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 528,
@@ -15972,7 +15549,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -15981,7 +15557,7 @@ d8
       value: 1,
     },
     spellRange: 60,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cube',
       size: 5,
@@ -16022,7 +15598,7 @@ d8
       value: 10,
     },
     spellRange: 120,
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
@@ -16055,7 +15631,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -16063,9 +15638,7 @@ d8
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 531,
@@ -16091,7 +15664,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -16105,7 +15677,7 @@ d8
       size: 20,
     },
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Debuff'],
   },
@@ -16133,7 +15705,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -16141,9 +15712,7 @@ d8
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 533,
@@ -16180,9 +15749,7 @@ d8
       type: 'minute',
       value: 10,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 534,
@@ -16204,7 +15771,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'bonusAction',
     },
@@ -16212,9 +15778,7 @@ d8
       type: 'minute',
       value: 1,
     },
-    spellRange: 0,
-    toSelf: true,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 535,
@@ -16241,7 +15805,7 @@ d8
       type: 'action',
     },
     spellRange: 30,
-    attack: true,
+    attackRoll: true,
   },
   {
     id: 536,
@@ -16268,7 +15832,7 @@ d8
       type: 'action',
     },
     spellRange: 150,
-    attack: true,
+    attackRoll: true,
     area: {
       type: 'cube',
       size: 30,
@@ -16291,7 +15855,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -16301,7 +15864,7 @@ d8
     },
     spellRange: 300,
     saveThrow: 'strength',
-    attack: true,
+    attackRoll: true,
     tags: ['Control', 'Debuff'],
   },
   {
@@ -16324,7 +15887,6 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
@@ -16332,8 +15894,7 @@ d8
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 539,
@@ -16360,12 +15921,11 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 540,
@@ -16409,7 +15969,7 @@ d8
       value: 24,
     },
     spellRange: 120,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 541,
@@ -16446,8 +16006,7 @@ d8
       type: 'hour',
       value: 1,
     },
-    spellRange: 0,
-    attack: false,
+    attackRoll: false,
   },
   {
     id: 542,
@@ -16471,11 +16030,10 @@ d8
     material: false,
     consumeComponents: false,
     needComponents: false,
-    components: '',
     castTime: {
       type: 'action',
     },
     spellRange: 30,
-    attack: false,
+    attackRoll: false,
   },
 ]
