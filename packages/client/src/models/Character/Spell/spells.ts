@@ -1,4 +1,6 @@
-export const spells = [
+import { Spell } from 'models/Character/Spell/Spell'
+
+export const spells: Spell[] = [
   {
     id: 1,
     name: 'Адское возмездие',
@@ -33,20 +35,14 @@ export const spells = [
       damage: [
         {
           damageType: 'fire',
-          dice: {
-            count: 1,
-            value: 10,
-          },
+          dice: { count: 1, value: 10 },
         },
       ],
     },
     damage: [
       {
         damageType: 'fire',
-        dice: {
-          count: 2,
-          value: 10,
-        },
+        dice: { count: 2, value: 10 },
       },
     ],
     tags: ['Damage'],
@@ -167,6 +163,7 @@ export const spells = [
     school: 'abjuration',
     ritual: false,
     concentration: true,
+    needModel: true,
     description:
       'От вас исходит очищающая аура с радиусом 30 фт.. Пока заклинание активно, аура перемещается вместе с вами, оставаясь с центром на вас. Все невраждебные существа в ауре (включая вас) не могут заболеть, имеют сопротивление к урону ядом и совершают с преимуществом спасброски от эффектов, вызывающих следующие состояния: глухота, испуг, ослепление, отравление, очарование, ошеломление и паралич.',
     source: 'PHB',
@@ -201,6 +198,7 @@ export const spells = [
     },
     ritual: false,
     concentration: true,
+    needModel: true,
     description:
       'Божественный свет исходит от вас мягким сиянием в радиусе 30 фт.. Пока заклинание активно, существа в этом радиусе, выбранные вами при накладывании этого заклинания, испускают тусклый свет в радиусе 5 фт. и совершают все спасброски с преимуществом, а остальные существа совершают с помехой броски атаки по ним. Кроме того, если исчадие или нежить попадает по такому существу рукопашной атакой, аура вспыхивает ярким светом. Атакующий должен преуспеть в спасброске Телосложения, иначе станет ослеплённым, пока не окончится это заклинание.',
     source: 'PHB',
@@ -274,8 +272,9 @@ export const spells = [
     concentration: true,
     target: {
       type: 'ally',
-      inRange: true,
+      from: 'range',
     },
+    needModel: true,
     description:
       'От вас начинает исходить покров теней и тишины, скрывающий вас и ваших спутников от обнаружения. Пока заклинание активно, все существа, выбранные вами в пределах 30 фт. (включая вас) получают бонус +10 к проверкам Ловкости (Скрытность), и их нельзя выследить без помощи магии. Существо, получившее этот бонус, не оставляет за собой следов.',
     source: 'PHB',
@@ -309,6 +308,7 @@ export const spells = [
       type: 'ally',
       count: 3,
     },
+    needModel: true,
     nextLevel: {
       target: {
         count: 1,
@@ -349,6 +349,7 @@ export const spells = [
     target: {
       type: 'self',
     },
+    needModel: true,
     description:
       'Ваша молитва наполняет вас божественной энергией. Пока заклинание активно, ваши атаки оружием причиняют при попадании дополнительный урон 1d4.',
     source: 'PHB',
@@ -366,15 +367,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: false,
-    damage: [
-      {
-        damageType: 'radiant',
-        dice: {
-          count: 1,
-          value: 4,
-        },
-      },
-    ],
     tags: ['Damage'],
   },
   {
@@ -385,6 +377,7 @@ export const spells = [
     school: 'evocation',
     ritual: false,
     concentration: false,
+    needModel: true,
     description: `
 Вы создаёте в пределах дистанции парящее призрачное оружие, существующее, пока заклинание активно, или пока вы не накладываете это заклинание ещё раз. Когда вы накладываете это заклинание, вы можете совершить рукопашную атаку заклинанием по существу, находящемуся в пределах 5 фт. от оружия. При попадании цель получает урон силовым полем, равный 1d8 + модификатор вашей базовой характеристики.
 
@@ -410,28 +403,6 @@ export const spells = [
     },
     spellRange: 60,
     attackRoll: false,
-    nextLevel: {
-      everyLevel: 2,
-      damage: [
-        {
-          damageType: 'force',
-          dice: {
-            count: 1,
-            value: 8,
-          },
-        },
-      ],
-    },
-    damage: [
-      {
-        damageType: 'force',
-        baseModifier: true,
-        dice: {
-          count: 1,
-          value: 8,
-        },
-      },
-    ],
     tags: ['Damage'],
   },
   {
@@ -444,8 +415,9 @@ export const spells = [
     concentration: false,
     target: {
       type: 'enemy',
-      inRange: true,
+      from: 'range',
     },
+    needModel: true,
     description: `
 Вы произносите божественное слово, наделённое силой, сформировавшей мир на заре творения. Выберите любое количество существ, которых вы видите в пределах дистанции. Все эти существа, слышащие вас, должны совершить спасбросок Харизмы. При провале существо попадает под действие эффекта, основанного на текущем количестве хитов:
 
@@ -468,7 +440,7 @@ export const spells = [
     },
     spellRange: 30,
     saveThrow: 'charisma',
-    attackRoll: true,
+    attackRoll: false,
     tags: ['Control', 'Debuff', 'Banishment'],
   },
   {
@@ -479,11 +451,29 @@ export const spells = [
     school: 'conjuration',
     ritual: false,
     concentration: false,
+    needModel: true,
+    target: {
+      type: 'enemy',
+    },
     description: `
 Вы кидаете кислотный шарик. Выберите одно существо, которое вы можете видеть в пределах дистанции или два существа, которых вы можете видеть в пределах дистанции, находящихся в пределах 5 фт. друг от друга. Цель должна преуспеть в спасброске Ловкости, иначе она получает урон кислотой 1d6.
 
 Урон этого заклинания увеличивается на 1d6, когда вы достигаете 5 уровня (2d6), 11 уровня (3d6) и 17 уровня (4d6).
 `,
+    damage: [
+      {
+        damageType: 'acid',
+        dice: { count: 1, value: 6 },
+      },
+    ],
+    cantripByCharacterLevel: {
+      damage: [
+        {
+          damageType: 'acid',
+          dice: { count: 1, value: 6 },
+        },
+      ],
+    },
     source: 'PHB',
     classes: ['fighter', 'rogue', 'sorcerer', 'wizard'],
     verbal: true,
@@ -499,12 +489,13 @@ export const spells = [
   },
   {
     id: 14,
-    name: 'Быстрый колчан ',
+    name: 'Быстрый колчан',
     nameEn: 'Swift quiver',
     level: 5,
     school: 'transmutation',
     ritual: false,
     concentration: true,
+    needModel: true,
     description: `
 Вы так модифицируете свой колчан, что он начинает производить бесконечный запас немагических боеприпасов, которые сами прыгают в вашу руку, когда вы тянетесь за ними.
 
@@ -535,11 +526,27 @@ export const spells = [
     school: 'evocation',
     ritual: false,
     concentration: true,
+    needModel: true,
     description: `
 Луч потрескивающей синеватой энергии устремляется к существу в пределах дистанции, формируя между вами и целью непрерывный дуговой разряд. Совершите дальнобойную атаку заклинанием по этому существу. При попадании цель получает урон электричеством 1d12, и пока заклинание активно, вы можете в каждый свой ход действием автоматически причинять цели урон электричеством 1d12. Это заклинание оканчивается, если вы действием сделаете что-то иное. Заклинание также оканчивается, если цель окажется за пределами дистанции заклинания или получит от вас полное укрытие.
 
 **На больших уровнях:** Если вы накладываете это заклинание, используя ячейку 2 уровня или выше, первичный урон увеличивается на 1d12 за каждый уровень ячейки выше первого.
 `,
+    target: { type: 'enemy' },
+    damage: [
+      {
+        damageType: 'lightning',
+        dice: { count: 1, value: 12 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'lightning',
+          dice: { count: 1, value: 12 },
+        },
+      ],
+    },
     source: 'PHB',
     classes: ['sorcerer', 'warlock', 'wizard'],
     verbal: true,
@@ -566,6 +573,7 @@ export const spells = [
     school: 'conjuration',
     ritual: false,
     concentration: false,
+    needModel: true,
     description: `
 Вы создаёте межпространственное жилище в пределах дистанции, существующее, пока заклинание активно. Вы выбираете, где будет находиться единственный вход. Вход слабо светится; он 5 фт. в ширину и 10 фт. в высоту. Вы и все существа, указанные вами при накладывании заклинания, можете входить в это жилище, пока дверь открыта. Вы можете открывать и закрывать дверь, если находитесь в пределах 30 фт. от неё. Дверь невидима, когда закрыта.
 
@@ -591,9 +599,6 @@ export const spells = [
       value: 24,
     },
     spellRange: 300,
-    area: {
-      type: 'cube',
-    },
     attackRoll: true,
     tags: ['Utility', 'Exploration'],
   },
@@ -605,10 +610,11 @@ export const spells = [
     school: 'conjuration',
     ritual: false,
     concentration: false,
+    needModel: true,
     description: `
 Вы создаете призрачного сторожевого пса в свободном пространстве, видимом в пределах дистанции, где он и остается на время длительности заклинания, пока вы не отпустите его действием, или пока вы не отойдете от него более чем на 100 фт..
 
-Пес невидим для всех существо кроме вас, и ему нельзя причинить вред. Если в пределах 30 фт. от него оказывается существо с размером Маленькое или больше, не произнося при этом пароль, указанный вами при накладывании этого заклинания, пес начинает громко лаять. Пес видит невидимых существ и его зрение простирается на Эфирный План. Он игнорирует иллюзии.
+Пес невидим для всех существ кроме вас, и ему нельзя причинить вред. Если в пределах 30 фт. от него оказывается существо с размером Маленькое или больше, не произнося при этом пароль, указанный вами при накладывании этого заклинания, пес начинает громко лаять. Пес видит невидимых существ и его зрение простирается на Эфирный План. Он игнорирует иллюзии.
 
 В начале каждого вашего хода пес пытается укусить одно существо в пределах 5 фт. от себя, враждебное вам. Бонус атаки пса равен вашему модификатору базовой характеристики + ваш бонус мастерства. При попадании он причиняет колющий урон 4d8.
 `,
@@ -628,7 +634,7 @@ export const spells = [
       value: 8,
     },
     spellRange: 30,
-    attackRoll: true,
+    attackRoll: false,
     damage: [
       {
         damageType: 'piercing',
@@ -665,12 +671,12 @@ export const spells = [
       type: 'special',
       text: 'пока не рассеется',
     },
-    attackRoll: true,
+    attackRoll: false,
     tags: ['Creation'],
   },
   {
     id: 19,
-    name: 'Вещий сон ',
+    name: 'Вещий сон',
     nameEn: 'Dream',
     level: 5,
     school: 'illusion',
@@ -702,7 +708,7 @@ export const spells = [
       value: 8,
     },
     saveThrow: 'wisdom',
-    attackRoll: true,
+    attackRoll: false,
     tags: ['Damage', 'Communication'],
   },
   {
@@ -730,7 +736,7 @@ export const spells = [
       type: 'hour',
       value: 1,
     },
-    attackRoll: true,
+    attackRoll: false,
     tags: ['Detection'],
   },
   {
@@ -739,6 +745,7 @@ export const spells = [
     nameEn: 'Control water',
     level: 4,
     school: 'transmutation',
+    needModel: true,
     ritual: false,
     concentration: true,
     description: `
@@ -776,8 +783,7 @@ export const spells = [
       value: 10,
     },
     spellRange: 300,
-    saveThrow: 'strength',
-    attackRoll: true,
+    attackRoll: false,
     damage: [
       {
         damageType: 'bludgeoning',
@@ -791,12 +797,13 @@ export const spells = [
   },
   {
     id: 22,
-    name: 'Власть над погодой ',
+    name: 'Власть над погодой',
     nameEn: 'Control weather',
     level: 8,
     school: 'transmutation',
     ritual: false,
     concentration: true,
+    needModel: true,
     description: `
 Вы получаете на время длительности контроль над погодой в пределах 5 миль от себя. Для накладывания этого заклинания вы должны находиться на открытом воздухе. Если вы переместитесь в место, где над головой не будет неба, заклинание тут же закончится.
 
@@ -805,86 +812,32 @@ export const spells = [
 Изменяя погоду, найдите текущее состояние в таблицах и измените их на 1 позицию выше или ниже. Изменяя ветер, можете изменить его направление.
 
 **Осадки**
-
-70Сила
-
-Состояние
-
-1
-
-Чистое небо
-
-2
-
-Небольшая облачность
-
-3
-
-Пасмурно или густой туман
-
-4
-
-Дождь, град или снег
-
-5
-
-Проливной дождь, сильный град или метель
+Сила | Состояние
+:--- | :---
+1 | Чистое небо
+2 | Небольшая облачность
+3 | Пасмурно или густой туман
+4 | Дождь, град или снег
+5 | Проливной дождь, сильный град или метель
 
 **Температура**
-
-70Сила
-
-Состояние
-
-1
-
-Невыносимая жара
-
-2
-
-Жара
-
-3
-
-Тепло
-
-4
-
-Прохлада
-
-5
-
-Холод
-
-6
-
-Арктическая стужа
+Сила | Состояние
+:--- | :---
+1 | Невыносимая жара
+2 | Жара
+3 | Тепло
+4 | Прохлада
+5 | Холод
+6 | Арктическая стужа
 
 **Ветер**
-
-70Сила
-
-Состояние
-
-1
-
-Штиль
-
-2
-
-Умеренный ветер
-
-3
-
-Сильный ветер
-
-4
-
-Буря
-
-5
-
-Шторм
+Сила | Состояние
+:--- | :---
+1 | Штиль
+2 | Умеренный ветер
+3 | Сильный ветер
+4 | Буря
+5 | Шторм
 `,
     source: 'PHB',
     classes: ['cleric', 'wizard', 'druid'],
@@ -907,7 +860,7 @@ export const spells = [
       type: 'sphere',
       size: 26400,
     },
-    attackRoll: true,
+    attackRoll: false,
     tags: ['Control', 'Environment'],
   },
   {
@@ -918,6 +871,7 @@ export const spells = [
     school: 'enchantment',
     ritual: false,
     concentration: true,
+    needModel: true,
     description: `
 Вы внушаете определенный курс действий (ограниченный одной-двумя фразами) существу, видимому в пределах дистанции, способному слышать и понимать вас. Существа, которые не могут быть очарованы, обладают иммунитетом к этому эффекту. Внушение должно быть сформировано так, чтобы действие звучало разумным. Просьбы ударить себя мечом, броситься на копье, сжечь себя, или как-то иначе причинить себе вред оканчивают заклинание.
 
@@ -943,17 +897,21 @@ export const spells = [
     },
     spellRange: 30,
     saveThrow: 'wisdom',
-    attackRoll: true,
+    attackRoll: false,
     tags: ['Control', 'Social'],
   },
   {
     id: 24,
-    name: 'Возрождение ',
+    name: 'Возрождение',
     nameEn: 'Revivify',
     level: 3,
     school: 'necromancy',
     ritual: false,
     concentration: false,
+    needModel: true,
+    target: {
+      type: 'notSelf',
+    },
     description:
       'Вы касаетесь существа, мёртвого не больше минуты. Это существо возвращается к жизни с 1 хитом. Это заклинание не может оживить существ, умерших от старости, а также не восстанавливает отсутствующие части тел.',
     source: 'PHB',
@@ -967,10 +925,7 @@ export const spells = [
     castTime: {
       type: 'action',
     },
-    attackRoll: true,
-    heal: {
-      value: 1,
-    },
+    attackRoll: false,
     tags: ['Healing'],
   },
   {
@@ -981,6 +936,7 @@ export const spells = [
     school: 'evocation',
     ritual: false,
     concentration: false,
+    needModel: true,
     description: `
 От вас исходит волна громовой силы. Все существа в кубе с длиной ребра 15 фт., исходящего от вас, должны совершить спасбросок Телосложения. При провале существо получает урон звуком 2d8 и толкается на 10 фт. от вас. При успехе существо получает половину урона и не толкается.
 
@@ -1003,16 +959,18 @@ export const spells = [
       size: 15,
     },
     saveThrow: 'constitution',
-    attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'thunder',
-        dice: {
-          count: 1,
-          value: 8,
+    attackRoll: false,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'thunder',
+          dice: {
+            count: 1,
+            value: 8,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'thunder',
@@ -1032,6 +990,7 @@ export const spells = [
     school: 'conjuration',
     ritual: false,
     concentration: false,
+    needModel: true,
     description: `
 В точке, выбранной вами в пределах дистанции, появляется призрачная парящая рука. Рука существует, пока заклинание активно, или пока вы не отпустите ее действием. Рука исчезает, если окажется более чем в 30 футах от вас, или если вы повторно используете это заклинание.
 
@@ -1064,6 +1023,10 @@ export const spells = [
     school: 'evocation',
     ritual: false,
     concentration: false,
+    needModel: true,
+    target: {
+      type: 'enemy',
+    },
     description: `
 Вы создаете три светящихся дротика из магической силы. Каждый дротик попадает в существо на ваш выбор, видимое в пределах дистанции. Каждый дротик причиняет урон силовым полем 1d4 + 1. Все дротики атакуют одновременно, и вы можете направить их как в одно существо, так и в разных.
 
@@ -1273,15 +1236,17 @@ export const spells = [
     spellRange: 120,
     saveThrow: 'wisdom',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'psychic',
-        dice: {
-          count: 1,
-          value: 10,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'psychic',
+          dice: {
+            count: 1,
+            value: 10,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'psychic',
@@ -1597,7 +1562,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Movement'],
   },
   {
@@ -1628,7 +1592,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing', 'Buff'],
   },
   {
@@ -1700,7 +1663,6 @@ export const spells = [
     },
     saveThrow: 'wisdom',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control'],
   },
   {
@@ -1791,7 +1753,6 @@ export const spells = [
     },
     spellRange: 150,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
     id: 48,
@@ -1826,7 +1787,18 @@ export const spells = [
       value: 10,
     },
     attackRoll: true,
-    nextLevelDamage: 'MANUAL_nextLeveldmg_notlevel1',
+    nextLevel: {
+      everyLevel: 2,
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
+    },
     damage: [
       {
         damageType: 'fire',
@@ -1871,7 +1843,33 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 2,
+          value: 8,
+        },
+      },
+      {
+        damageType: 'cold',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
+    },
     tags: ['Damage', 'Control'],
   },
   {
@@ -1940,7 +1938,6 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Debuff'],
   },
   {
@@ -2136,7 +2133,6 @@ export const spells = [
     },
     spellRange: 120,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
     id: 58,
@@ -2310,15 +2306,17 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'thunder',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'thunder',
+          dice: {
+            count: 1,
+            value: 8,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'thunder',
@@ -2728,7 +2726,6 @@ export const spells = [
     },
     saveThrow: 'wisdom',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
   {
@@ -3000,7 +2997,6 @@ export const spells = [
     },
     saveThrow: 'wisdom',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
   {
@@ -3029,7 +3025,6 @@ export const spells = [
       value: 6,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
     id: 85,
@@ -3122,7 +3117,6 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage'],
   },
   {
@@ -3193,7 +3187,6 @@ export const spells = [
       size: 40000,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control'],
   },
   {
@@ -3224,7 +3217,6 @@ export const spells = [
     },
     spellRange: 30,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Movement'],
   },
   {
@@ -3307,7 +3299,6 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Debuff'],
   },
   {
@@ -3411,15 +3402,17 @@ export const spells = [
     spellRange: 30,
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'necrotic',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 1,
+            value: 8,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'necrotic',
@@ -3544,7 +3537,6 @@ export const spells = [
       value: 10,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Debuff', 'Warding'],
   },
   {
@@ -3574,7 +3566,6 @@ export const spells = [
     },
     spellRange: 30,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
   {
@@ -3677,7 +3668,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
   {
@@ -3771,7 +3761,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Warding'],
   },
   {
@@ -3802,6 +3791,7 @@ export const spells = [
     spellRange: 100,
     area: {
       type: 'cube',
+      size: 20,
     },
     saveThrow: 'charisma',
     attackRoll: true,
@@ -3835,7 +3825,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Warding'],
   },
   {
@@ -4072,7 +4061,6 @@ export const spells = [
       size: 60,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
   {
@@ -4204,6 +4192,7 @@ export const spells = [
     spellRange: 120,
     area: {
       type: 'cube',
+      size: 10,
     },
     attackRoll: true,
     tags: ['Creation'],
@@ -4560,6 +4549,7 @@ export const spells = [
     spellRange: 120,
     area: {
       type: 'cube',
+      size: 100,
     },
     attackRoll: true,
     tags: ['Control'],
@@ -4598,7 +4588,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
   {
@@ -4669,15 +4658,17 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'radiant',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 6,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'radiant',
@@ -4749,15 +4740,17 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'cold',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'cold',
+          dice: {
+            count: 1,
+            value: 8,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'cold',
@@ -4859,15 +4852,17 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'necrotic',
-        dice: {
-          count: 2,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 2,
+            value: 6,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'necrotic',
@@ -5051,7 +5046,6 @@ export const spells = [
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
   {
@@ -5229,15 +5223,17 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'radiant',
-        dice: {
-          count: 1,
-          value: 10,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 10,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'radiant',
@@ -5442,7 +5438,6 @@ export const spells = [
     },
     saveThrow: 'charisma',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
   {
@@ -5473,7 +5468,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
   {
@@ -5652,7 +5646,26 @@ export const spells = [
     },
     spellRange: 90,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'acid',
+        dice: {
+          count: 4,
+          value: 4,
+        },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'acid',
+          dice: {
+            count: 1,
+            value: 4,
+          },
+        },
+      ],
+    },
     tags: ['Damage'],
   },
   {
@@ -5782,10 +5795,26 @@ export const spells = [
     spellRange: 5280,
     area: {
       type: 'sphere',
+      size: 40,
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 20,
+          value: 6,
+        },
+      },
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 20,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
   },
   {
@@ -5817,7 +5846,6 @@ export const spells = [
     },
     spellRange: 90,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
   {
@@ -6178,15 +6206,14 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'lightning',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'lightning',
+          dice: { count: 1, value: 6 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'lightning',
@@ -6286,15 +6313,14 @@ export const spells = [
       type: 'action',
     },
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'necrotic',
-        dice: {
-          count: 1,
-          value: 10,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: { count: 1, value: 10 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'necrotic',
@@ -6335,7 +6361,20 @@ export const spells = [
     },
     spellRange: 120,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: { count: 4, value: 6 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: { count: 1, value: 6 },
+        },
+      ],
+    },
     tags: ['Damage', 'Buff'],
   },
   {
@@ -6402,15 +6441,17 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'piercing',
-        dice: {
-          count: 1,
-          value: 10,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'piercing',
+          dice: {
+            count: 1,
+            value: 10,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'piercing',
@@ -6453,7 +6494,24 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: { count: 4, value: 6 },
+      },
+      {
+        damageType: 'fire',
+        dice: { count: 4, value: 6 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: { count: 1, value: 6 },
+        },
+      ],
+    },
     tags: ['Damage'],
   },
   {
@@ -6649,7 +6707,6 @@ export const spells = [
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
   {
@@ -6796,15 +6853,14 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'poison',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'poison',
+          dice: { count: 1, value: 8 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'poison',
@@ -7207,15 +7263,14 @@ export const spells = [
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'fire',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'fire',
+          dice: { count: 1, value: 8 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'fire',
@@ -7258,15 +7313,14 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'fire',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'fire',
+          dice: { count: 1, value: 6 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'fire',
@@ -7335,15 +7389,14 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'fire',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'fire',
+          dice: { count: 1, value: 6 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'fire',
@@ -7386,7 +7439,6 @@ export const spells = [
       value: 10,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Buff'],
   },
   {
@@ -7423,7 +7475,6 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Debuff'],
   },
   {
@@ -7683,15 +7734,14 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'cold',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'cold',
+          dice: { count: 1, value: 6 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'cold',
@@ -7737,9 +7787,6 @@ export const spells = [
       value: 1,
     },
     spellRange: 30,
-    area: {
-      type: 'sphere',
-    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control', 'Warding'],
@@ -7855,7 +7902,6 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Warding'],
   },
   {
@@ -7888,7 +7934,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Warding'],
   },
   {
@@ -8218,7 +8263,6 @@ export const spells = [
     },
     spellRange: 30,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing', 'Buff', 'Social'],
   },
   {
@@ -8430,8 +8474,10 @@ export const spells = [
     heal: {
       value: 5,
     },
-    nextLevelHeal: {
-      value: 5,
+    nextLevel: {
+      heal: {
+        value: 5,
+      },
     },
     tags: ['Healing', 'Buff'],
   },
@@ -8875,8 +8921,10 @@ export const spells = [
     heal: {
       value: 70,
     },
-    nextLevelHeal: {
-      value: 10,
+    nextLevel: {
+      heal: {
+        value: 10,
+      },
     },
     tags: ['Healing'],
   },
@@ -8960,7 +9008,12 @@ export const spells = [
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: { count: 14, value: 6 },
+      },
+    ],
     tags: ['Damage', 'Debuff'],
   },
   {
@@ -9307,7 +9360,6 @@ export const spells = [
       value: 8,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff', 'Debuff', 'Foreknowledge'],
   },
   {
@@ -9570,7 +9622,20 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'lightning',
+        dice: { count: 3, value: 10 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'lightning',
+          dice: { count: 1, value: 10 },
+        },
+      ],
+    },
     tags: ['Damage'],
   },
   {
@@ -9741,7 +9806,20 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: { count: 3, value: 6 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: { count: 1, value: 6 },
+        },
+      ],
+    },
     tags: ['Healing', 'Damage'],
   },
   {
@@ -10107,22 +10185,18 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'fire',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'fire',
+          dice: { count: 1, value: 6 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'fire',
-        dice: {
-          count: 2,
-          value: 6,
-        },
+        dice: { count: 2, value: 6 },
       },
     ],
     tags: ['Damage'],
@@ -10169,7 +10243,6 @@ export const spells = [
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
   {
@@ -10215,7 +10288,6 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control'],
   },
   {
@@ -10326,7 +10398,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Deception', 'Warding'],
   },
   {
@@ -10350,7 +10421,16 @@ export const spells = [
       type: 'action',
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
+    damage: [
+      {
+        damageType: 'thunder',
+        dice: { count: 5, value: 6 },
+      },
+      {
+        damageType: 'radiant',
+        dice: { count: 5, value: 6 },
+      },
+    ],
   },
   {
     id: 297,
@@ -10385,7 +10465,6 @@ export const spells = [
     },
     saveThrow: 'wisdom',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Debuff'],
   },
   {
@@ -10418,7 +10497,20 @@ export const spells = [
     },
     spellRange: 60,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'fire',
+        dice: { count: 2, value: 8 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'fire',
+          dice: { count: 1, value: 8 },
+        },
+      ],
+    },
     tags: ['Damage', 'Debuff'],
   },
   {
@@ -10448,15 +10540,14 @@ export const spells = [
     spellRange: 60,
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'force',
-        dice: {
-          count: 3,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'force',
+          dice: { count: 3, value: 6 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'force',
@@ -10500,7 +10591,6 @@ export const spells = [
     },
     saveThrow: 'charisma',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Control', 'Debuff'],
   },
   {
@@ -10567,7 +10657,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Healing'],
   },
   {
@@ -11366,7 +11455,6 @@ export const spells = [
       value: 24,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
   {
@@ -12001,7 +12089,20 @@ export const spells = [
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'piercing',
+        dice: { count: 7, value: 8 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'piercing',
+          dice: { count: 1, value: 8 },
+        },
+      ],
+    },
     tags: ['Damage', 'Control'],
   },
   {
@@ -12245,7 +12346,6 @@ export const spells = [
     spellRange: 30,
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Buff'],
   },
   {
@@ -13035,7 +13135,6 @@ export const spells = [
     },
     spellRange: 120,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
     id: 457,
@@ -13148,15 +13247,17 @@ export const spells = [
     spellRange: 10,
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'bludgeoning',
-        dice: {
-          count: 1,
-          value: 6,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 6,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'bludgeoning',
@@ -13235,7 +13336,26 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'acid',
+        dice: {
+          count: 10,
+          value: 4,
+        },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'acid',
+          dice: {
+            count: 2,
+            value: 4,
+          },
+        },
+      ],
+    },
     tags: ['Damage'],
   },
   {
@@ -13304,7 +13424,6 @@ export const spells = [
       value: 10,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Communication', 'Buff'],
   },
   {
@@ -13341,7 +13460,12 @@ export const spells = [
     },
     spellRange: 30,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: { count: 2, value: 6 },
+      },
+    ],
   },
   {
     id: 466,
@@ -13376,15 +13500,14 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'bludgeoning',
-        dice: {
-          count: 1,
-          value: 12,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: { count: 1, value: 12 },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'bludgeoning',
@@ -13538,7 +13661,12 @@ export const spells = [
     spellRange: 90,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'fire',
+        dice: { count: 8, value: 6 },
+      },
+    ],
     tags: ['Damage'],
   },
   {
@@ -13603,15 +13731,17 @@ export const spells = [
     spellRange: 60,
     saveThrow: 'dexterity',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'bludgeoning',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 8,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'bludgeoning',
@@ -13812,7 +13942,24 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'piercing',
+        dice: { count: 1, value: 10 },
+      },
+      {
+        damageType: 'cold',
+        dice: { count: 2, value: 6 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'cold',
+          dice: { count: 1, value: 6 },
+        },
+      ],
+    },
     tags: ['Damage'],
   },
   {
@@ -13915,7 +14062,12 @@ export const spells = [
     },
     spellRange: 60,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
+    damage: [
+      {
+        damageType: 'psychic',
+        dice: { count: 5, value: 10 },
+      },
+    ],
   },
   {
     id: 481,
@@ -14140,7 +14292,6 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Movement', 'Warding'],
   },
   {
@@ -14212,7 +14363,6 @@ export const spells = [
     },
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Control', 'Warding'],
   },
   {
@@ -14246,7 +14396,6 @@ export const spells = [
     },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Warding'],
   },
   {
@@ -14455,7 +14604,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Warding'],
   },
   {
@@ -14612,7 +14760,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Warding'],
   },
   {
@@ -14640,7 +14787,20 @@ export const spells = [
     },
     spellRange: 60,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: { count: 1, value: 8 },
+      },
+    ],
+    cantripByCharacterLevel: {
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: { count: 1, value: 8 },
+        },
+      ],
+    },
   },
   {
     id: 504,
@@ -14705,7 +14865,12 @@ export const spells = [
     },
     spellRange: 60,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: { count: 5, value: 12 },
+      },
+    ],
   },
   {
     id: 506,
@@ -14898,7 +15063,6 @@ export const spells = [
     spellRange: 90,
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
     tags: ['Damage', 'Debuff'],
   },
   {
@@ -15039,15 +15203,17 @@ export const spells = [
     },
     saveThrow: 'strength',
     attackRoll: true,
-    nextLevelDamage: [
-      {
-        damageType: 'bludgeoning',
-        dice: {
-          count: 1,
-          value: 8,
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 8,
+          },
         },
-      },
-    ],
+      ],
+    },
     damage: [
       {
         damageType: 'bludgeoning',
@@ -15225,7 +15391,6 @@ export const spells = [
       value: 1,
     },
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
     id: 520,
@@ -15408,41 +15573,16 @@ export const spells = [
     description: `
 Вы бросаете волнистую, трепещущую массу хаотической энергии в одно существо в радиусе действия. Совершите дальнобойную атаку заклинанием по существу. При попадании цель получает 2d8 + 1d6 урона. Выберите одно из d8. Выпавшее число определяет тип урона атаки, как показано ниже.
 
-d8
-
-Тип урона
-
-1
-
-Кислота
-
-2
-
-Холод
-
-3
-
-Огонь
-
-4
-
-Силовое поле
-
-5
-
-Электричество
-
-6
-
-Яд
-
-7
-
-Психическая энергия
-
-8
-
-Звук
+d8 | Тип урона
+:--- | :---
+1 | Кислота
+2 | Холод
+3 | Огонь
+4 | Силовое поле
+5 | Электричество
+6 | Яд
+7 | Психическая энергия
+8 | Звук
 
 Существо может быть целью только один раз за каждое произношение этого заклинания.
 
@@ -15460,7 +15600,6 @@ d8
     },
     spellRange: 120,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
   },
   {
     id: 526,
@@ -15599,7 +15738,20 @@ d8
     },
     spellRange: 120,
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_more_than_1',
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: { count: 4, value: 6 },
+      },
+    ],
+    nextLevel: {
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: { count: 1, value: 6 },
+        },
+      ],
+    },
   },
   {
     id: 530,
@@ -15678,7 +15830,12 @@ d8
     },
     saveThrow: 'strength',
     attackRoll: true,
-    damage: 'MANUAL_DAMAGE_OR_HEALING_more_than_1',
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: { count: 2, value: 6 },
+      },
+    ],
     tags: ['Damage', 'Control', 'Debuff'],
   },
   {

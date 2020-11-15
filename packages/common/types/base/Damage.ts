@@ -1,4 +1,5 @@
 import { DamageDice } from 'common/types/base/Dice'
+import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 export type DamageType =
   | 'slashing' // рубящий
@@ -15,8 +16,9 @@ export type DamageType =
   | 'force' // силовое поле
   | 'psychic' // психическая энергия
 
-export type Damage = Array<
-  {
-    damageType: DamageType
-  } & ({ dice: DamageDice } | { value: number })
->
+export type Heal = OneOfOptionalRequired<{
+  dice?: DamageDice
+  value?: number
+}>
+
+export type Damage = Array<{ damageType: DamageType } & Heal>

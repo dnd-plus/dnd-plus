@@ -1,1 +1,1 @@
-export type SpellSlotsType = 'mage' | 'semiMage' | 'littleMage' | 'warlock'
+export type SpellSlotsType = 'mage' | 'secondMage' | 'thirdMage' | 'caster'

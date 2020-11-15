@@ -1,4 +1,4 @@
-export interface Duration {
+export type Duration = {
   type: 'round' | 'minute' | 'hour' | 'day'
   value: number
 }
