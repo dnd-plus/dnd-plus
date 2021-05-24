@@ -70,7 +70,8 @@ export function ProfilePage() {
   const characters = useSelector((state) =>
     Object.values(state.characters)
       .filter((character) => character.userId === userId)
-      .sort((a, b) => b.updatedAt - a.updatedAt),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      .sort((a, b) => b.updatedAt! - a.updatedAt!),
   )
 
   const dispatch = useDispatch()

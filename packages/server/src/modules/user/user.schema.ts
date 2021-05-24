@@ -7,6 +7,7 @@ import {
 } from '@typegoose/typegoose'
 import bcrypt from 'bcrypt'
 import uniqueValidator from 'mongoose-unique-validator'
+import { UserState } from 'common/modules/user/redux'
 
 @modelOptions({
   options: {
@@ -14,7 +15,9 @@ import uniqueValidator from 'mongoose-unique-validator'
   },
 })
 @plugin(uniqueValidator)
-export class UserSchema {
+export class UserSchema implements UserState {
+  _id!: string
+
   @prop({ required: true, unique: true, select: false })
   email!: string
 
@@ -31,8 +34,12 @@ export class UserSchema {
   async checkPassword(password: string) {
     return await bcrypt.compare(password, this.passwordHash)
   }
+
+  toObject!: () => UserDocument
 }
 
-export type UserDocument = DocumentType<UserSchema>
+export type UserDocument = Omit<DocumentType<UserSchema>, 'toObject'> & {
+  toObject: () => UserDocument
+}
 
 export const User = getModelForClass(UserSchema)

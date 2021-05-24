@@ -1,6 +1,6 @@
 import Server from '@logux/server/server'
 import { GUEST_USER, userActions } from 'common/modules/user/redux'
-import { User } from './user.schema'
+import { User, UserDocument } from './user.schema'
 import {
   UNIQUE_FIELD_EXIST,
   UNKNOWN_USER,
@@ -35,7 +35,7 @@ module.exports = function userModule(server: Server) {
     async load(ctx) {
       if (ctx.userId === GUEST_USER) return
 
-      const user = await User.findById(ctx.userId)
+      const user: UserDocument | null = await User.findById(ctx.userId)
       if (user) {
         return userActions.load(user.toObject())
       }
@@ -56,11 +56,11 @@ module.exports = function userModule(server: Server) {
         return
       }
 
-      let user = new User({ login, email })
+      const user = new User({ login, email })
       await user.setPassword(password)
       try {
-        user = await user.save()
-        const userId = user._id.toString()
+        const savedUser = await user.save()
+        const userId = savedUser._id.toString()
         const token = jwtEncode({ userId })
         ctx.sendBack(userActions.done({ userId, token }))
       } catch (error) {

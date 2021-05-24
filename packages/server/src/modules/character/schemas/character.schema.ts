@@ -4,13 +4,13 @@ import {
   modelOptions,
   plugin,
   prop,
-  Ref,
 } from '@typegoose/typegoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
 import { UserSchema } from 'modules/user/user.schema'
-import { RaceSchema } from 'modules/character/race/race.schema'
-import { BaseAbilitiesSchema } from 'modules/character/baseAbilities/baseAbilities.schema'
+import { RaceSchema } from 'modules/character/schemas/race.schema'
+import { BaseAbilitiesSchema } from 'modules/character/schemas/baseAbilities.schema'
+import { CharacterState } from 'common/modules/character/redux'
 
 @modelOptions({
   options: {
@@ -23,9 +23,11 @@ import { BaseAbilitiesSchema } from 'modules/character/baseAbilities/baseAbiliti
   },
 })
 @plugin(uniqueValidator)
-export class CharacterSchema {
+export class CharacterSchema implements CharacterState {
+  _id!: string
+
   @prop({ required: true, ref: UserSchema, index: true })
-  userId!: Ref<UserSchema>
+  userId!: string
 
   @prop({ required: true })
   name!: string
@@ -34,15 +36,22 @@ export class CharacterSchema {
   baseAbilities?: BaseAbilitiesSchema
 
   @prop()
-  createdAt!: number
+  createdAt?: number
 
   @prop()
-  updatedAt!: number
+  updatedAt?: number
 
   @prop()
   race?: RaceSchema
+
+  toObject!: () => CharacterDocument
 }
 
-export type CharacterDocument = DocumentType<CharacterSchema>
+export type CharacterDocument = Omit<
+  DocumentType<CharacterSchema>,
+  'toObject'
+> & {
+  toObject: () => CharacterDocument
+}
 
 export const Character = getModelForClass(CharacterSchema)

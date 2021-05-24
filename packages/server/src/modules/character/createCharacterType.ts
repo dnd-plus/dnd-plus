@@ -3,10 +3,11 @@ import { ActionCreator, ActionCallbacks } from '@logux/server/base-server'
 import {
   Character,
   CharacterDocument,
-} from 'modules/character/character.schema'
+} from 'modules/character/schemas/character.schema'
 import { GUEST_USER } from 'common/modules/user/redux'
 import { characterChannel } from 'common/modules/character/channels'
 import { EntityQueue } from 'modules/EntityQueue'
+import { WithCharacterReducer } from 'common/modules/character/redux'
 
 export const characterQueue = new EntityQueue()
 
@@ -26,31 +27,43 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
     CU extends boolean | undefined = true
   >(
     actionCreator: AC,
-    {
-      access,
-      resend,
-      finally: finallyCallback,
-      ...callbacks
-    }: Partial<
-      ActionCallbacks<
-        ReturnType<AC>,
-        D & (CU extends false ? ChDataMaybe : ChData),
-        H
-      >
-    >,
+    updater:
+      | Partial<
+          ActionCallbacks<
+            ReturnType<AC>,
+            D & (CU extends false ? ChDataMaybe : ChData),
+            H
+          >
+        >
+      | WithCharacterReducer,
     options: {
       checkGuest?: boolean
       checkUser?: CU
       resendAction?: boolean
+      saveCharacter?: boolean
     } = {},
   ): void {
-    const { checkGuest = true, checkUser = true, resendAction = true } = options
+    type Callbacks = Exclude<typeof updater, WithCharacterReducer>
+    const callbacks: Callbacks =
+      typeof updater === 'function'
+        ? {
+            process: (ctx, action) => {
+              if (ctx.data.character) updater(ctx.data.character, action)
+            },
+          }
+        : updater
+    const { access, resend, finally: finallyCallback, process } = callbacks
+    const {
+      checkGuest = true,
+      checkUser = true,
+      resendAction = true,
+      saveCharacter = true,
+    } = options
 
     server.type<
       AC,
       D & { doneTask(): void } & (CU extends false ? ChDataMaybe : ChData)
     >(actionCreator, {
-      ...callbacks,
       async access(ctx, action, meta) {
         ctx.data.doneTask = characterQueue.createTask(action.payload._id)
 
@@ -65,6 +78,15 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
         ctx.data.character = character
 
         return access ? await access(ctx, action, meta) : true
+      },
+      async process(ctx, action, meta) {
+        const result = await process?.(ctx, action, meta)
+
+        if (saveCharacter) {
+          ctx.data.character?.save()
+        }
+
+        return result
       },
       async resend(ctx, action, meta) {
         const to = resend ? await resend(ctx, action, meta) : {}

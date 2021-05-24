@@ -1,4 +1,4 @@
-'use strict'
+/* eslint-disable import/first */
 
 // load env before imports
 require('dotenv').config()
@@ -19,14 +19,20 @@ import path from 'path'
     response.sendFile(path.resolve(staticDir, 'index.html'))
   })
 
-  await app.listen(80)
+  const httpServer = await app.listen(process.env.PORT || 80)
+
+  // hack to prevent logux rewrite routes
+  const _on = httpServer.on
+  httpServer.on = (event: any, listener: any) => {
+    if (event === 'request') return httpServer
+    return _on.call(httpServer, event, listener)
+  }
 
   // logux server
-  const server = await createServer({
-    host: '0.0.0.0',
-    port: 31337,
+  const loguxServer = await createServer({
+    server: httpServer,
   })
-  await server.listen()
+  await loguxServer.listen()
 
   process.send?.('ready')
 })()

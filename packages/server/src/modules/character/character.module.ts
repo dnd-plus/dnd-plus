@@ -7,8 +7,11 @@ import { GUEST_USER } from 'common/modules/user/redux'
 import {
   Character,
   CharacterDocument,
-} from 'modules/character/character.schema'
-import { characterActions } from 'common/modules/character/redux'
+} from 'modules/character/schemas/character.schema'
+import {
+  characterActions,
+  characterUpdaters,
+} from 'common/modules/character/redux'
 import { mongoose } from '@typegoose/typegoose'
 import {
   characterQueue,
@@ -33,7 +36,7 @@ module.exports = function characterModule(server: Server) {
         characterIds.map(({ _id }) => characterQueue.waitCurrentTasks(_id)),
       )
 
-      const characters = await Character.find(params)
+      const characters: CharacterDocument[] = await Character.find(params)
         .sort({ updatedAt: -1 })
         .exec()
 
@@ -87,18 +90,35 @@ module.exports = function characterModule(server: Server) {
     async process(ctx, { payload: { name } }, meta) {
       if (!name) {
         server.undo(meta)
-        return
+      } else {
+        ctx.data.character.name = name
       }
-      const { character } = ctx.data
-      character.name = name
-
-      await character.save()
     },
   })
 
-  characterType(characterActions.delete, {
-    async process(ctx) {
-      await ctx.data.character.remove()
+  characterType(
+    characterActions.delete,
+    {
+      async process(ctx) {
+        await ctx.data.character.remove()
+      },
     },
-  })
+    { saveCharacter: false },
+  )
+
+  // Base abilities
+  characterType(
+    characterActions.setBaseAbilitiesType,
+    characterUpdaters.setBaseAbilitiesType,
+  )
+
+  characterType(
+    characterActions.setBaseAbilities,
+    characterUpdaters.setBaseAbilities,
+  )
+
+  // Race
+  characterType(characterActions.setRace, characterUpdaters.setRace)
+
+  characterType(characterActions.setRaceChoice, characterUpdaters.setRaceChoice)
 }
