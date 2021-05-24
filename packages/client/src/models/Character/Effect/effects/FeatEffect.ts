@@ -1,63 +1,74 @@
 import { DeepReadonly } from 'ts-essentials'
-import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
-import { uniq } from 'lodash-es'
+import {
+  BaseEffectModel,
+  ChildEffectsData,
+} from 'models/Character/Effect/BaseEffect'
+import { uniqBy } from 'lodash-es'
 import { effectFactory, EffectModel } from 'models/Character/Effect/Effect'
 import { createKey } from 'models/utils/createKey'
-import { feats } from 'models/Character/Feat/feats'
 import { checkFeatConditions } from 'models/Character/Feat/Feat'
-import { createUseSelector } from 'models/utils/createUseSelector'
+import { feats } from 'models/Character/Feat/feats'
+import { getFeatureChoiceEffects } from '../../FeatureChoice/FeatureChoice'
 
 export type FeatEffect = DeepReadonly<{
   type: 'feat'
-  featIds: number[]
+  feats: { id: number; choices?: Record<string, unknown> }[]
 }>
 
 export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
   get emptyRef() {
     return {
       type: 'feat',
-      featIds: [],
+      feats: [],
     } as const
   }
 
-  fromState = createUseSelector(
-    this.characterModel.effects.type.ability,
-    this.characterModel.effects.type.equipmentPossession,
-    this.characterModel.race.ref,
-    (abilityEffect, equipmentPossessionEffect, raceRef): EffectModel[] => {
-      return this.featIds.flatMap((id) => {
-        const feat = feats.find((feat) => feat.id === id)
+  getChildEffects({ effectMap, raceRef }: ChildEffectsData): EffectModel[] {
+    return this.feats.flatMap(({ id, choices }) => {
+      const feat = feats.find((feat) => feat.id === id)
 
-        return feat && feat.effects
-          ? feat.effects.flatMap((effect, index) => {
-              if (
-                checkFeatConditions(feat, {
-                  abilityEffect,
-                  equipmentPossessionEffect,
-                  raceRef,
-                })
-              ) {
-                return (
-                  effectFactory(
-                    this.characterModel,
-                    effect,
-                    createKey(this.key, id, index),
-                  ) || []
-                )
-              } else {
-                return []
-              }
-            })
-          : []
-      })
-    },
-  )
+      if (
+        !feat ||
+        !checkFeatConditions(feat, {
+          abilityEffect: effectMap.ability,
+          equipmentPossessionEffect: effectMap.equipmentPossession,
+          raceRef,
+        })
+      ) {
+        return []
+      }
 
-  get featIds() {
-    return this.ref.featIds
+      const featEffects =
+        feat.effects?.flatMap(
+          (effect, index) =>
+            effectFactory(
+              this.characterModel,
+              effect,
+              createKey(this.key, feat.id, index),
+            ) || [],
+        ) || []
+
+      const choiceEffects =
+        feat.choices?.flatMap((choice, index) =>
+          getFeatureChoiceEffects(
+            this.characterModel,
+            choices?.[index],
+            choice,
+            createKey(this.key, 'choice', feat.id, index),
+          ),
+        ) || []
+
+      return [...featEffects, ...choiceEffects].map((model) =>
+        model.withFrom({ ...this.from, feat: feat.name }),
+      )
+    })
   }
 
+  feats = this.ref.feats
+
+  featIds = this.ref.feats.map(({ id }) => id)
+
   assign(effect: FeatEffect) {
-    this.ref.featIds = uniq([...this.ref.featIds, ...effect.featIds])
+    this.ref.feats = uniqBy([...this.ref.feats, ...effect.feats], 'id')
   }
 }

@@ -21,7 +21,6 @@ export type FeatCondition = OneOfOptionalRequired<{
   size?: CreatureSize
 }>
 
-// todo: add choices
 export type Feat = {
   id: number
   nameEn: string

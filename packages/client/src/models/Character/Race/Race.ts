@@ -97,17 +97,12 @@ export class RaceModel {
   )
 
   data = createUseSelector(this.ref, this.features, (ref, features) =>
-    ref
-      ? {
-          ...ref,
-          features,
-        }
-      : undefined,
+    ref ? { ...ref, features } : undefined,
   )
 
   effects = createUseSelector(this.ref, this.features, (ref, features) =>
     features.flatMap((feature) =>
-      feature.effects.map((effect) => effect.withFrom({ race: this.ref.name })),
+      feature.effects.map((effect) => effect.withFrom({ race: ref?.name })),
     ),
   )
 }

@@ -17,6 +17,10 @@ type EffectTypeSelector<T extends keyof EffectModelsMap> = OutputAppSelector<
   all: OutputAppSelector<InstanceType<EffectModelsMap[T]>[]>
 }
 
+type EffectTypeMap = {
+  [K in keyof EffectModelsMap]: InstanceType<EffectModelsMap[K]>
+}
+
 type EffectTypeSelectorsMap = {
   [K in keyof EffectModelsMap]: EffectTypeSelector<K>
 }
@@ -24,44 +28,45 @@ type EffectTypeSelectorsMap = {
 export class EffectsModel {
   constructor(private characterModel: CharacterModel) {}
 
-  readonly effectsAllRaw = createUseSelector(
+  private raw = createUseSelector(
     this.characterModel.baseAbilitiesEffect,
     this.characterModel.race.effects,
     (baseAbilitiesEffect, raceEffects) => [baseAbilitiesEffect, ...raceEffects],
   )
 
-  readonly effectsAllStatic = createUseSelector(
-    this.effectsAllRaw,
-    (effectsRaw) =>
-      effectsRaw.flatMap((effect) =>
-        effect.fromState ? [] : effect.computed ? effect.computed() : effect,
-      ),
-  )
+  readonly all = createUseSelector(
+    this.raw,
+    this.characterModel.race.ref,
+    (effects, raceRef) => {
+      const effectMap = EFFECT_TYPES.reduce(
+        (obj, type) => ({
+          ...obj,
+          [type]: unionEffectModels(this.characterModel, type, effects),
+        }),
+        {} as EffectTypeMap,
+      )
 
-  readonly effectsAllFromState = createUseSelector(
-    this.effectsAllRaw,
-    this.characterModel.globalCharacterState,
-    (effectsRaw, state) =>
-      effectsRaw.flatMap((effect) =>
-        effect.fromState ? effect.fromState(state) : [],
-      ),
-  )
+      for (let i = 0; i < effects.length; i++) {
+        const childEffects = effects[i].getChildEffects({ effectMap, raceRef })
 
-  readonly effectsAll = createUseSelector(
-    this.effectsAllStatic,
-    this.effectsAllFromState,
-    (staticEffects, fromStateEffects) => [
-      ...staticEffects,
-      ...fromStateEffects,
-    ],
+        effects.push(...childEffects)
+        childEffects.forEach((effect) => {
+          effectMap[effect.type].assignModel(effect)
+        })
+      }
+
+      console.log(effects)
+
+      return effects
+    },
   )
 
   private createEffectSelector<T extends keyof EffectModelsMap>(type: T) {
-    const selectorAll = createUseSelector(this.effectsAll, (effects) =>
+    const selectorAll = createUseSelector(this.all, (effects) =>
       effects.filter((effect) => effect.type === type),
     )
 
-    const selector = createUseSelector(selectorAll, (effects) => {
+    const selector = createUseSelector(this.all, (effects) => {
       return unionEffectModels(this.characterModel, type, effects)
     })
 
@@ -84,7 +89,7 @@ export class EffectsModel {
     {} as EffectTypeSelectorsMap,
   )
 
-  readonly effectsNormalized = createUseSelector(
+  readonly normalized = createUseSelector(
     Object.values(this.type) as OutputAppSelector<EffectModel>[],
     (effects) => effects,
   )

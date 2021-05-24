@@ -1,16 +1,27 @@
 import { Writable } from 'ts-essentials'
 import { CharacterModel } from 'models/Character/CharacterModel'
-import { AppState } from 'redux/configureStore'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import type { EffectModelsMap } from './Effect'
+import { CharacterRace } from '../Race/Race'
 
 export type EffectFrom = {
   race?: string
   feature?: string
   class?: string
+  feat?: string
+}
+
+type EffectMap = {
+  [K in keyof EffectModelsMap]: InstanceType<EffectModelsMap[K]>
+}
+
+export type ChildEffectsData = {
+  effectMap: EffectMap
+  raceRef?: CharacterRace
 }
 
 export abstract class BaseEffectModel<
-  R extends Readonly<{ from?: never; type: string }>
+  R extends Readonly<{ from?: never; type: keyof EffectModelsMap }>
 > {
   constructor(
     protected characterModel: CharacterModel,
@@ -23,7 +34,7 @@ export abstract class BaseEffectModel<
   }
 
   readonly ref: Writable<R>
-  readonly type: R['type']
+  readonly type: keyof EffectModelsMap
 
   abstract get emptyRef(): R
 
@@ -38,11 +49,12 @@ export abstract class BaseEffectModel<
 
   abstract assign(effect: R): void
 
-  assignModel(effectModel: this) {
-    this.assign(effectModel.ref)
+  assignModel(effectModel: BaseEffectModel<any>) {
+    if (this.type === effectModel.type) this.assign(effectModel.ref)
   }
 
-  readonly fromState?: (state: AppState) => BaseEffectModel<any>[]
-
-  readonly computed?: () => BaseEffectModel<any>[]
+  // eslint-disable-next-line unused-imports/no-unused-vars-ts
+  getChildEffects(data: ChildEffectsData): BaseEffectModel<any>[] {
+    return []
+  }
 }

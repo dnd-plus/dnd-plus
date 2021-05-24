@@ -1,4 +1,3 @@
-import { effectFactory } from 'models/Character/Effect/Effect'
 import * as t from 'io-ts'
 import React from 'react'
 import { useDispatch } from 'react-redux'
@@ -40,6 +39,7 @@ import {
   FeatureChoiceModel,
 } from 'models/Character/FeatureChoice/FeatureChoice'
 import { MapHooks } from 'components/MapHooks'
+import { FeatEffectModel } from '../../Effect/effects/FeatEffect'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
@@ -108,22 +108,20 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     return []
   })()
 
-  get effects() {
-    const choiceEffects =
-      this.choiceModels?.flatMap((choice) => choice.effects) || []
+  effect =
+    this.selected &&
+    new FeatEffectModel(
+      this.characterModel,
+      {
+        type: 'feat',
+        feats: [
+          { id: this.selected.id, choices: (this.state as any)?.choices },
+        ],
+      },
+      createKey(this.key, this.knownState?.selected),
+    )
 
-    const featEffects =
-      this.selected?.effects?.flatMap(
-        (effect, index) =>
-          effectFactory(
-            this.characterModel,
-            effect,
-            createKey(this.key, this.knownState?.selected, index),
-          ) || [],
-      ) || []
-
-    return [...featEffects, ...choiceEffects]
-  }
+  effects = this.effect ? [this.effect] : []
 
   isAvailableSelector = createUseSelector(
     this.checkOptionsSelector,

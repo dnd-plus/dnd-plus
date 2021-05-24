@@ -20,7 +20,7 @@ export class EntityQueue {
   createTask(id: string) {
     let done = () => {}
 
-    const promise = new Promise((r) => {
+    const promise = new Promise<void>((r) => {
       done = r
     })
 

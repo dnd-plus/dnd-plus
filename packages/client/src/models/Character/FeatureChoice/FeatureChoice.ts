@@ -10,6 +10,8 @@ import {
 } from 'models/Character/FeatureChoice/choices/SelectPossessionFeatureChoice'
 import { SelectAbilityFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityFeatureChoice'
 import { SelectFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectFeatFeatureChoice'
+import { EffectModel } from '../Effect/Effect'
+import { noop } from 'lodash-es'
 
 const choiceModelsMap = {
   select: SelectFeatureChoiceModel,
@@ -50,4 +52,21 @@ export function featureChoiceFactory(
     )
   }
   return null
+}
+
+export function getFeatureChoiceEffects(
+  characterModel: CharacterModel,
+  state: unknown,
+  choice: FeatureChoice,
+  key: string,
+): EffectModel[] {
+  return (
+    featureChoiceFactory(
+      characterModel,
+      state,
+      choice,
+      key,
+      noop as FeatureChoiceAction,
+    )?.effects || []
+  )
 }

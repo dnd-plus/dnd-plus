@@ -1,5 +1,5 @@
 import { BaseEffectModel, EffectFrom } from 'models/Character/Effect/BaseEffect'
-import { DeepReadonly, Tuple, Writable } from 'ts-essentials'
+import { Tuple, Writable } from 'ts-essentials'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
 import {
   FlyMovementEffectModel,
@@ -21,6 +21,7 @@ import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEff
 import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
 import { FeatEffectModel } from 'models/Character/Effect/effects/FeatEffect'
 import { HitPointEffectModel } from 'models/Character/Effect/effects/HitPointEffect'
+import { ArmorClassEffectModel } from './effects/ArmorClassEffect'
 
 export const effectModelsMap = {
   ability: AbilityEffectModel,
@@ -39,6 +40,7 @@ export const effectModelsMap = {
   language: LanguageEffectModel,
   feat: FeatEffectModel,
   hitPoint: HitPointEffectModel,
+  armorClass: ArmorClassEffectModel,
 } as const
 
 export const EFFECT_TYPES = Object.keys(effectModelsMap) as Tuple<
@@ -54,14 +56,6 @@ export type Effect = {
     ? R
     : null
 }[keyof EffectModelsMap]
-
-export type FinalEffect = Effect &
-  DeepReadonly<{
-    from: {
-      feature?: string
-      race?: string
-    }
-  }>
 
 // eslint-disable-next-line unused-imports/no-unused-vars-ts
 const effectModelsMapGuard: Record<Effect['type'], Function> = effectModelsMap
