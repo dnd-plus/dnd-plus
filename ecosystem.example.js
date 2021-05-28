@@ -1,9 +1,9 @@
 module.exports = {
   apps: [
     {
-      name: 'dnd-plus',
+      name: 'dnd',
       script: './src/prod.ts',
-      cwd: './dnd-plus/packages/server',
+      cwd: './dnd/packages/server',
       interpreter_args: '-r tsconfig-paths/register',
       watch: false,
       log_date_format: 'YYYY-MM-DD HH:mm',
