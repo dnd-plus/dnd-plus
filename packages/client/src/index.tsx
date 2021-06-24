@@ -1,4 +1,3 @@
-import 'react-hot-loader'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
@@ -14,11 +13,19 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { badge, badgeRu, log } from '@logux/client'
 import { badgeStyles } from '@logux/client/badge/styles'
 import theme from './theme'
+import { configure } from 'mobx'
 
 const store = configureStore()
 
+configure({
+  enforceActions: 'always',
+  computedRequiresReaction: true,
+  reactionRequiresObservable: false,
+  observableRequiresReaction: true,
+  disableErrorBoundaries: true,
+})
+
 badge(store.client, { messages: badgeRu, styles: badgeStyles })
-log(store.client)
 
 declare global {
   interface Window {
@@ -26,7 +33,11 @@ declare global {
   }
 }
 
-window.store = store
+if (process.env.NODE_ENV !== 'production') {
+  log(store.client)
+
+  window.store = store
+}
 
 ReactDOM.render(
   <BrowserRouter>

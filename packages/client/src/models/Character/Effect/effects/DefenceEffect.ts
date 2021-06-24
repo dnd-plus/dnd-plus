@@ -1,6 +1,8 @@
+import { Memoize } from 'models/utils/Memoize'
 import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { entries } from 'common/utils/typesafe'
 
 export type DefenceEffect = DeepReadonly<{
   type: 'defence'
@@ -10,6 +12,7 @@ export type DefenceEffect = DeepReadonly<{
 }>
 
 export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'defence',
@@ -17,17 +20,15 @@ export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
     } as const
   }
 
+  @Memoize()
   get damages() {
     return this.ref.damages
   }
 
   assign(effect: DefenceEffect) {
-    type Damages = DefenceEffect['damages']
     const damages = { ...this.ref.damages }
 
-    ;(Object.entries(effect.damages) as Array<
-      [keyof Damages, Damages[keyof Damages]]
-    >).forEach(([key, value]) => {
+    entries(effect.damages).forEach(([key, value]) => {
       if (value === undefined || damages[key] === 'immunity') {
         return
       } else if (damages[key] === undefined || value === 'immunity') {

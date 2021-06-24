@@ -22,10 +22,17 @@ export const configureStore = () => {
     token: localStorage.getItem('token') || '',
   })
 
-  const store = createStore(
-    rootReducer,
-    applyMiddleware(...getDefaultMiddleware()),
-  )
+  let middleware = applyMiddleware(...getDefaultMiddleware())
+
+  const composeEnhancers = (typeof window !== 'undefined' &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__' as any]) as any
+
+  if (composeEnhancers) {
+    middleware = composeEnhancers(middleware)
+  }
+
+  const store = createStore(rootReducer, middleware)
 
   store.client.on('add', (action) => {
     if (action.type === userActions.done.type) {
@@ -70,9 +77,7 @@ declare module 'react-redux' {
 }
 
 declare module '@logux/core' {
-  function parseId(
-    id: string,
-  ): {
+  function parseId(id: string): {
     clientId: string
     nodeId: string
     userId: string

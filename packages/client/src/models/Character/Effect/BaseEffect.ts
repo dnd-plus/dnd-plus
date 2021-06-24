@@ -2,9 +2,11 @@ import { Writable } from 'ts-essentials'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 import type { EffectModelsMap } from './Effect'
-import { CharacterRace } from '../Race/Race'
+import { toJS } from 'mobx'
+import { FeatureChoiceModel } from 'models/Character/FeatureChoice/FeatureChoice'
 
 export type EffectFrom = {
+  text?: string
   race?: string
   feature?: string
   class?: string
@@ -17,11 +19,11 @@ type EffectMap = {
 
 export type ChildEffectsData = {
   effectMap: EffectMap
-  raceRef?: CharacterRace
+  currentEffectMap: EffectMap
 }
 
 export abstract class BaseEffectModel<
-  R extends Readonly<{ from?: never; type: keyof EffectModelsMap }>
+  R extends Readonly<{ type: keyof EffectModelsMap }>,
 > {
   constructor(
     protected characterModel: CharacterModel,
@@ -29,7 +31,7 @@ export abstract class BaseEffectModel<
     public readonly key: string,
     public from?: EffectFrom,
   ) {
-    this.ref = { ...ref }
+    this.ref = { ...toJS(ref) }
     this.type = this.ref.type
   }
 
@@ -47,7 +49,14 @@ export abstract class BaseEffectModel<
     return this
   }
 
-  abstract assign(effect: R): void
+  choiceModel: FeatureChoiceModel | undefined
+
+  withChoice(choiceModel: FeatureChoiceModel): this {
+    this.choiceModel = choiceModel
+    return this
+  }
+
+  protected abstract assign(effect: R): void
 
   assignModel(effectModel: BaseEffectModel<any>) {
     if (this.type === effectModel.type) this.assign(effectModel.ref)

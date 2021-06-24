@@ -1,18 +1,42 @@
 import { DeepReadonly } from 'ts-essentials'
-import { SkillType } from 'common/reference/SkillType'
+import { Memoize } from 'models/utils/Memoize'
+import { SKILL_TYPES, SkillType } from 'common/reference/SkillType'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+
+export type SkillPossessionLevel =
+  | 'expertise'
+  | 'proficient'
+  | 'halfProficient'
+  | null
+  | undefined
+
+export const SKILL_POSSESSION_LEVEL_PRIORITY = [
+  undefined,
+  'halfProficient',
+  'proficient',
+  'expertise',
+  null,
+] as const
+
+export function isFirstSkillPossessionLevelStronger(
+  first: SkillPossessionLevel,
+  second: SkillPossessionLevel,
+) {
+  return (
+    SKILL_POSSESSION_LEVEL_PRIORITY.indexOf(first) >
+    SKILL_POSSESSION_LEVEL_PRIORITY.indexOf(second)
+  )
+}
 
 export type SkillPossessionEffect = DeepReadonly<{
   type: 'skillPossession'
   skills: {
-    [K in SkillType]?: 'expertise' | 'proficient' | 'halfProficient' | null
+    [K in SkillType]?: SkillPossessionLevel
   }
 }>
 
-// noinspection JSConstantReassignment
-export class SkillPossessionEffectModel extends BaseEffectModel<
-  SkillPossessionEffect
-> {
+export class SkillPossessionEffectModel extends BaseEffectModel<SkillPossessionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'skillPossession',
@@ -20,26 +44,17 @@ export class SkillPossessionEffectModel extends BaseEffectModel<
     } as const
   }
 
+  @Memoize()
   get skills() {
     return this.ref.skills
   }
 
   assign(effect: SkillPossessionEffect) {
-    const priority = [
-      undefined,
-      'halfProficient',
-      'proficient',
-      'expertise',
-      null,
-    ] as const
-
-    type Skills = SkillPossessionEffect['skills']
     const skills = { ...this.ref.skills }
 
-    ;(Object.entries(effect.skills) as Array<
-      [keyof Skills, Skills[keyof Skills]]
-    >).forEach(([key, value]) => {
-      if (priority.indexOf(skills[key]) < priority.indexOf(value)) {
+    SKILL_TYPES.forEach((key) => {
+      const value = effect.skills[key]
+      if (isFirstSkillPossessionLevelStronger(value, skills[key])) {
         skills[key] = value
       }
     })

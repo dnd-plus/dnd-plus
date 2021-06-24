@@ -1,5 +1,5 @@
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
-import { AbilitiesMap, AbilityType } from 'common/reference/AbilityType'
+import { AbilitiesMap } from 'common/reference/AbilityType'
 import { ArmorType } from 'common/reference/equipment/ArmorType'
 import { CreatureSize } from 'common/types/base/stats/CreatureSize'
 import {
@@ -12,6 +12,8 @@ import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffec
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
 import { FeatureChoice } from 'models/Character/FeatureChoice/FeatureChoice'
 import { RuleSource } from 'common/types/RuleSource'
+import { keys } from 'common/utils/typesafe'
+import { SpellCastingEffectModel } from 'models/Character/Effect/effects/SpellCastingEffect'
 
 export type FeatCondition = OneOfOptionalRequired<{
   abilities?: Partial<AbilitiesMap>
@@ -36,17 +38,21 @@ export type Feat = {
   choices?: FeatureChoice[]
 }
 
+export type CheckFeatConditionsProps = {
+  abilityEffect: AbilityEffectModel
+  equipmentPossessionEffect: EquipmentPossessionEffectModel
+  spellCastingEffect: SpellCastingEffectModel
+  raceRef?: CharacterRace
+}
+
 export function checkFeatConditions(
   feat: Feat,
   {
     abilityEffect,
     equipmentPossessionEffect,
     raceRef,
-  }: {
-    abilityEffect: AbilityEffectModel
-    equipmentPossessionEffect: EquipmentPossessionEffectModel
-    raceRef?: CharacterRace
-  },
+    spellCastingEffect,
+  }: CheckFeatConditionsProps,
 ) {
   if (!feat.demands) return true
 
@@ -54,7 +60,7 @@ export function checkFeatConditions(
     ({ abilities, armorPossession, race, size, spellCasting }) =>
       // abilities
       (!abilities ||
-        (Object.keys(abilities) as AbilityType[]).every(
+        keys(abilities).every(
           (key) =>
             Number(abilities[key]) <= Number(abilityEffect.abilities[key]),
         )) &&
@@ -66,6 +72,6 @@ export function checkFeatConditions(
       // size
       (!size || size === raceRef?.size) &&
       // spell casting
-      !spellCasting,
+      (!spellCasting || spellCastingEffect.hasSpellCasting),
   )
 }

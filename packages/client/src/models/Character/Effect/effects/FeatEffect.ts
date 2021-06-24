@@ -8,6 +8,7 @@ import { effectFactory, EffectModel } from 'models/Character/Effect/Effect'
 import { createKey } from 'models/utils/createKey'
 import { checkFeatConditions } from 'models/Character/Feat/Feat'
 import { feats } from 'models/Character/Feat/feats'
+import { Memoize } from 'models/utils/Memoize'
 import { getFeatureChoiceEffects } from '../../FeatureChoice/FeatureChoice'
 
 export type FeatEffect = DeepReadonly<{
@@ -16,6 +17,7 @@ export type FeatEffect = DeepReadonly<{
 }>
 
 export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'feat',
@@ -23,16 +25,20 @@ export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
     } as const
   }
 
-  getChildEffects({ effectMap, raceRef }: ChildEffectsData): EffectModel[] {
+  getChildEffects({
+    currentEffectMap,
+    effectMap,
+  }: ChildEffectsData): EffectModel[] {
     return this.feats.flatMap(({ id, choices }) => {
       const feat = feats.find((feat) => feat.id === id)
 
       if (
         !feat ||
         !checkFeatConditions(feat, {
-          abilityEffect: effectMap.ability,
-          equipmentPossessionEffect: effectMap.equipmentPossession,
-          raceRef,
+          abilityEffect: currentEffectMap.ability,
+          equipmentPossessionEffect: currentEffectMap.equipmentPossession,
+          spellCastingEffect: effectMap.spellCasting,
+          raceRef: this.characterModel.race.ref,
         })
       ) {
         return []
@@ -59,7 +65,7 @@ export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
         ) || []
 
       return [...featEffects, ...choiceEffects].map((model) =>
-        model.withFrom({ ...this.from, feat: feat.name }),
+        model.withFrom({ feat: feat.name }),
       )
     })
   }

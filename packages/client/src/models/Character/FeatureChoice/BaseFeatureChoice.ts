@@ -3,7 +3,8 @@ import { DeepReadonly } from 'ts-essentials'
 import { ReactNode } from 'react'
 import { AnyAction } from '@logux/core'
 import { EffectModel } from 'models/Character/Effect/Effect'
-import { AppState } from 'redux/configureStore'
+import { computed, makeObservable, observable } from 'mobx'
+import { EffectTypeMap } from 'models/Character/EffectsModel'
 
 export type FeatureChoiceAction<V = unknown> = (payload: {
   key: string
@@ -17,13 +18,26 @@ export abstract class BaseFeatureChoiceModel<R extends { type: string }, ST> {
     public readonly ref: R,
     public readonly key: string,
     protected readonly setChoiceAction: FeatureChoiceAction<ST>,
-  ) {}
+  ) {
+    makeObservable(this)
+  }
 
-  type: R['type'] = this.ref.type
+  @observable
+  private _currentEffects?: EffectTypeMap
+
+  @computed
+  get currentEffects() {
+    return this._currentEffects || this.characterModel.effects
+  }
+  set currentEffects(currentEffects: EffectTypeMap) {
+    this._currentEffects = currentEffects
+  }
+
+  readonly type: R['type'] = this.ref.type
 
   abstract get knownState(): DeepReadonly<ST> | null
 
-  abstract choicesCountSelector: (state: AppState) => number
+  abstract get choicesCount(): number
 
   abstract get effects(): EffectModel[]
 

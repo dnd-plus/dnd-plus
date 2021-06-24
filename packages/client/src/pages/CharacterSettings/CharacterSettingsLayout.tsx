@@ -25,6 +25,7 @@ import {
   GameUiStats,
 } from 'components/DndIcons'
 import { SBox } from 'components/SBox'
+import { observer } from 'mobx-react-lite'
 
 const SBottomNavigation = styled(BottomNavigation)`
   position: fixed;
@@ -50,99 +51,119 @@ const STabs = styled(Tabs)(
   `,
 )
 
-export function CharacterSettingsLayout() {
-  const { characterId: id } = useParams() as { characterId: string }
-  const { pathname } = useLocation()
-  const characterModel = useCharacterModel()
+export const CharacterSettingsLayout = observer(
+  function CharacterSettingsLayout() {
+    const { characterId: id } = useParams() as { characterId: string }
+    const { pathname } = useLocation()
+    const characterModel = useCharacterModel()
 
-  const characterName = characterModel.name.use()
-  const isEmptyRace = characterModel.race.isEmpty.use()
-  const raceChoicesCount = characterModel.race.choicesCount.use()
+    const settingPages = useMemo(() => {
+      const create = (title: string, link: string, icon: ReactElement) => ({
+        title,
+        link,
+        icon,
+      })
 
-  const settingPages = useMemo(() => {
-    const create = (title: string, link: string, icon: ReactElement) => ({
-      title,
-      link,
-      icon,
-    })
+      return [
+        create(
+          'Основное',
+          characterSettingsRoute.link(id),
+          <Badge
+            color={'error'}
+            badgeContent={characterModel.baseAbilitiesChoicesCount}
+          >
+            <GameUiStats />
+          </Badge>,
+        ),
+        create(
+          'Раса',
+          characterSettingsRaceRoute.link(id),
+          <Badge
+            color={'error'}
+            badgeContent={characterModel.race.choicesCount}
+          >
+            <GameUiPlayerBody />
+          </Badge>,
+        ),
+        create(
+          'Класс',
+          characterSettingsClassRoute.link(id),
+          <Badge
+            color={'error'}
+            badgeContent={characterModel.class.choicesCount}
+          >
+            <EquipmentWizardHat />,
+          </Badge>,
+        ),
+        create(
+          'Описание',
+          characterSettingsDescriptionRoute.link(id),
+          <GameUiBookSkill />,
+        ),
+      ]
+    }, [
+      characterModel.baseAbilitiesChoicesCount,
+      characterModel.class.choicesCount,
+      characterModel.race.choicesCount,
+      id,
+    ])
 
-    return [
-      create('Основное', characterSettingsRoute.link(id), <GameUiStats />),
-      create(
-        'Раса',
-        characterSettingsRaceRoute.link(id),
-        <Badge color={'error'} badgeContent={+isEmptyRace || raceChoicesCount}>
-          <GameUiPlayerBody />
-        </Badge>,
-      ),
-      create(
-        'Класс',
-        characterSettingsClassRoute.link(id),
-        <EquipmentWizardHat />,
-      ),
-      create(
-        'Описание',
-        characterSettingsDescriptionRoute.link(id),
-        <GameUiBookSkill />,
-      ),
-    ]
-  }, [id, isEmptyRace, raceChoicesCount])
-
-  return (
-    <>
-      <SBox mt={3} />
-      <DefaultContainer relative>
-        <SBox mb={3}>
-          <Typography variant={'h4'}>
-            <Typography variant={'h5'} component={'div'}>
-              параметры
+    return (
+      <>
+        <SBox mt={3} />
+        <DefaultContainer relative>
+          <SBox mb={3}>
+            <Typography variant={'h4'}>
+              <Typography variant={'h5'} component={'div'}>
+                параметры
+              </Typography>
+              <b>{characterModel.name}</b>
             </Typography>
-            <b>{characterName}</b>
-          </Typography>
-        </SBox>
-        <Hidden smDown>
-          <STabsWrap>
-            <STabs
-              orientation='vertical'
-              value={pathname}
-              variant='standard'
-              scrollButtons='auto'
-              indicatorColor='primary'
-              textColor='primary'
-              centered
-            >
-              {settingPages.map(({ title, link, icon }) => (
-                <Tab
-                  key={link}
-                  label={title}
-                  icon={icon}
-                  component={Link}
-                  to={link}
-                  value={link}
-                />
-              ))}
-            </STabs>
-          </STabsWrap>
+          </SBox>
+          <Hidden smDown>
+            <STabsWrap>
+              <STabs
+                orientation='vertical'
+                value={pathname}
+                variant='standard'
+                scrollButtons='auto'
+                indicatorColor='primary'
+                textColor='primary'
+                centered
+              >
+                {settingPages.map(({ title, link, icon }) => (
+                  <Tab
+                    key={link}
+                    label={title}
+                    icon={icon}
+                    component={Link}
+                    to={link}
+                    value={link}
+                  />
+                ))}
+              </STabs>
+            </STabsWrap>
+          </Hidden>
+          <SBox my={5}>
+            <Outlet />
+          </SBox>
+        </DefaultContainer>
+        <Hidden mdUp>
+          <SBox pt={7} />
+          <SBottomNavigation value={pathname} showLabels>
+            {settingPages.map(({ title, link, icon }) => (
+              <BottomNavigationAction
+                key={link}
+                label={title}
+                icon={icon}
+                component={Link}
+                to={link}
+                value={link}
+              />
+            ))}
+          </SBottomNavigation>
         </Hidden>
-        <SBox my={5}>
-          <Outlet />
-        </SBox>
-      </DefaultContainer>
-      <Hidden mdUp>
-        <SBox pt={7} />
-        <SBottomNavigation value={pathname} showLabels>
-          {settingPages.map(({ title, link, icon }) => (
-            <BottomNavigationAction
-              key={link}
-              label={title}
-              icon={icon}
-              component={Link}
-              to={link}
-              value={link}
-            />
-          ))}
-        </SBottomNavigation>
-      </Hidden>
-    </>
-  )
-}
+      </>
+    )
+  },
+)

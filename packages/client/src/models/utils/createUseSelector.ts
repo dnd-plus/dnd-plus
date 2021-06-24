@@ -1064,10 +1064,10 @@ export function createUseSelector<S, P, R, T>(
   combiner: (...res: R[]) => T,
 ): OutputParametricSelector<S, P, T, (...res: R[]) => T>;
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export function createUseSelector(...args) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const selector = createArraySelector(...args)
   const selectorUse = selector as typeof selector & {

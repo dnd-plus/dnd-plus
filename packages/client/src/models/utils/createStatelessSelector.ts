@@ -1059,7 +1059,7 @@ export function createStatelessSelector<P, R, T>(
 ): OutputParametricSelector<P, T, (...res: R[]) => T>;
 
 export function createStatelessSelector() {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   // eslint-disable-next-line
   return createSelector.apply(null, arguments)

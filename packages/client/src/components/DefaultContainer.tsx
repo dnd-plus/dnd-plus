@@ -2,7 +2,10 @@ import { Container, Grid, GridProps } from '@material-ui/core'
 import React, { ReactNode } from 'react'
 import styled, { css } from 'styled-components'
 
-const SGrid = styled(Grid as React.FC<GridProps & { relative?: boolean }>)`
+const SGrid = styled(
+  // eslint-disable-next-line unused-imports/no-unused-vars-ts
+  ({ relative, ...p }: GridProps & { relative?: boolean }) => <Grid {...p} />,
+)`
   margin: auto;
   ${(p) =>
     p.relative &&
@@ -17,7 +20,7 @@ export function DefaultContainer({
 }) {
   return (
     <Container>
-      <SGrid relative={relative} item xs={12} sm={8} md={6} lg={6}>
+      <SGrid relative={relative} item xs={12} sm={8} md={8} lg={7}>
         {children}
       </SGrid>
     </Container>

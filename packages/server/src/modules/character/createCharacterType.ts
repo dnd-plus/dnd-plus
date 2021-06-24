@@ -7,7 +7,7 @@ import {
 import { GUEST_USER } from 'common/modules/user/redux'
 import { characterChannel } from 'common/modules/character/channels'
 import { EntityQueue } from 'modules/EntityQueue'
-import { WithCharacterReducer } from 'common/modules/character/redux'
+import { WithCharacterReducer } from 'common/modules/character/characterUpdaters'
 
 export const characterQueue = new EntityQueue()
 
@@ -24,7 +24,7 @@ export function createCharacterType<S extends Server<H>, H extends object = {}>(
       }
     },
     D extends object = {},
-    CU extends boolean | undefined = true
+    CU extends boolean | undefined = true,
   >(
     actionCreator: AC,
     updater:

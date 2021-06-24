@@ -2,15 +2,14 @@ import {
   DocumentType,
   getModelForClass,
   modelOptions,
-  plugin,
   prop,
 } from '@typegoose/typegoose'
-import uniqueValidator from 'mongoose-unique-validator'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
 import { UserSchema } from 'modules/user/user.schema'
 import { RaceSchema } from 'modules/character/schemas/race.schema'
 import { BaseAbilitiesSchema } from 'modules/character/schemas/baseAbilities.schema'
 import { CharacterState } from 'common/modules/character/redux'
+import { ClassMapSchema } from 'modules/character/schemas/class.schema'
 
 @modelOptions({
   options: {
@@ -22,7 +21,6 @@ import { CharacterState } from 'common/modules/character/redux'
     },
   },
 })
-@plugin(uniqueValidator)
 export class CharacterSchema implements CharacterState {
   _id!: string
 
@@ -43,6 +41,9 @@ export class CharacterSchema implements CharacterState {
 
   @prop()
   race?: RaceSchema
+
+  @prop()
+  classes?: ClassMapSchema
 
   toObject!: () => CharacterDocument
 }

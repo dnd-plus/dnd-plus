@@ -16,6 +16,15 @@ export const AbilityTypeDict: Record<AbilityType, string> = {
   charisma: 'Харизма',
 }
 
+export const AbilityTypeGenDict: Record<AbilityType, string> = {
+  strength: 'Силы',
+  dexterity: 'Ловкости',
+  constitution: 'Телосложения',
+  intelligence: 'Интеллекта',
+  wisdom: 'Мудрости',
+  charisma: 'Харизмы',
+}
+
 export type AbilityType = typeof ABILITY_TYPES[number]
 
 export type AbilitiesMap = Record<AbilityType, number>

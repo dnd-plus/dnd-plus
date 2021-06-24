@@ -15,7 +15,7 @@ import styled from 'styled-components'
 import { SBox } from 'components/SBox'
 
 const SMarkdownToJsx = styled(MarkdownToJsx)`
-  ${({ theme }) => theme.typography.body1 as {}}
+  ${({ theme }) => theme.typography.body1 as any}
   *:first-child {
     margin-top: 0;
   }

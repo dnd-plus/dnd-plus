@@ -22,6 +22,7 @@ import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effect
 import { FeatEffectModel } from 'models/Character/Effect/effects/FeatEffect'
 import { HitPointEffectModel } from 'models/Character/Effect/effects/HitPointEffect'
 import { ArmorClassEffectModel } from './effects/ArmorClassEffect'
+import { SpellCastingEffectModel } from 'models/Character/Effect/effects/SpellCastingEffect'
 
 export const effectModelsMap = {
   ability: AbilityEffectModel,
@@ -41,6 +42,7 @@ export const effectModelsMap = {
   feat: FeatEffectModel,
   hitPoint: HitPointEffectModel,
   armorClass: ArmorClassEffectModel,
+  spellCasting: SpellCastingEffectModel,
 } as const
 
 export const EFFECT_TYPES = Object.keys(effectModelsMap) as Tuple<
@@ -49,6 +51,7 @@ export const EFFECT_TYPES = Object.keys(effectModelsMap) as Tuple<
 
 export type EffectModelsMap = Writable<typeof effectModelsMap>
 export type EffectModel = BaseEffectModel<any>
+export type EffectType = keyof EffectModelsMap
 export type Effect = {
   [K in keyof EffectModelsMap]: InstanceType<
     EffectModelsMap[K]
@@ -57,7 +60,7 @@ export type Effect = {
     : null
 }[keyof EffectModelsMap]
 
-// eslint-disable-next-line unused-imports/no-unused-vars-ts
+// eslint-disable-next-line unused-imports/no-unused-vars-ts,@typescript-eslint/ban-types
 const effectModelsMapGuard: Record<Effect['type'], Function> = effectModelsMap
 
 export function effectFactory(

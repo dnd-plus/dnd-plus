@@ -1,1 +1,1 @@
-export type SpellSlotsType = 'mage' | 'secondMage' | 'thirdMage' | 'caster'
+export type SpellCastingType = 'mage' | 'secondMage' | 'thirdMage' | 'caster'

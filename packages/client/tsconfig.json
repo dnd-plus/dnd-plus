@@ -8,7 +8,11 @@
       "esnext"
     ],
     "baseUrl": "src",
-    "types": []
+    "experimentalDecorators": true,
+    "types": [],
+    "noFallthroughCasesInSwitch": true,
+    "jsx": "react-jsx",
+    "useDefineForClassFields": true
   },
   "include": [
     "src",

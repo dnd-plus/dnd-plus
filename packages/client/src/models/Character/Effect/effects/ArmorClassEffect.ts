@@ -1,5 +1,6 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { Memoize } from 'models/utils/Memoize'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 export type ArmorClassEffect = DeepReadonly<
@@ -11,6 +12,7 @@ export type ArmorClassEffect = DeepReadonly<
 >
 
 export class ArmorClassEffectModel extends BaseEffectModel<ArmorClassEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'armorClass',
@@ -19,10 +21,12 @@ export class ArmorClassEffectModel extends BaseEffectModel<ArmorClassEffect> {
     } as const
   }
 
+  @Memoize()
   get absolute() {
     return this.ref.absolute || 0
   }
 
+  @Memoize()
   get relative() {
     return this.ref.relative || 0
   }

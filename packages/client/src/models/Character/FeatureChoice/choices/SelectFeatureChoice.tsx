@@ -1,20 +1,24 @@
 import { Effect, effectFactory } from 'models/Character/Effect/Effect'
 import * as t from 'io-ts'
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
 import { ChoiceSelect } from 'components/ChoiceSelect'
+import { computed } from 'mobx'
 
-export type SelectFeatureChoice = DeepReadonly<{
+type SelectFeatureChoiceOption = {
+  group?: string
+  name: string
+  effects: Effect[]
+}
+
+export type SelectFeatureChoice<
+  Option extends SelectFeatureChoiceOption = SelectFeatureChoiceOption,
+> = DeepReadonly<{
   type: 'select'
   label: string
-  options: Array<{
-    group?: string
-    name: string
-    effects: Effect[]
-  }>
+  options: Array<Option>
 }>
 const SelectFeatureChoiceState = t.readonly(
   t.type({
@@ -22,22 +26,30 @@ const SelectFeatureChoiceState = t.readonly(
   }),
 )
 
-export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
-  SelectFeatureChoice,
+export class SelectFeatureChoiceModel<
+  Option extends SelectFeatureChoiceOption = SelectFeatureChoiceOption,
+> extends BaseFeatureChoiceModel<
+  SelectFeatureChoice<Option>,
   t.TypeOf<typeof SelectFeatureChoiceState>
 > {
+  @computed
   get knownState() {
     return SelectFeatureChoiceState.is(this.state) ? this.state : null
   }
 
+  @computed
   get selected() {
     return (
       (this.knownState && this.ref.options[this.knownState.selected]) || null
     )
   }
 
-  choicesCountSelector = () => (this.selected ? 0 : 1)
+  @computed
+  get choicesCount() {
+    return this.selected ? 0 : 1
+  }
 
+  @computed
   get effects() {
     return (this.selected?.effects || []).flatMap(
       (effect, index) =>
@@ -50,8 +62,6 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
   }
 
   readonly hook = () => {
-    const dispatch = useDispatch()
-
     return {
       node: (
         <ChoiceSelect
@@ -63,14 +73,12 @@ export class SelectFeatureChoiceModel extends BaseFeatureChoiceModel<
             value: index,
           }))}
           onChange={(e) =>
-            dispatch.sync(
-              this.setChoiceAction({
-                key: this.key,
-                value: {
-                  selected: Number(e.target.value),
-                },
-              }),
-            )
+            this.setChoiceAction({
+              key: this.key,
+              value: {
+                selected: Number(e.target.value),
+              },
+            })
           }
         />
       ),

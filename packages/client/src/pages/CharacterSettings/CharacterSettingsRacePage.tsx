@@ -6,7 +6,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   Grid,
   IconButton,
   List,
@@ -21,13 +20,11 @@ import React, { useState } from 'react'
 import { racesList } from 'models/Character/Race/racesList'
 import { CharacterRace } from 'models/Character/Race/Race'
 import { Info as InfoIcon } from '@material-ui/icons'
-import { useDispatch } from 'react-redux'
 import styled, { css, useTheme } from 'styled-components'
-import { MapHooks } from 'components/MapHooks'
 import { useToggle } from 'react-use'
-import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
-import { Markdown } from 'components/Markdown'
 import { SBox } from 'components/SBox'
+import { FeatureItem } from 'pages/CharacterSettings/components/FeatureItem'
+import { observer } from 'mobx-react-lite'
 
 const SBigAvatar = styled(Avatar)(
   ({ theme }) => css`
@@ -36,65 +33,66 @@ const SBigAvatar = styled(Avatar)(
   `,
 )
 
-export function CharacterSettingsRacePage() {
-  const characterModel = useCharacterModel()
-  const race = characterModel.race.data.use()
+export const CharacterSettingsRacePage = observer(
+  function CharacterSettingsRacePage() {
+    const characterModel = useCharacterModel()
+    const race = characterModel.race.data
 
-  const [reselectRace, toggleReselectRace] = useToggle(false)
+    const [reselectRace, toggleReselectRace] = useToggle(false)
 
-  if (!race) {
-    return (
-      <>
-        <SBox my={3}>
-          <Typography variant={'h5'}>Выбор расы</Typography>
-        </SBox>
-        <SelectRaceList />
-      </>
-    )
-  } else {
-    return (
-      <React.Fragment key={race.type}>
-        <SBox display={'flex'} my={3}>
-          <SBox mr={2}>
-            <SBigAvatar src={race.image} alt={race.name} />
+    if (!race) {
+      return (
+        <>
+          <SBox my={3}>
+            <Typography variant={'h5'}>Выбор расы</Typography>
           </SBox>
-          <div>
-            <SBox mb={1}>
-              <Typography variant={'h5'}>
-                {race.name.toUpperCase()}
-                {race.variant && ' (альтернатива)'}
-              </Typography>
+          <SelectRaceList />
+        </>
+      )
+    } else {
+      return (
+        <React.Fragment key={race.type}>
+          <SBox display={'flex'} my={3}>
+            <SBox mr={2}>
+              <SBigAvatar src={race.image} alt={race.name} />
             </SBox>
-            <SBox mb={1}>
-              <Typography variant={'body1'}>{race.description}</Typography>
-            </SBox>
-            <Button onClick={() => toggleReselectRace()}>
-              {reselectRace ? 'Оставить' : 'Cменить'}
-            </Button>
-          </div>
-        </SBox>
-        {!reselectRace && (
-          <Grid container direction={'column'} spacing={2}>
-            {race.features.map((feature) => (
-              <FeatureItem feature={feature} key={feature.key} />
-            ))}
-          </Grid>
-        )}
-        {reselectRace && (
-          <SelectRaceList onSelectRace={() => toggleReselectRace(false)} />
-        )}
-      </React.Fragment>
-    )
-  }
-}
+            <div>
+              <SBox mb={1}>
+                <Typography variant={'h5'}>
+                  {race.name.toUpperCase()}
+                  {race.variant && ' (альтернатива)'}
+                </Typography>
+              </SBox>
+              <SBox mb={1}>
+                <Typography variant={'body1'}>{race.description}</Typography>
+              </SBox>
+              <Button onClick={() => toggleReselectRace()}>
+                {reselectRace ? 'Оставить' : 'Cменить'}
+              </Button>
+            </div>
+          </SBox>
+          {!reselectRace && (
+            <Grid container direction={'column'} spacing={2}>
+              {race.features.map((feature) => (
+                <FeatureItem feature={feature} key={feature.key} />
+              ))}
+            </Grid>
+          )}
+          {reselectRace && (
+            <SelectRaceList onSelectRace={() => toggleReselectRace(false)} />
+          )}
+        </React.Fragment>
+      )
+    }
+  },
+)
 
 function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
   const [raceInfo, setRaceInfo] = useState<CharacterRace | null>(null)
 
   const characterModel = useCharacterModel()
-  const dispatch = useDispatch()
   const selectRace = (type: CharacterRace['type']) => {
-    dispatch.sync(characterModel.actions.setRace({ type }))
+    characterModel.actions.setRace({ type })
     onSelectRace?.()
   }
 
@@ -177,36 +175,5 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
         )}
       </Dialog>
     </>
-  )
-}
-
-function FeatureItem({ feature }: { feature: Feature | FeatureModel }) {
-  const data = 'data' in feature ? feature.data : feature
-  return (
-    <Grid item>
-      <SBox mb={1}>
-        <Typography variant={'subtitle1'}>
-          <b>{data.name}</b>
-        </Typography>
-        <Divider />
-      </SBox>
-      <Typography variant={'body1'}>
-        <Markdown>{data.description}</Markdown>
-      </Typography>
-      {'data' in feature &&
-        Array.isArray(feature.choices) &&
-        feature.choices?.length > 0 && (
-          <SBox mt={1}>
-            <MapHooks
-              hooks={feature.choices.map(({ hook }) => hook)}
-              render={(choices) =>
-                choices.map(({ node }, key) => (
-                  <React.Fragment key={key}>{node}</React.Fragment>
-                ))
-              }
-            />
-          </SBox>
-        )}
-    </Grid>
   )
 }

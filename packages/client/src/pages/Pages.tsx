@@ -18,6 +18,7 @@ import { CharacterGuard } from 'pages/CharacterGuard/CharacterGuard'
 import { CharacterSettingsLayout } from 'pages/CharacterSettings/CharacterSettingsLayout'
 import { CharacterSettingsRacePage } from 'pages/CharacterSettings/CharacterSettingsRacePage'
 import { CharacterSettingsMainPage } from 'pages/CharacterSettings/CharacterSettingsMainPage'
+import { CharacterSettingsClassPage } from 'pages/CharacterSettings/CharacterSettingsClassPage'
 
 export function Pages() {
   return (
@@ -38,7 +39,10 @@ export function Pages() {
               path={characterSettingsRaceRoute.path}
               element={<CharacterSettingsRacePage />}
             />
-            <Route path={characterSettingsClassRoute.path} element={null} />
+            <Route
+              path={characterSettingsClassRoute.path}
+              element={<CharacterSettingsClassPage />}
+            />
             <Route
               path={characterSettingsDescriptionRoute.path}
               element={null}

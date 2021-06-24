@@ -14,7 +14,6 @@ import {
 import React from 'react'
 import { Field, Form } from 'react-final-form'
 import { MuiField } from 'components/MuiField'
-import { useDispatch } from 'react-redux'
 import { BaseAbilitiesStateType } from 'common/modules/character/redux'
 import {
   AbilitiesMap,
@@ -22,52 +21,54 @@ import {
   AbilityTypeDict,
 } from 'common/reference/AbilityType'
 import { SBox } from 'components/SBox'
+import { observer } from 'mobx-react-lite'
+import { runInAction } from 'mobx'
 
-export function CharacterSettingsMainPage() {
-  const characterModel = useCharacterModel()
-  const characterName = characterModel.name.use()
+export const CharacterSettingsMainPage = observer(
+  function CharacterSettingsMainPage() {
+    const characterModel = useCharacterModel()
+    const characterName = characterModel.name
 
-  const dispatch = useDispatch()
-
-  return (
-    <Grid container direction={'column'} spacing={3}>
-      <Grid item>
-        <Form
-          onSubmit={({ name }) => {
-            dispatch.sync(characterModel.actions.setName({ name }))
-          }}
-          subscription={{}}
-          initialValues={{ name: characterName }}
-          render={({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <Grid container direction={'column'} spacing={2}>
-                <Grid item>
-                  <Field
-                    name={'name'}
-                    label={'Имя персонажа'}
-                    component={MuiField}
-                  />
+    return (
+      <Grid container direction={'column'} spacing={3}>
+        <Grid item>
+          <Form
+            onSubmit={({ name }) => {
+              characterModel.actions.setName({ name })
+            }}
+            subscription={{}}
+            initialValues={{ name: characterName }}
+            render={({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Grid container direction={'column'} spacing={2}>
+                  <Grid item>
+                    <Field
+                      name={'name'}
+                      label={'Имя персонажа'}
+                      component={MuiField}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      type={'submit'}
+                      variant={'contained'}
+                      color={'primary'}
+                    >
+                      Сохранить
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <Button
-                    type={'submit'}
-                    variant={'contained'}
-                    color={'primary'}
-                  >
-                    Сохранить
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          )}
-        />
+              </form>
+            )}
+          />
+        </Grid>
+        <Grid item>
+          <BaseAbilities />
+        </Grid>
       </Grid>
-      <Grid item>
-        <BaseAbilities />
-      </Grid>
-    </Grid>
-  )
-}
+    )
+  },
+)
 
 const standardValuesArray = [8, 10, 12, 13, 14, 15]
 
@@ -92,12 +93,11 @@ const valuesArrayMap: Record<BaseAbilitiesStateType, number[]> = {
   manual: manualValuesArray,
 }
 
-function BaseAbilities() {
+const BaseAbilities = observer(function BaseAbilities() {
   const characterModel = useCharacterModel()
-  const { type, abilities = {} } = characterModel.baseAbilities.use() || {
+  const { type, abilities = {} } = characterModel.baseAbilities || {
     abilities: {} as Partial<AbilitiesMap>,
   }
-  const dispatch = useDispatch()
 
   const abilityValues = Object.values(abilities as Record<string, number>)
 
@@ -122,11 +122,9 @@ function BaseAbilities() {
             name='type'
             value={type || ''}
             onChange={(e) =>
-              dispatch.sync(
-                characterModel.actions.setBaseAbilitiesType({
-                  type: e.target.value as BaseAbilitiesStateType,
-                }),
-              )
+              characterModel.actions.setBaseAbilitiesType({
+                type: e.target.value as BaseAbilitiesStateType,
+              })
             }
           >
             <SBox mt={2}>
@@ -186,7 +184,7 @@ function BaseAbilities() {
               (abilityValue && pointBuyCost[abilityValue]) || 0
 
             return (
-              <Grid item xs={4} lg={2}>
+              <Grid key={abilityType} item xs={4} lg={2}>
                 <div>
                   <Typography variant={'caption'}>
                     <b>{label}</b>
@@ -197,7 +195,7 @@ function BaseAbilities() {
                   fullWidth
                   value={abilityValue || ''}
                   onChange={(e) =>
-                    dispatch.sync(
+                    runInAction(() =>
                       characterModel.actions.setBaseAbilities({
                         abilities: {
                           ...abilities,
@@ -242,4 +240,4 @@ function BaseAbilities() {
       )}
     </Grid>
   )
-}
+})

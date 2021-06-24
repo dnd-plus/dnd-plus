@@ -2,6 +2,7 @@ import { AbilityType } from 'common/reference/AbilityType'
 import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { Memoize } from 'models/utils/Memoize'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 export type SavingThrowAdvantageEffect = DeepReadonly<
@@ -12,9 +13,8 @@ export type SavingThrowAdvantageEffect = DeepReadonly<
   }>
 >
 
-export class SavingThrowAdvantageEffectModel extends BaseEffectModel<
-  SavingThrowAdvantageEffect
-> {
+export class SavingThrowAdvantageEffectModel extends BaseEffectModel<SavingThrowAdvantageEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'savingThrowAdvantage',
@@ -23,10 +23,12 @@ export class SavingThrowAdvantageEffectModel extends BaseEffectModel<
     } as const
   }
 
+  @Memoize()
   get abilities() {
     return this.ref.abilities || {}
   }
 
+  @Memoize()
   get damages() {
     return this.ref.damages || {}
   }
@@ -37,9 +39,11 @@ export class SavingThrowAdvantageEffectModel extends BaseEffectModel<
       type Data = typeof data
 
       if (data) {
-        ;(Object.entries(effect[prop] || []) as Array<
-          [keyof Data, Data[keyof Data]]
-        >).forEach(([key, value]) => {
+        ;(
+          Object.entries(effect[prop] || []) as Array<
+            [keyof Data, Data[keyof Data]]
+          >
+        ).forEach(([key, value]) => {
           if (value === undefined || data[key] === null) {
             return
           } else if (data[key] === undefined || value === null) {

@@ -17,7 +17,11 @@
   "devDependencies": {
     "husky": "4.2.5",
     "lint-staged": "10.2.11",
-    "prettier": "2.0.5"
+    "prettier": "^2.3.0"
+  },
+  "resolutions": {
+    "**/@typescript-eslint/eslint-plugin": "^4.25.0",
+    "**/@typescript-eslint/parser": "^4.25.0"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -27,7 +31,9 @@
     "rules": {
       "@typescript-eslint/no-unused-vars": "off",
       "unused-imports/no-unused-imports-ts": "error",
-      "unused-imports/no-unused-vars-ts": "error"
+      "unused-imports/no-unused-vars-ts": "error",
+      "@typescript-eslint/no-extra-semi": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off"
     }
   },
   "husky": {

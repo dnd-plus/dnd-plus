@@ -118,7 +118,7 @@ export const WeaponTypeDict = extendType<
   handaxe: 'Ручной топор',
   sickle: 'Серп',
 
-  lightCrossbow: 'Арбалет, легкий',
+  lightCrossbow: 'Легкий арбалет',
   dart: 'Дротик',
   shortbow: 'Короткий лук',
   sling: 'Праща',
@@ -145,8 +145,8 @@ export const WeaponTypeDict = extendType<
   whip: 'Кнут',
 
   blowgun: 'Духовая трубка',
-  handCrossbow: 'Арбалет, ручной',
-  heavyCrossbow: 'Арбалет, тяжелый',
+  handCrossbow: 'Ручной арбалет',
+  heavyCrossbow: 'Тяжелый арбалет',
   longbow: 'Длинный лук',
   net: 'Сеть',
 } as const)

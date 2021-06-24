@@ -1,3 +1,4 @@
+import { Memoize } from 'models/utils/Memoize'
 import {
   MARTIAL_WEAPON_GROUP_TYPE,
   MARTIAL_WEAPON_TYPES,
@@ -9,7 +10,7 @@ import { ArmorType } from 'common/reference/equipment/ArmorType'
 import { ToolType } from 'common/reference/equipment/ToolType'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
-import { difference } from 'lodash-es'
+import { difference, uniq } from 'lodash-es'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 export type EquipmentPossessionEffect = DeepReadonly<
@@ -21,9 +22,8 @@ export type EquipmentPossessionEffect = DeepReadonly<
   }>
 >
 
-export class EquipmentPossessionEffectModel extends BaseEffectModel<
-  EquipmentPossessionEffect
-> {
+export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPossessionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'equipmentPossession',
@@ -33,6 +33,7 @@ export class EquipmentPossessionEffectModel extends BaseEffectModel<
     } as const
   }
 
+  @Memoize()
   get weapon(): ReadonlyArray<WeaponTypeWithGroups> {
     let weapon = this.ref.weapon || []
     if (weapon.includes(SIMPLE_WEAPON_GROUP_TYPE)) {
@@ -43,16 +44,22 @@ export class EquipmentPossessionEffectModel extends BaseEffectModel<
     }
     return weapon
   }
+  @Memoize()
   get armor(): ReadonlyArray<ArmorType> {
     return this.ref.armor || []
   }
+
+  @Memoize()
   get tool(): ReadonlyArray<ToolType> {
     return this.ref.tool || []
   }
 
   assign(effect: EquipmentPossessionEffect) {
-    this.ref.weapon = [...new Set([...this.weapon, ...(effect.weapon || [])])]
-    this.ref.armor = [...new Set([...this.armor, ...(effect.armor || [])])]
-    this.ref.tool = [...new Set([...this.tool, ...(effect.tool || [])])]
+    this.ref.weapon = uniq([
+      ...(this.ref.weapon || []),
+      ...(effect.weapon || []),
+    ])
+    this.ref.armor = uniq([...(this.ref.armor || []), ...(effect.armor || [])])
+    this.ref.tool = uniq([...(this.ref.tool || []), ...(effect.tool || [])])
   }
 }

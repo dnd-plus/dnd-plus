@@ -7,18 +7,22 @@ import { SelectFeatureChoiceModel } from 'models/Character/FeatureChoice/choices
 import {
   SelectLanguageFeatureChoiceModel,
   SelectSkillFeatureChoiceModel,
+  SelectToolFeatureChoiceModel,
 } from 'models/Character/FeatureChoice/choices/SelectPossessionFeatureChoice'
 import { SelectAbilityFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityFeatureChoice'
 import { SelectFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectFeatFeatureChoice'
 import { EffectModel } from '../Effect/Effect'
 import { noop } from 'lodash-es'
+import { SelectAbilityOrFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityOrFeatFeatureChoice'
 
 const choiceModelsMap = {
   select: SelectFeatureChoiceModel,
   selectAbility: SelectAbilityFeatureChoiceModel,
   selectSkill: SelectSkillFeatureChoiceModel,
+  selectTool: SelectToolFeatureChoiceModel,
   selectLanguage: SelectLanguageFeatureChoiceModel,
   selectFeat: SelectFeatFeatureChoiceModel,
+  selectAbilityOrFeat: SelectAbilityOrFeatFeatureChoiceModel,
 } as const
 
 type FeatureChoiceModelsMap = typeof choiceModelsMap
@@ -32,6 +36,7 @@ export type FeatureChoice = {
 // eslint-disable-next-line unused-imports/no-unused-vars-ts
 const choiceModelsMapGuard: Record<
   FeatureChoice['type'],
+  // eslint-disable-next-line @typescript-eslint/ban-types
   Function
 > = choiceModelsMap
 

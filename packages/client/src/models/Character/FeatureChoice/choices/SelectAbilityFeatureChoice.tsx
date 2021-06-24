@@ -1,6 +1,5 @@
 import * as t from 'io-ts'
 import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
-import { useDispatch } from 'react-redux'
 import { Typography } from '@material-ui/core'
 import React from 'react'
 import { createKey } from 'models/utils/createKey'
@@ -13,8 +12,7 @@ import {
 import { DeepReadonly } from 'ts-essentials'
 import { ChoiceSelect } from 'components/ChoiceSelect'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
-import { defaultMemoize } from 'reselect'
-import { compareArrays } from 'models/utils/createUseSelector'
+import { computed } from 'mobx'
 
 export type SelectAbilityFeatureChoice = DeepReadonly<{
   type: 'selectAbility'
@@ -32,41 +30,49 @@ export class SelectAbilityFeatureChoiceModel extends BaseFeatureChoiceModel<
   SelectAbilityFeatureChoice,
   t.TypeOf<typeof SelectAbilityFeatureChoiceState>
 > {
+  @computed
   get knownState() {
     return SelectAbilityFeatureChoiceState.is(this.state) ? this.state : null
   }
 
+  @computed
   get options() {
     return this.ref.available ?? ABILITY_TYPES
   }
 
+  @computed
   get count() {
     return this.ref.count || 1
   }
 
+  @computed
   get items() {
     return Array(this.count)
       .fill('')
       .map((_, index) => this.knownState?.selected[index] || '')
   }
 
+  @computed
   get selected() {
     return this.items
   }
 
-  choicesCountSelector = defaultMemoize(
-    () => this.selected.reduce((sum, item) => sum + (item ? 0 : 1), 0),
-    compareArrays,
-  )
+  @computed
+  get choicesCount() {
+    return this.selected.reduce((sum, item) => sum + (item ? 0 : 1), 0)
+  }
 
+  @computed
   get chosen() {
     return this.selected.every(Boolean)
   }
 
+  @computed
   get effectKey() {
     return createKey(this.key, this.knownState?.selected)
   }
 
+  @computed
   get effects() {
     return [
       new AbilityEffectModel(
@@ -84,12 +90,12 @@ export class SelectAbilityFeatureChoiceModel extends BaseFeatureChoiceModel<
   }
 
   readonly hook = () => {
-    const dispatch = useDispatch()
-
+    const selected = this.items
     return {
       node: this.items.map((value, index) => {
         return (
           <ChoiceSelect
+            key={index}
             label={'Выбор характеристики'}
             value={value}
             options={this.options.map((option) => {
@@ -117,15 +123,12 @@ export class SelectAbilityFeatureChoiceModel extends BaseFeatureChoiceModel<
               }
             })}
             onChange={(e) => {
-              const selected = this.items.slice()
               selected.splice(index, 1, String(e.target.value))
 
-              dispatch.sync(
-                this.setChoiceAction({
-                  key: this.key,
-                  value: { selected },
-                }),
-              )
+              this.setChoiceAction({
+                key: this.key,
+                value: { selected },
+              })
             }}
           />
         )

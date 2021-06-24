@@ -7,6 +7,7 @@ import {
 } from 'common/modules/character/redux'
 import { AbilitiesMap } from 'common/reference/AbilityType'
 
+@modelOptions({ schemaOptions: { _id: false } })
 class AbilitiesSchema implements Partial<AbilitiesMap> {
   @prop()
   strength?: number
@@ -32,6 +33,7 @@ class AbilitiesSchema implements Partial<AbilitiesMap> {
     timestamps: {
       currentTime: dateUTCNow,
     },
+    _id: false,
   },
 })
 export class BaseAbilitiesSchema implements BaseAbilitiesState {

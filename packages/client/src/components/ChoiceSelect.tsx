@@ -46,6 +46,9 @@ export function ChoiceSelect<T extends string | number | undefined>({
               )),
             ].filter(Boolean),
           )}
+          {!options.length && (
+            <MenuItem disabled>Нет доступных вариантов</MenuItem>
+          )}
         </Select>
       </FormControl>
     </SBox>

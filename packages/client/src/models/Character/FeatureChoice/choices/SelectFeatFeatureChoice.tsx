@@ -1,6 +1,5 @@
 import * as t from 'io-ts'
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
@@ -26,12 +25,9 @@ import {
   useMediaQuery,
 } from '@material-ui/core'
 import styled, { css, useTheme } from 'styled-components'
-import { CharacterModel } from 'models/Character/CharacterModel'
 import { checkFeatConditions, Feat } from 'models/Character/Feat/Feat'
 import { AddCircleOutline, CheckCircle, ErrorOutline } from '@material-ui/icons'
 import { Markdown } from 'components/Markdown'
-import { createSelector } from 'reselect'
-import { createUseSelector } from 'models/utils/createUseSelector'
 import { SBox } from 'components/SBox'
 
 import {
@@ -40,6 +36,11 @@ import {
 } from 'models/Character/FeatureChoice/FeatureChoice'
 import { MapHooks } from 'components/MapHooks'
 import { FeatEffectModel } from '../../Effect/effects/FeatEffect'
+import { observer } from 'mobx-react-lite'
+import { computed, toJS } from 'mobx'
+import { EffectTypeMap } from 'models/Character/EffectsModel'
+import { CharacterRace } from 'models/Character/Race/Race'
+import { EffectModel } from 'models/Character/Effect/Effect'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
@@ -56,10 +57,12 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     choices?: Record<string, unknown>
   }
 > {
+  @computed
   get knownState() {
     return SelectFeatureChoiceState.is(this.state) ? this.state : null
   }
 
+  @computed
   get selected() {
     return (
       (this.knownState &&
@@ -68,19 +71,19 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     )
   }
 
-  checkOptionsSelector = createUseSelector(
-    this.characterModel.effects.type.ability,
-    this.characterModel.effects.type.equipmentPossession,
-    this.characterModel.race.ref,
-    (abilityEffect, equipmentPossessionEffect, raceRef) => ({
-      abilityEffect,
-      equipmentPossessionEffect,
-      raceRef,
-    }),
-  )
+  @computed
+  get checkOptions() {
+    return {
+      abilityEffect: this.currentEffects.ability,
+      equipmentPossessionEffect: this.currentEffects.equipmentPossession,
+      spellCastingEffect: this.currentEffects.spellCasting,
+      raceRef: this.characterModel.race.ref,
+    }
+  }
 
-  choiceModels: FeatureChoiceModel[] = (() => {
-    const state = this.state as any
+  @computed
+  get choiceModels(): FeatureChoiceModel[] {
+    const state = toJS(this.state) as any
     const selected = this.selected
 
     if (selected && selected.choices) {
@@ -106,47 +109,47 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
       )
     }
     return []
-  })()
+  }
 
-  effect =
-    this.selected &&
-    new FeatEffectModel(
-      this.characterModel,
-      {
-        type: 'feat',
-        feats: [
-          { id: this.selected.id, choices: (this.state as any)?.choices },
-        ],
-      },
-      createKey(this.key, this.knownState?.selected),
+  @computed
+  get effects(): EffectModel[] {
+    return [
+      new FeatEffectModel(
+        this.characterModel,
+        {
+          type: 'feat',
+          feats: this.selected
+            ? [{ id: this.selected.id, choices: (this.state as any)?.choices }]
+            : [],
+        },
+        createKey(this.key, this.knownState?.selected),
+      ).withChoice(this),
+    ]
+  }
+
+  @computed
+  get isAvailable() {
+    return (
+      this.selected && checkFeatConditions(this.selected, this.checkOptions)
     )
+  }
 
-  effects = this.effect ? [this.effect] : []
+  @computed
+  get innerChoicesCount() {
+    return this.choiceModels.reduce(
+      (sum, { choicesCount }) => sum + choicesCount,
+      0,
+    )
+  }
 
-  isAvailableSelector = createUseSelector(
-    this.checkOptionsSelector,
-    (checkOptions) =>
-      this.selected && checkFeatConditions(this.selected, checkOptions),
-  )
-
-  innerChoicesCountSelector = createSelector(
-    this.choiceModels.map(({ choicesCountSelector }) => choicesCountSelector),
-    (...choicesCountArray) =>
-      choicesCountArray.reduce((sum, num) => sum + num, 0),
-  )
-
-  choicesCountSelector = createSelector(
-    this.isAvailableSelector,
-    this.innerChoicesCountSelector,
-    (isAvailable, innerChoicesCount) =>
-      (isAvailable ? 0 : 1) + innerChoicesCount,
-  )
+  @computed
+  get choicesCount() {
+    return (this.isAvailable ? 0 : 1) + this.innerChoicesCount
+  }
 
   readonly hook = () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isOpen, toggleIsOpen] = useToggle(false)
-    const dispatch = useDispatch()
-
-    const isAvailable = this.isAvailableSelector.use()
 
     return {
       node: (
@@ -160,7 +163,7 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
                 <SBox mb={1}>
                   <Markdown>{this.selected.description}</Markdown>
                 </SBox>
-                {!isAvailable && (
+                {!this.isAvailable && (
                   <SBox color={'error.dark'}>
                     <Typography variant={'h6'}>
                       Не выполнено условие:
@@ -186,7 +189,7 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
               </CardContent>
               <CardActions>
                 <Button
-                  color={isAvailable ? 'default' : 'primary'}
+                  color={this.isAvailable ? 'default' : 'primary'}
                   onClick={toggleIsOpen}
                 >
                   Сменить
@@ -208,16 +211,15 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
             value={this.selected}
             onClose={() => toggleIsOpen()}
             onChange={(feat) =>
-              dispatch.sync(
-                this.setChoiceAction({
-                  key: this.key,
-                  value: {
-                    selected: feat.id,
-                  },
-                }),
-              )
+              this.setChoiceAction({
+                key: this.key,
+                value: {
+                  selected: feat.id,
+                },
+              })
             }
-            characterModel={this.characterModel}
+            effectMap={this.currentEffects}
+            raceRef={this.characterModel.race.ref}
           />
         </>
       ),
@@ -225,23 +227,25 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
   }
 }
 
-function FeatsListModal<F extends () => void>({
+const FeatsListModal = observer(function FeatsListModal<F extends () => void>({
   open,
   onClose,
   onChange,
   value,
-  characterModel,
+  effectMap,
+  raceRef,
 }: {
   open: boolean
   onClose: F
   onChange: (f: Feat) => void
   value: Feat | null
-  characterModel: CharacterModel
+  effectMap: EffectTypeMap
+  raceRef: CharacterRace | undefined
 }) {
-  const featEffect = characterModel.effects.type.feat.use()
-  const abilityEffect = characterModel.effects.type.ability.use()
-  const equipmentPossessionEffect = characterModel.effects.type.equipmentPossession.use()
-  const raceRef = characterModel.race.ref.use()
+  const featEffect = effectMap.feat
+  const abilityEffect = effectMap.ability
+  const equipmentPossessionEffect = effectMap.equipmentPossession
+  const spellCastingEffect = effectMap.spellCasting
 
   return (
     <Dialog
@@ -258,6 +262,7 @@ function FeatsListModal<F extends () => void>({
             const available = checkFeatConditions(feat, {
               abilityEffect,
               equipmentPossessionEffect,
+              spellCastingEffect,
               raceRef,
             })
             const selected = available && feat.id === value?.id
@@ -350,7 +355,7 @@ function FeatsListModal<F extends () => void>({
       </DialogActions>
     </Dialog>
   )
-}
+})
 
 const SDangerButton = styled(Button)(
   ({ theme }) => css`

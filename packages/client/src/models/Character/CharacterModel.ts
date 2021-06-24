@@ -2,24 +2,37 @@ import {
   CharacterState,
   characterActions,
 } from 'common/modules/character/redux'
-import { AppState } from 'redux/configureStore'
-import { createUseSelector } from 'models/utils/createUseSelector'
 import { RaceModel } from 'models/Character/Race/Race'
 import { EffectsModel } from 'models/Character/EffectsModel'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
+import { ClassModel } from 'models/Character/Class/Class'
+import { computed, makeObservable, observable } from 'mobx'
+import { entries } from 'common/utils/typesafe'
+import { AnyAction } from '@logux/core'
+import { deepToJS } from 'models/utils/deepToJS'
+import { ABILITY_TYPES } from 'common/reference/AbilityType'
 
 type CActions = typeof characterActions
 
 export class CharacterModel {
-  constructor(public readonly id: string) {}
+  constructor(
+    private readonly initialState: CharacterState,
+    public readonly dispatch?: (action: AnyAction) => unknown,
+  ) {
+    makeObservable(this)
+  }
 
-  actions = Object.entries(characterActions).reduce(
-    (actions, [key, action]) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-      // @ts-ignore too hard to create typings
-      actions[key] = (payload) => action({ ...payload, _id: this.id })
-      return actions
-    },
+  readonly actions = entries(characterActions).reduce(
+    (actions, [key, actionCreator]) => ({
+      ...actions,
+      [key]: (payload: any) => {
+        const action = actionCreator({
+          ...deepToJS(payload),
+          _id: this.initialState._id,
+        })
+        return this.dispatch ? this.dispatch(action) : action
+      },
+    }),
     {} as {
       [K in keyof CActions]: (
         p: Omit<Parameters<CActions[K]>[0], '_id'>,
@@ -27,34 +40,45 @@ export class CharacterModel {
     },
   )
 
-  state = createUseSelector(
-    (state: AppState) => state.characters[this.id] as CharacterState,
-    (state) => state,
-  )
+  @observable
+  state = this.initialState
 
-  globalCharacterState = createUseSelector(this.state, (state) => ({
-    characters: { [this.id]: state },
-    user: null,
-  }))
+  @computed
+  get hasState() {
+    return !!this.state
+  }
 
-  hasState = createUseSelector(this.state, (state) => !!state)
+  @computed
+  get name() {
+    return this.state.name
+  }
 
-  name = createUseSelector(this.state, (state) => state.name)
+  @computed
+  get baseAbilities() {
+    return this.state.baseAbilities
+  }
 
-  baseAbilities = createUseSelector(this.state, (state) => state.baseAbilities)
+  @computed
+  get baseAbilitiesChoicesCount() {
+    return this.baseAbilities?.abilities
+      ? ABILITY_TYPES.length -
+          Object.values(this.baseAbilities.abilities).filter(Boolean).length
+      : 1
+  }
 
-  baseAbilitiesEffect = createUseSelector(
-    this.baseAbilities,
-    (baseAbilities) =>
-      new AbilityEffectModel(
-        this,
-        { type: 'ability', abilities: baseAbilities?.abilities || {} },
-        'baseAbilities',
-      ),
-  )
+  @computed
+  get baseAbilitiesEffect() {
+    return new AbilityEffectModel(
+      this,
+      { type: 'ability', abilities: this.baseAbilities?.abilities || {} },
+      'baseAbilities',
+    )
+  }
 
-  race = new RaceModel(this)
+  readonly race = new RaceModel(this)
+
+  readonly class = new ClassModel(this)
 
   // must be last
-  effects = new EffectsModel(this)
+  readonly effects = new EffectsModel(this)
 }

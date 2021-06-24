@@ -1,4 +1,3 @@
-import { hot } from 'react-hot-loader/root'
 import React from 'react'
 import { CssBaseline } from '@material-ui/core'
 import { Pages } from 'pages/Pages'
@@ -12,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `
 
-function App() {
+export default function App() {
   return (
     <>
       <GlobalStyles />
@@ -23,5 +22,3 @@ function App() {
     </>
   )
 }
-
-export default hot(App)

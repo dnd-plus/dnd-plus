@@ -1,6 +1,8 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { AbilityType } from 'common/reference/AbilityType'
+import { Memoize } from 'models/utils/Memoize'
+import { entries } from 'common/utils/typesafe'
 
 export type SavingThrowPossessionEffect = DeepReadonly<{
   type: 'savingThrowPossession'
@@ -9,9 +11,8 @@ export type SavingThrowPossessionEffect = DeepReadonly<{
   }
 }>
 
-export class SavingThrowPossessionEffectModel extends BaseEffectModel<
-  SavingThrowPossessionEffect
-> {
+export class SavingThrowPossessionEffectModel extends BaseEffectModel<SavingThrowPossessionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'savingThrowPossession',
@@ -19,6 +20,7 @@ export class SavingThrowPossessionEffectModel extends BaseEffectModel<
     } as const
   }
 
+  @Memoize()
   get abilities() {
     return this.ref.abilities
   }
@@ -32,12 +34,9 @@ export class SavingThrowPossessionEffectModel extends BaseEffectModel<
       null,
     ] as const
 
-    type Abilities = SavingThrowPossessionEffect['abilities']
     const abilities = { ...this.ref.abilities }
 
-    ;(Object.entries(effect.abilities) as Array<
-      [keyof Abilities, Abilities[keyof Abilities]]
-    >).forEach(([key, value]) => {
+    entries(effect.abilities).forEach(([key, value]) => {
       if (priority.indexOf(abilities[key]) < priority.indexOf(value)) {
         abilities[key] = value
       }

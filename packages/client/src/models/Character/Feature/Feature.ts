@@ -3,15 +3,11 @@ import {
   FeatureChoice,
   featureChoiceFactory,
 } from 'models/Character/FeatureChoice/FeatureChoice'
-
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { DeepReadonly } from 'ts-essentials'
-import {
-  BaseFeatureChoiceModel,
-  FeatureChoiceAction,
-} from 'models/Character/FeatureChoice/BaseFeatureChoice'
+import { FeatureChoiceAction } from 'models/Character/FeatureChoice/BaseFeatureChoice'
 import { createKey } from 'models/utils/createKey'
-import { createUseSelector } from 'models/utils/createUseSelector'
+import { computed, makeObservable } from 'mobx'
 
 export type Feature = DeepReadonly<{
   name: string
@@ -20,38 +16,41 @@ export type Feature = DeepReadonly<{
   choices?: FeatureChoice[]
 }>
 
-export class FeatureModel {
+export class FeatureModel<Ref extends Feature = Feature> {
   constructor(
-    private readonly characterModel: CharacterModel,
-    public readonly ref: Feature,
+    protected readonly characterModel: CharacterModel,
+    public readonly ref: Ref,
     public readonly key: string,
-    private readonly choicesState: Record<any, unknown>,
-    private readonly setChoiceAction: FeatureChoiceAction,
-  ) {}
-
-  get choices() {
-    const resultModels: BaseFeatureChoiceModel<any, any>[] = []
-    this.ref.choices?.forEach((choice, index) => {
-      const choiceKey = createKey(this.key, 'choice', index)
-      const choiceModel = featureChoiceFactory(
-        this.characterModel,
-        this.choicesState[choiceKey],
-        choice,
-        choiceKey,
-        this.setChoiceAction,
-      )
-      if (choiceModel) {
-        resultModels.push(choiceModel)
-      }
-    })
-    return resultModels
+    protected readonly choicesState: Record<any, unknown>,
+    protected readonly setChoiceAction: FeatureChoiceAction,
+  ) {
+    makeObservable(this)
   }
 
-  choicesCountSelector = createUseSelector(
-    this.choices.map((choice) => choice.choicesCountSelector),
-    (...choicesCount) => choicesCount.reduce((a, b) => a + b, 0),
-  )
+  @computed
+  get choices() {
+    return (
+      this.ref.choices?.flatMap((choice, index) => {
+        const choiceKey = createKey(this.key, 'choice', index)
+        return (
+          featureChoiceFactory(
+            this.characterModel,
+            this.choicesState[choiceKey],
+            choice,
+            choiceKey,
+            this.setChoiceAction,
+          ) || []
+        )
+      }) || []
+    )
+  }
 
+  @computed
+  get choicesCount() {
+    return this.choices.reduce((sum, choice) => sum + choice.choicesCount, 0)
+  }
+
+  @computed
   get effects() {
     return [
       ...(this.ref.effects || []).flatMap(
@@ -60,13 +59,13 @@ export class FeatureModel {
             this.characterModel,
             effect,
             createKey(this.key, 'effect', index),
-            { feature: this.ref.name },
           ) || [],
       ),
       ...this.choices.flatMap((choice) => choice.effects),
-    ]
+    ].map((effect) => effect.withFrom({ feature: this.ref.name }))
   }
 
+  @computed
   get data() {
     return {
       ...this.ref,

@@ -1,10 +1,10 @@
 import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
 import { CreatureSize } from 'common/types/base/stats/CreatureSize'
 import { CharacterModel } from 'models/Character/CharacterModel'
-import { createUseSelector } from 'models/utils/createUseSelector'
 import { racesList } from 'models/Character/Race/racesList'
 import { DeepReadonly } from 'ts-essentials'
 import { createKey } from 'models/utils/createKey'
+import { computed, makeObservable } from 'mobx'
 
 export type CharacterRace = DeepReadonly<
   {
@@ -53,56 +53,60 @@ export type CharacterRaceType =
   | 'VariantHuman'
 
 export class RaceModel {
-  constructor(private characterModel: CharacterModel) {}
+  constructor(private characterModel: CharacterModel) {
+    makeObservable(this)
+  }
 
-  state = createUseSelector(
-    this.characterModel.state,
-    (characterState) => characterState.race,
-  )
+  get state() {
+    return this.characterModel.state.race
+  }
 
-  ref = createUseSelector(this.state, (state) =>
-    racesList.find(({ type }) => type === state?.type),
-  )
+  @computed
+  get ref() {
+    return racesList.find(({ type }) => type === this.state?.type)
+  }
 
-  choicesState = createUseSelector(
-    this.state,
-    (state) => state?.choices || ({} as Record<string, unknown>),
-  )
+  @computed
+  get choicesState() {
+    return this.state?.choices || ({} as Record<string, unknown>)
+  }
 
-  isEmpty = createUseSelector(this.ref, (ref) => !ref)
-
-  features = createUseSelector(
-    this.ref,
-    this.choicesState,
-    (ref, choicesState) =>
-      ref?.features.map(
+  @computed
+  get features() {
+    return (
+      this.ref?.features.map(
         (feature, index) =>
           new FeatureModel(
             this.characterModel,
             feature,
-            createKey(ref.type, +index),
-            choicesState,
+            createKey(this.ref?.type, index),
+            this.choicesState,
             this.characterModel.actions.setRaceChoice,
           ),
-      ) || [],
-  )
+      ) || []
+    )
+  }
 
-  choicesCount = createUseSelector(
-    this.features,
-    this.characterModel.globalCharacterState,
-    (features, state) =>
-      features.reduce((sum, feature) => {
-        return sum + feature.choicesCountSelector(state)
-      }, 0),
-  )
+  @computed
+  get choicesCount() {
+    return !this.ref
+      ? 1
+      : this.features.reduce((sum, feature) => {
+          return sum + feature.choicesCount
+        }, 0)
+  }
 
-  data = createUseSelector(this.ref, this.features, (ref, features) =>
-    ref ? { ...ref, features } : undefined,
-  )
+  @computed
+  get data() {
+    return this.ref ? { ...this.ref, features: this.features } : undefined
+  }
 
-  effects = createUseSelector(this.ref, this.features, (ref, features) =>
-    features.flatMap((feature) =>
-      feature.effects.map((effect) => effect.withFrom({ race: ref?.name })),
-    ),
-  )
+  @computed
+  get effects() {
+    return this.features.flatMap((feature) =>
+      feature.effects.map((effect) =>
+        effect.withFrom({ race: this.ref?.name }),
+      ),
+    )
+  }
 }

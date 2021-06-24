@@ -8,16 +8,15 @@ import {
   Character,
   CharacterDocument,
 } from 'modules/character/schemas/character.schema'
-import {
-  characterActions,
-  characterUpdaters,
-} from 'common/modules/character/redux'
+import { characterActions } from 'common/modules/character/redux'
 import { mongoose } from '@typegoose/typegoose'
 import {
   characterQueue,
   createCharacterType,
 } from 'modules/character/createCharacterType'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
+import { characterUpdaters } from 'common/modules/character/characterUpdaters'
+import { keys } from 'common/utils/typesafe'
 
 module.exports = function characterModule(server: Server) {
   server.on('preadd', (action, meta) => {
@@ -106,19 +105,7 @@ module.exports = function characterModule(server: Server) {
     { saveCharacter: false },
   )
 
-  // Base abilities
-  characterType(
-    characterActions.setBaseAbilitiesType,
-    characterUpdaters.setBaseAbilitiesType,
+  keys(characterUpdaters).forEach((key) =>
+    characterType(characterActions[key], characterUpdaters[key]),
   )
-
-  characterType(
-    characterActions.setBaseAbilities,
-    characterUpdaters.setBaseAbilities,
-  )
-
-  // Race
-  characterType(characterActions.setRace, characterUpdaters.setRace)
-
-  characterType(characterActions.setRaceChoice, characterUpdaters.setRaceChoice)
 }

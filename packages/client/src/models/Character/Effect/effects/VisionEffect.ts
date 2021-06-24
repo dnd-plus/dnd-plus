@@ -1,3 +1,4 @@
+import { Memoize } from 'models/utils/Memoize'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 
@@ -25,8 +26,9 @@ export type VisionEffect =
   | TruesightVisionEffect
 
 abstract class VisionEffectModel<
-  R extends VisionEffect
+  R extends VisionEffect,
 > extends BaseEffectModel<R> {
+  @Memoize()
   get distance() {
     return this.ref.distance
   }
@@ -36,9 +38,8 @@ abstract class VisionEffectModel<
   }
 }
 
-export class BlindsightVisionEffectModel extends VisionEffectModel<
-  BlindsightVisionEffect
-> {
+export class BlindsightVisionEffectModel extends VisionEffectModel<BlindsightVisionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'blindsightVision',
@@ -48,6 +49,7 @@ export class BlindsightVisionEffectModel extends VisionEffectModel<
 }
 
 export class DarkVisionEffectModel extends VisionEffectModel<DarkVisionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'darkVision',
@@ -56,9 +58,8 @@ export class DarkVisionEffectModel extends VisionEffectModel<DarkVisionEffect> {
   }
 }
 
-export class TremorsenseVisionEffectModel extends VisionEffectModel<
-  TremorsenseVisionEffect
-> {
+export class TremorsenseVisionEffectModel extends VisionEffectModel<TremorsenseVisionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'tremorsenseVision',
@@ -67,9 +68,8 @@ export class TremorsenseVisionEffectModel extends VisionEffectModel<
   }
 }
 
-export class TruesightVisionEffectModel extends VisionEffectModel<
-  TruesightVisionEffect
-> {
+export class TruesightVisionEffectModel extends VisionEffectModel<TruesightVisionEffect> {
+  @Memoize()
   get emptyRef() {
     return {
       type: 'truesightVision',

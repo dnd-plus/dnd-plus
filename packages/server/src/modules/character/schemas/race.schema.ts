@@ -7,6 +7,7 @@ import { CharacterRaceState } from 'common/modules/character/redux'
     timestamps: {
       currentTime: dateUTCNow,
     },
+    _id: false,
   },
 })
 export class RaceSchema implements CharacterRaceState {
