@@ -37,6 +37,7 @@ import { MAX_CHARACTER_LEVEL } from 'common/types/base/character/Level'
 import { AbilitiesMap, AbilityTypeDict } from 'common/reference/AbilityType'
 import { entries, mapValues } from 'common/utils/typesafe'
 import { getMulticlassUnmetClaims } from 'models/Character/Class/getMulticlassUnmetClaims'
+import theme from 'theme'
 
 export const CharacterSettingsClassPage = observer(
   function CharacterSettingsClassPage() {
@@ -44,6 +45,8 @@ export const CharacterSettingsClassPage = observer(
     const refList = character.class.refList
 
     const [isSelectClass, toggleIsSelectClass] = useToggle(false)
+
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
     if (!refList.length || isSelectClass) {
       return (
@@ -108,7 +111,7 @@ export const CharacterSettingsClassPage = observer(
                   alignItems={'center'}
                   style={{ width: '100%' }}
                   my={2}
-                  p={2}
+                  p={isMobile ? 1 : 2}
                 >
                   {renderClass(type)}
                   <IconButton
@@ -151,39 +154,35 @@ export const CharacterSettingsClassPage = observer(
           <Typography variant={'h4'}>Классовые умения</Typography>
           {character.class.levelFeaturesList.map(
             ({ level, type, features }, index) => (
-              <SBox key={type + level} my={3}>
-                <Paper variant='outlined' style={{ background: 'transparent' }}>
-                  <SBox p={2}>
-                    <SBox
-                      display={'flex'}
-                      alignItems={'center'}
-                      justifyContent={'space-between'}
-                      style={{ width: '100%' }}
-                    >
-                      <Typography variant={'h6'} color={'primary'}>
-                        {index + 1} уровень
-                      </Typography>
-                      {character.class.isMulticlass && (
-                        <SBox display={'flex'} alignItems={'center'}>
-                          {renderClass(type, true, ` ${level} ур.`)}
-                        </SBox>
-                      )}
+              <SBox key={type + level} mt={6} mb={3}>
+                <SBox
+                  display={'flex'}
+                  alignItems={'center'}
+                  justifyContent={'space-between'}
+                  style={{ width: '100%' }}
+                >
+                  <Typography variant={'h6'} color={'primary'}>
+                    {index + 1} уровень
+                  </Typography>
+                  {character.class.isMulticlass && (
+                    <SBox display={'flex'} alignItems={'center'}>
+                      {renderClass(type, true, ` ${level} ур.`)}
                     </SBox>
-                    {unmetTextMap[type] && (
-                      <Typography variant={'subtitle1'} color={'error'}>
-                        {unmetTextMap[type]}
-                      </Typography>
-                    )}
-                    {features.map((feature) => (
-                      <SBox my={2} key={feature.key}>
-                        <FeatureItem feature={feature} />
-                      </SBox>
-                    ))}
-                    {!unmetTextMap[type] && !features.length && (
-                      <Typography variant={'subtitle1'}>Нет умений</Typography>
-                    )}
+                  )}
+                </SBox>
+                {unmetTextMap[type] && (
+                  <Typography variant={'subtitle1'} color={'error'}>
+                    {unmetTextMap[type]}
+                  </Typography>
+                )}
+                {features.map((feature) => (
+                  <SBox my={2} key={feature.key}>
+                    <FeatureItem feature={feature} />
                   </SBox>
-                </Paper>
+                ))}
+                {!unmetTextMap[type] && !features.length && (
+                  <Typography variant={'subtitle1'}>Нет умений</Typography>
+                )}
               </SBox>
             ),
           )}
