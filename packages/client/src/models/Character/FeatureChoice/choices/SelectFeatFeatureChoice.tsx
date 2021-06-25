@@ -319,7 +319,7 @@ const FeatsListModal = observer(function FeatsListModal<F extends () => void>({
                               feat.available ? 'text.secondary' : 'error.dark'
                             }
                           >
-                            {feat.demands?.text}
+                            Требование: {feat.demands?.text}
                           </SBox>
                         </Grid>
                       )}

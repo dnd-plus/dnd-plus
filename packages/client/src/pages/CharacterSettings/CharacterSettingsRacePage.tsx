@@ -66,7 +66,7 @@ export const CharacterSettingsRacePage = observer(
               <SBox mb={1}>
                 <Typography variant={'body1'}>{race.description}</Typography>
               </SBox>
-              <Button onClick={() => toggleReselectRace()}>
+              <Button color={'primary'} onClick={() => toggleReselectRace()}>
                 {reselectRace ? 'Оставить' : 'Cменить'}
               </Button>
             </div>

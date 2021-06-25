@@ -56,7 +56,9 @@ export const CharacterSettingsClassPage = observer(
           </SBox>
           {isSelectClass && (
             <SBox my={2}>
-              <Button onClick={() => toggleIsSelectClass()}>Отмена</Button>
+              <Button color={'primary'} onClick={() => toggleIsSelectClass()}>
+                Отмена
+              </Button>
             </SBox>
           )}
           <SelectClassList onSelect={() => toggleIsSelectClass(false)} />
@@ -115,6 +117,7 @@ export const CharacterSettingsClassPage = observer(
                 >
                   {renderClass(type)}
                   <IconButton
+                    color={'secondary'}
                     onClick={(e) => {
                       e.stopPropagation()
                       character.actions.updateClassLevel({ type, to: 'down' })
@@ -131,6 +134,7 @@ export const CharacterSettingsClassPage = observer(
                     </Typography>
                   </SBox>
                   <IconButton
+                    color={'secondary'}
                     disabled={character.class.level >= MAX_CHARACTER_LEVEL}
                     onClick={(e) => {
                       e.stopPropagation()
@@ -145,6 +149,7 @@ export const CharacterSettingsClassPage = observer(
           })}
           <SBox mb={2}>
             <Button
+              color={'primary'}
               disabled={character.class.level >= MAX_CHARACTER_LEVEL}
               onClick={() => toggleIsSelectClass()}
             >
