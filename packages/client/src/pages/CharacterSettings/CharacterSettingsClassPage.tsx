@@ -154,7 +154,7 @@ export const CharacterSettingsClassPage = observer(
           <Typography variant={'h4'}>Классовые умения</Typography>
           {character.class.levelFeaturesList.map(
             ({ level, type, features }, index) => (
-              <SBox key={type + level} mt={6} mb={3}>
+              <SBox key={type + level} mt={3} mb={6}>
                 <SBox
                   display={'flex'}
                   alignItems={'center'}
