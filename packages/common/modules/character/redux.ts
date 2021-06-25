@@ -3,7 +3,10 @@ import { createObjectId } from 'common/utils/createObjectId'
 import { dateUTCNow } from 'common/utils/dateUTCNow'
 import { IdPayloadAction } from 'common/modules/redux/IdPayloadAction'
 import { AbilitiesMap } from 'common/reference/AbilityType'
-import { CharacterClassName } from 'common/types/base/character/CharacterClassName'
+import {
+  CharacterClassName,
+  CharacterTypeRecord,
+} from 'common/types/base/character/CharacterClassName'
 import { keys } from 'common/utils/typesafe'
 import {
   characterUpdaters,
@@ -48,7 +51,7 @@ export type CharacterState = {
   updatedAt?: number
   baseAbilities?: BaseAbilitiesState
   race?: CharacterRaceState
-  classes?: { [K in CharacterClassName]?: CharacterClassState }
+  classes?: CharacterTypeRecord<CharacterClassState>
 }
 
 type CharacterUpdaters = typeof characterUpdaters

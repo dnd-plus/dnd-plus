@@ -1,4 +1,3 @@
-import { Memoize } from 'models/utils/Memoize'
 import {
   MARTIAL_WEAPON_GROUP_TYPE,
   MARTIAL_WEAPON_TYPES,
@@ -23,7 +22,6 @@ export type EquipmentPossessionEffect = DeepReadonly<
 >
 
 export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPossessionEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'equipmentPossession',
@@ -33,7 +31,6 @@ export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPos
     } as const
   }
 
-  @Memoize()
   get weapon(): ReadonlyArray<WeaponTypeWithGroups> {
     let weapon = this.ref.weapon || []
     if (weapon.includes(SIMPLE_WEAPON_GROUP_TYPE)) {
@@ -44,12 +41,10 @@ export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPos
     }
     return weapon
   }
-  @Memoize()
   get armor(): ReadonlyArray<ArmorType> {
     return this.ref.armor || []
   }
 
-  @Memoize()
   get tool(): ReadonlyArray<ToolType> {
     return this.ref.tool || []
   }

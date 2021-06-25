@@ -7,7 +7,6 @@ import {
   CharacterLevel,
   CharacterLevelArray,
 } from 'common/types/base/character/Level'
-import { Memoize } from 'models/utils/Memoize'
 import { spells } from 'models/Character/Spell/spells'
 import { entries, mapValues } from 'common/utils/typesafe'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
@@ -57,7 +56,6 @@ const MULTI_CLASS_SPELL_LEVEL_MOD: Record<CharacterClassName, number> = {
 }
 
 export class SpellCastingEffectModel extends BaseEffectModel<SpellCastingEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'spellCasting',
@@ -66,12 +64,10 @@ export class SpellCastingEffectModel extends BaseEffectModel<SpellCastingEffect>
     } as const
   }
 
-  @Memoize()
   get spellCastingClassMap() {
     return this.ref.spellCastingClassMap
   }
 
-  @Memoize()
   get spellCasting(): MultiSpellCasting | undefined {
     const list = Object.values(this.ref.spellCastingClassMap || {}).flatMap(
       (spellCasting) => (spellCasting as MultiSpellCasting) || [],
@@ -100,7 +96,6 @@ export class SpellCastingEffectModel extends BaseEffectModel<SpellCastingEffect>
     }
   }
 
-  @Memoize()
   get preparedSpellsClassMap() {
     return mapValues(
       this.ref.spellCastingClassMap,
@@ -115,14 +110,12 @@ export class SpellCastingEffectModel extends BaseEffectModel<SpellCastingEffect>
     )
   }
 
-  @Memoize()
   get preparedSpells() {
     return Object.values(this.preparedSpellsClassMap).flatMap(
       (preparedSpells) => preparedSpells || [],
     )
   }
 
-  @Memoize()
   get hasSpellCasting() {
     return (
       Object.values(this.ref.spellCastingClassMap || {}).filter(Boolean)

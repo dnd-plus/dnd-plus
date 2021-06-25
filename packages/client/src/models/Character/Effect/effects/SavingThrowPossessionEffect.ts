@@ -1,7 +1,6 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { AbilityType } from 'common/reference/AbilityType'
-import { Memoize } from 'models/utils/Memoize'
 import { entries } from 'common/utils/typesafe'
 
 export type SavingThrowPossessionEffect = DeepReadonly<{
@@ -12,7 +11,6 @@ export type SavingThrowPossessionEffect = DeepReadonly<{
 }>
 
 export class SavingThrowPossessionEffectModel extends BaseEffectModel<SavingThrowPossessionEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'savingThrowPossession',
@@ -20,7 +18,6 @@ export class SavingThrowPossessionEffectModel extends BaseEffectModel<SavingThro
     } as const
   }
 
-  @Memoize()
   get abilities() {
     return this.ref.abilities
   }

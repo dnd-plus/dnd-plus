@@ -52,7 +52,7 @@ export const FeatureItem = observer(function FeatureItem({
           </AccordionSummary>
         </Badge>
         <AccordionDetails>
-          <div>
+          <SBox flexGrow={1} style={{ width: '100%' }}>
             <Typography component={'div'} variant={'body1'}>
               <Markdown>{data.description}</Markdown>
             </Typography>
@@ -70,7 +70,7 @@ export const FeatureItem = observer(function FeatureItem({
                   />
                 </SBox>
               )}
-          </div>
+          </SBox>
         </AccordionDetails>
       </Accordion>
     </Grid>

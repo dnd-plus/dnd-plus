@@ -5,16 +5,17 @@ import {
   effectModelsMap,
   EffectModelsMap,
   EffectType,
+  EffectTypeMap,
 } from 'models/Character/Effect/Effect'
-import { unionEffectModels } from 'models/utils/unionEffectModels'
+import {
+  compareEffectArrays,
+  createEffectMap,
+  unionEffectModels,
+} from 'models/utils/effect'
 import { computed, makeObservable } from 'mobx'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 import { EffectFrom } from 'models/Character/Effect/BaseEffect'
 import { mapValues } from 'common/utils/typesafe'
-
-export type EffectTypeMap = {
-  [K in EffectType]: InstanceType<EffectModelsMap[K]>
-}
 
 type KeyFromAll<KeyAll extends `${EffectType}All`> =
   KeyAll extends `${infer Key}All` ? Key : never
@@ -26,11 +27,35 @@ type EffectTypeAllMap = {
 const EffectModelWithTypes = class {} as new () => EffectTypeMap &
   EffectTypeAllMap
 
-function compareEffectArrays(a: EffectModel[], b: EffectModel[]) {
-  return (
-    a === b ||
-    (a.length === b.length && a.every(({ ref }, index) => ref === b[index].ref))
-  )
+export function withChildEffects(
+  characterModel: CharacterModel,
+  effects: EffectModel[],
+): EffectModel[] {
+  const nextEffects = effects.slice()
+  const effectMap = createEffectMap(characterModel, nextEffects)
+  const currentEffectMap = createEffectMap(characterModel, [])
+
+  for (let i = 0; i < nextEffects.length; i++) {
+    const effect = nextEffects[i]
+    currentEffectMap[nextEffects[i].type].assignModel(effect)
+
+    const childEffects = effect.getChildEffects({
+      effectMap,
+      currentEffectMap,
+    })
+
+    if (childEffects.length) {
+      nextEffects.splice(i + 1, 0, ...childEffects)
+    }
+
+    childEffects.forEach((childEffect) => {
+      childEffect.withFrom(effect.from as OneOfOptionalRequired<EffectFrom>)
+      effectMap[childEffect.type].assignModel(childEffect)
+      currentEffectMap[childEffect.type].assignModel(childEffect)
+    })
+  }
+
+  return nextEffects
 }
 
 export class EffectsModel extends EffectModelWithTypes {
@@ -64,52 +89,12 @@ export class EffectsModel extends EffectModelWithTypes {
 
   @computed
   private get raw(): EffectModel[] {
-    return [
-      this.characterModel.baseAbilitiesEffect,
-      this.characterModel.race.effects,
-      this.characterModel.class.effects,
-    ].flatMap((effects) => effects)
+    return this.characterModel.class.effects
   }
 
   @computed
   get all() {
-    const effects = [...this.raw]
-    const createEffectMap = (effects: EffectModel[] = []) =>
-      EFFECT_TYPES.reduce(
-        (obj, type) => ({
-          ...obj,
-          [type]: unionEffectModels(this.characterModel, type, effects),
-        }),
-        {} as EffectTypeMap,
-      )
-    const effectMap = createEffectMap(effects)
-    const currentEffectMap = createEffectMap()
-
-    for (let i = 0; i < effects.length; i++) {
-      const effect = effects[i]
-      currentEffectMap[effects[i].type].assignModel(effect)
-
-      if (effect.choiceModel) {
-        effect.choiceModel.currentEffects = createEffectMap(effects.slice(0, i))
-      }
-
-      const childEffects = effect.getChildEffects({
-        effectMap,
-        currentEffectMap,
-      })
-
-      if (childEffects.length) {
-        effects.splice(i + 1, 0, ...childEffects)
-      }
-
-      childEffects.forEach((childEffect) => {
-        childEffect.withFrom(effect.from as OneOfOptionalRequired<EffectFrom>)
-        effectMap[childEffect.type].assignModel(childEffect)
-        currentEffectMap[childEffect.type].assignModel(childEffect)
-      })
-    }
-
-    return effects
+    return withChildEffects(this.characterModel, this.raw)
   }
 
   @computed

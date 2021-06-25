@@ -1,4 +1,3 @@
-import { Memoize } from 'models/utils/Memoize'
 import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
@@ -12,7 +11,6 @@ export type DefenceEffect = DeepReadonly<{
 }>
 
 export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'defence',
@@ -20,7 +18,6 @@ export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
     } as const
   }
 
-  @Memoize()
   get damages() {
     return this.ref.damages
   }

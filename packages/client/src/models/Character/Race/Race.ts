@@ -5,6 +5,7 @@ import { racesList } from 'models/Character/Race/racesList'
 import { DeepReadonly } from 'ts-essentials'
 import { createKey } from 'models/utils/createKey'
 import { computed, makeObservable } from 'mobx'
+import { EffectModel } from 'models/Character/Effect/Effect'
 
 export type CharacterRace = DeepReadonly<
   {
@@ -102,11 +103,19 @@ export class RaceModel {
   }
 
   @computed
-  get effects() {
-    return this.features.flatMap((feature) =>
-      feature.effects.map((effect) =>
-        effect.withFrom({ race: this.ref?.name }),
+  get incomingEffects(): EffectModel[] {
+    return [this.characterModel.baseAbilitiesEffect]
+  }
+
+  @computed
+  get effects(): EffectModel[] {
+    return [
+      ...this.incomingEffects,
+      ...this.features.flatMap((feature) =>
+        feature.effects.map((effect) =>
+          effect.withFrom({ race: this.ref?.name }),
+        ),
       ),
-    )
+    ]
   }
 }

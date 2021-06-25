@@ -23,7 +23,7 @@ const BaseGnome = extendType<Partial<CharacterRace>>()({
       name: 'Темное зрение',
       description:
         'Привыкнув к жизни под землёй, вы обладаете превосходным зрением в темноте и при тусклом освещении. На расстоянии в 60 фт. вы при тусклом освещении можете видеть так, как будто это яркое освещение, и в темноте так, как будто это тусклое освещение. В темноте вы не можете различать цвета, только оттенки серого.',
-      effects: [{ type: 'darkVision', distance: 60 }],
+      effects: [{ type: 'vision', dark: 60 }],
     },
     {
       // todo: feature
@@ -146,7 +146,7 @@ export const DeepGnome: CharacterRace = {
     {
       name: 'Превосходное тёмное зрение',
       description: 'Ваше тёмное зрение имеет радиус 120 фт.',
-      effects: [{ type: 'darkVision', distance: 60 }],
+      effects: [{ type: 'vision', dark: 60 }],
     },
     {
       // todo: feature

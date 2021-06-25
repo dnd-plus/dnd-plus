@@ -86,7 +86,7 @@ export class SelectAbilityOrFeatFeatureChoiceModel extends BaseFeatureChoiceMode
   }
 
   @computed
-  get effects() {
+  protected get choiceEffects() {
     return this.getActiveChoices().flatMap((choice) => choice.effects)
   }
 

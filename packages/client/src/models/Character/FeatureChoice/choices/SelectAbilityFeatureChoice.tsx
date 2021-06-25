@@ -73,7 +73,7 @@ export class SelectAbilityFeatureChoiceModel extends BaseFeatureChoiceModel<
   }
 
   @computed
-  get effects() {
+  protected get choiceEffects() {
     return [
       new AbilityEffectModel(
         this.characterModel,

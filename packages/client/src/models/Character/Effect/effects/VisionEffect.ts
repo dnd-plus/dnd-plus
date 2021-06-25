@@ -1,79 +1,44 @@
-import { Memoize } from 'models/utils/Memoize'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
-export type BlindsightVisionEffect = DeepReadonly<{
-  type: 'blindsightVision'
-  distance: number
-}>
-export type DarkVisionEffect = DeepReadonly<{
-  type: 'darkVision'
-  distance: number
-}>
-export type TremorsenseVisionEffect = DeepReadonly<{
-  type: 'tremorsenseVision'
-  distance: number
-}>
-export type TruesightVisionEffect = DeepReadonly<{
-  type: 'truesightVision'
-  distance: number
-}>
-
-export type VisionEffect =
-  | BlindsightVisionEffect
-  | DarkVisionEffect
-  | TremorsenseVisionEffect
-  | TruesightVisionEffect
-
-abstract class VisionEffectModel<
-  R extends VisionEffect,
-> extends BaseEffectModel<R> {
-  @Memoize()
-  get distance() {
-    return this.ref.distance
-  }
-
-  assign(effect: R) {
-    this.ref.distance = Math.max(this.ref.distance, effect.distance)
-  }
-}
-
-export class BlindsightVisionEffectModel extends VisionEffectModel<BlindsightVisionEffect> {
-  @Memoize()
+export type VisionEffect = DeepReadonly<
+  OneOfOptionalRequired<{
+    type: 'vision'
+    blindsight?: number
+    dark?: number
+    tremorsense?: number
+    truesight?: number
+  }>
+>
+export class VisionEffectModel extends BaseEffectModel<VisionEffect> {
   get emptyRef() {
     return {
-      type: 'blindsightVision',
-      distance: 0,
+      type: 'vision',
+      blindsight: 0,
+      dark: 0,
+      tremorsense: 0,
+      truesight: 0,
     } as const
   }
-}
 
-export class DarkVisionEffectModel extends VisionEffectModel<DarkVisionEffect> {
-  @Memoize()
-  get emptyRef() {
-    return {
-      type: 'darkVision',
-      distance: 0,
-    } as const
+  get blindsight() {
+    return this.ref.blindsight || 0
   }
-}
-
-export class TremorsenseVisionEffectModel extends VisionEffectModel<TremorsenseVisionEffect> {
-  @Memoize()
-  get emptyRef() {
-    return {
-      type: 'tremorsenseVision',
-      distance: 0,
-    } as const
+  get dark() {
+    return this.ref.dark || 0
   }
-}
+  get tremorsense() {
+    return this.ref.tremorsense || 0
+  }
+  get truesight() {
+    return this.ref.truesight || 0
+  }
 
-export class TruesightVisionEffectModel extends VisionEffectModel<TruesightVisionEffect> {
-  @Memoize()
-  get emptyRef() {
-    return {
-      type: 'truesightVision',
-      distance: 0,
-    } as const
+  assign(effect: VisionEffect) {
+    this.ref.blindsight = Math.max(this.blindsight, effect.blindsight || 0)
+    this.ref.dark = Math.max(this.dark, effect.dark || 0)
+    this.ref.tremorsense = Math.max(this.tremorsense, effect.tremorsense || 0)
+    this.ref.truesight = Math.max(this.truesight, effect.truesight || 0)
   }
 }

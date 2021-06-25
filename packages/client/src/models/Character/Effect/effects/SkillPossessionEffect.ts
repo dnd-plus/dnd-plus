@@ -1,5 +1,4 @@
 import { DeepReadonly } from 'ts-essentials'
-import { Memoize } from 'models/utils/Memoize'
 import { SKILL_TYPES, SkillType } from 'common/reference/SkillType'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 
@@ -36,7 +35,6 @@ export type SkillPossessionEffect = DeepReadonly<{
 }>
 
 export class SkillPossessionEffectModel extends BaseEffectModel<SkillPossessionEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'skillPossession',
@@ -44,7 +42,6 @@ export class SkillPossessionEffectModel extends BaseEffectModel<SkillPossessionE
     } as const
   }
 
-  @Memoize()
   get skills() {
     return this.ref.skills
   }

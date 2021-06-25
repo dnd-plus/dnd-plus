@@ -1,9 +1,6 @@
 import { useCharacterModel } from 'models/Character/CharacterModelContext'
 import { useMemo, useState } from 'react'
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Button,
   Dialog,
   DialogActions,
@@ -16,6 +13,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  Paper,
   Typography,
   useMediaQuery,
 } from '@material-ui/core'
@@ -26,16 +24,19 @@ import {
 } from 'common/types/base/character/CharacterClassName'
 import { ClassIcon } from 'models/Character/Class/classIconMap'
 import React from 'react'
-import { Add, ExpandMore, Info as InfoIcon, Remove } from '@material-ui/icons'
+import { Add, Info as InfoIcon, Remove } from '@material-ui/icons'
 import { CharacterClass, ClassModel } from 'models/Character/Class/Class'
 import { SBox } from 'components/SBox'
 import { useTheme } from 'styled-components'
 import { FeatureItem } from 'pages/CharacterSettings/components/FeatureItem'
-import { CharacterModel } from 'models/Character/CharacterModel'
+import { CharacterMockModel } from 'models/Character/CharacterModel'
 import { useToggle } from 'react-use'
 import { ClassFeatureModel } from 'models/Character/Feature/ClassFeature'
 import { observer } from 'mobx-react-lite'
 import { MAX_CHARACTER_LEVEL } from 'common/types/base/character/Level'
+import { AbilitiesMap, AbilityTypeDict } from 'common/reference/AbilityType'
+import { entries, mapValues } from 'common/utils/typesafe'
+import { getMulticlassUnmetClaims } from 'models/Character/Class/getMulticlassUnmetClaims'
 
 export const CharacterSettingsClassPage = observer(
   function CharacterSettingsClassPage() {
@@ -59,8 +60,86 @@ export const CharacterSettingsClassPage = observer(
         </>
       )
     } else {
+      const unmetTextMap = mapValues(character.class.refMap, (type) => {
+        const { multiclassUnmetClaimsMap, mainType } = character.class
+        return (
+          type !== character.class.mainType &&
+          getUnmetClaimsText(
+            mainType && multiclassUnmetClaimsMap[mainType],
+            multiclassUnmetClaimsMap[type],
+          )
+        )
+      })
+
+      function renderClass(
+        type: CharacterClassName,
+        small?: boolean,
+        text?: string,
+      ) {
+        return (
+          <>
+            <ClassIcon type={type} fontSize={small ? 'small' : 'large'} />
+            <SBox mr={'auto'} ml={small ? 1 : 3}>
+              <Typography
+                variant={small ? 'h6' : 'h5'}
+                color={unmetTextMap[type] ? 'error' : 'textPrimary'}
+              >
+                {CharacterClassNameDict[type]}
+                {text}
+              </Typography>
+              {!small && unmetTextMap[type] && (
+                <Typography variant={'caption'} color={'error'}>
+                  {unmetTextMap[type]}
+                </Typography>
+              )}
+            </SBox>
+          </>
+        )
+      }
+
       return (
         <>
+          <Typography variant={'h4'}>Классы</Typography>
+          {refList.map(({ type }) => {
+            return (
+              <Paper key={type}>
+                <SBox
+                  display={'flex'}
+                  alignItems={'center'}
+                  style={{ width: '100%' }}
+                  my={2}
+                  p={2}
+                >
+                  {renderClass(type)}
+                  <IconButton
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      character.actions.updateClassLevel({ type, to: 'down' })
+                    }}
+                  >
+                    <Remove />
+                  </IconButton>
+                  <SBox mx={1}>
+                    <Typography variant={'h5'}>
+                      {character.class.levelMap[type]}{' '}
+                      <Typography component={'span'} variant={'subtitle1'}>
+                        ур.
+                      </Typography>
+                    </Typography>
+                  </SBox>
+                  <IconButton
+                    disabled={character.class.level >= MAX_CHARACTER_LEVEL}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      character.actions.updateClassLevel({ type, to: 'up' })
+                    }}
+                  >
+                    <Add />
+                  </IconButton>
+                </SBox>
+              </Paper>
+            )
+          })}
           <SBox mb={2}>
             <Button
               disabled={character.class.level >= MAX_CHARACTER_LEVEL}
@@ -69,71 +148,50 @@ export const CharacterSettingsClassPage = observer(
               Добавить класс
             </Button>
           </SBox>
-          {refList.map(({ type }) => (
-            <ClassItem type={type} key={type} />
-          ))}
+          <Typography variant={'h4'}>Классовые умения</Typography>
+          {character.class.levelFeaturesList.map(
+            ({ level, type, features }, index) => (
+              <SBox key={type + level} my={3}>
+                <Paper variant='outlined' style={{ background: 'transparent' }}>
+                  <SBox p={2}>
+                    <SBox
+                      display={'flex'}
+                      alignItems={'center'}
+                      justifyContent={'space-between'}
+                      style={{ width: '100%' }}
+                    >
+                      <Typography variant={'h6'} color={'primary'}>
+                        {index + 1} уровень
+                      </Typography>
+                      {character.class.isMulticlass && (
+                        <SBox display={'flex'} alignItems={'center'}>
+                          {renderClass(type, true, ` ${level} ур.`)}
+                        </SBox>
+                      )}
+                    </SBox>
+                    {unmetTextMap[type] && (
+                      <Typography variant={'subtitle1'} color={'error'}>
+                        {unmetTextMap[type]}
+                      </Typography>
+                    )}
+                    {features.map((feature) => (
+                      <SBox my={2} key={feature.key}>
+                        <FeatureItem feature={feature} />
+                      </SBox>
+                    ))}
+                    {!unmetTextMap[type] && !features.length && (
+                      <Typography variant={'subtitle1'}>Нет умений</Typography>
+                    )}
+                  </SBox>
+                </Paper>
+              </SBox>
+            ),
+          )}
         </>
       )
     }
   },
 )
-
-const ClassItem = observer(function ClassItem({
-  type,
-}: {
-  type: CharacterClassName
-}) {
-  const character = useCharacterModel()
-  const data = character.class.dataMap[type]
-
-  if (!data) return null
-
-  return (
-    <Accordion>
-      <AccordionSummary expandIcon={<ExpandMore />}>
-        <SBox
-          display={'flex'}
-          alignItems={'center'}
-          style={{ width: '100%' }}
-          onFocus={(e) => e.stopPropagation()}
-        >
-          <ClassIcon type={type} fontSize={'large'} />
-          &nbsp;&nbsp;&nbsp;
-          <Typography variant={'h5'}>{CharacterClassNameDict[type]}</Typography>
-          <SBox ml={'auto'}>&nbsp;</SBox>
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation()
-              character.actions.updateClassLevel({ type, to: 'down' })
-            }}
-          >
-            <Remove />
-          </IconButton>
-          <SBox mx={1}>
-            <Typography variant={'h5'}>
-              {data.level}{' '}
-              <Typography component={'span'} variant={'subtitle1'}>
-                ур.
-              </Typography>
-            </Typography>
-          </SBox>
-          <IconButton
-            disabled={character.class.level >= MAX_CHARACTER_LEVEL}
-            onClick={(e) => {
-              e.stopPropagation()
-              character.actions.updateClassLevel({ type, to: 'up' })
-            }}
-          >
-            <Add />
-          </IconButton>
-        </SBox>
-      </AccordionSummary>
-      <AccordionDetails>
-        <ClassFeatures features={character.class.featuresMap[type]} />
-      </AccordionDetails>
-    </Accordion>
-  )
-})
 
 const SelectClassList = observer(function SelectClassList({
   onSelect,
@@ -141,20 +199,24 @@ const SelectClassList = observer(function SelectClassList({
   onSelect?: () => void
 }) {
   const character = useCharacterModel()
-  // const refList = character.class.refList
   const refMap = character.class.refMap
-  // const abilityEffect = character.effects.ability
 
-  // const isMulticlass = refList.length > 0
-  //
-  // const baseRequirements = useMemo(
-  //   () =>
-  //     getMulticlassDispleasedRequirements(
-  //       abilityEffect.abilities,
-  //       ...refList.map(({ multiclass: { requirements } }) => requirements),
-  //     ),
-  //   [abilityEffect.abilities, refList],
-  // )
+  const baseClaims = useMemo(
+    () =>
+      character.class.isEmpty
+        ? undefined
+        : getMulticlassUnmetClaims(
+            character.class.effectMap.ability.abilities,
+            ...character.class.refList.map(
+              ({ multiclass: { requirements } }) => requirements,
+            ),
+          ),
+    [
+      character.class.effectMap.ability.abilities,
+      character.class.isEmpty,
+      character.class.refList,
+    ],
+  )
 
   const [classInfo, setClassInfo] = useState<CharacterClass | undefined>()
 
@@ -169,31 +231,42 @@ const SelectClassList = observer(function SelectClassList({
   const classInfoModel = useMemo(
     () =>
       new ClassModel(
-        new CharacterModel({
-          ...character.state,
-          classes: {
-            [classInfo?.type || '']: {
-              type: classInfo?.type,
-              level: Array(20).fill(0),
-            },
-          },
+        new CharacterMockModel({
+          classes: classInfo?.type
+            ? {
+                [classInfo.type]: {
+                  type: classInfo?.type,
+                  level: Array(20).fill(0),
+                },
+              }
+            : undefined,
         }),
       ),
-    [character.state, classInfo?.type],
+    [classInfo?.type],
   )
 
   const classInfoFeaturesMap = classInfoModel.featuresMap
+
+  console.log(character.effects.ability.abilities)
 
   return (
     <>
       <List>
         {classesList.map((classItem) => {
-          const { type } = classItem
+          const { type, multiclass } = classItem
+          const isSelected = !!refMap[type]
+          const classClaims = character.class.isEmpty
+            ? undefined
+            : getMulticlassUnmetClaims(
+                character.class.effectMap.ability.abilities,
+                multiclass.requirements,
+              )
+
           return (
             <ListItem
               key={type}
               button
-              disabled={!!refMap[type]}
+              disabled={Boolean(isSelected || baseClaims || classClaims)}
               onClick={() => selectClass(type)}
             >
               <ListItemAvatar>
@@ -204,6 +277,11 @@ const SelectClassList = observer(function SelectClassList({
                   <Typography variant={'h6'}>
                     {CharacterClassNameDict[type]}
                   </Typography>
+                }
+                secondary={
+                  isSelected
+                    ? 'Выбран'
+                    : getUnmetClaimsText(baseClaims, classClaims)
                 }
               />
               <ListItemSecondaryAction>
@@ -303,34 +381,19 @@ const ClassFeatures = observer(function ClassFeatures({
   )
 })
 
-// function getMulticlassDispleasedRequirements(
-//   abilityMap: Partial<AbilitiesMap>,
-//   ...requirementsList: DeepReadonly<Partial<AbilitiesMap>[]>[]
-// ) {
-//   for (const requirements of requirementsList) {
-//     let displeased: Partial<AbilitiesMap> | undefined
-//
-//     const isSatisfied = requirements.some((requirement) => {
-//       let currentDispleased: Partial<AbilitiesMap> | undefined
-//
-//       ABILITY_TYPES.forEach((ability) => {
-//         if (Number(requirement[ability]) < Number(abilityMap[ability])) {
-//           currentDispleased = {
-//             ...currentDispleased,
-//             [ability]: Number(requirement[ability]),
-//           }
-//         }
-//       })
-//
-//       if (currentDispleased) {
-//         displeased = currentDispleased
-//         return false
-//       }
-//       return true
-//     })
-//
-//     if (!isSatisfied) {
-//       return displeased
-//     }
-//   }
-// }
+function getUnmetClaimsText(
+  baseClaims: Partial<AbilitiesMap> | undefined,
+  classClaims: Partial<AbilitiesMap> | undefined,
+) {
+  if (!baseClaims && !classClaims) return undefined
+
+  const text = baseClaims
+    ? 'Не выполнены требования имеющегося класса: '
+    : 'Не выполнены требования для этого класса: '
+  return (
+    text +
+    entries(baseClaims || classClaims)
+      .map(([ability, value]) => `${AbilityTypeDict[ability]} ${value}`)
+      .join(' и ')
+  )
+}

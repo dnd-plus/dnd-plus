@@ -9,8 +9,10 @@ import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
 import { createKey } from 'models/utils/createKey'
 import { computed } from 'mobx'
 
-type WithoutLevel<Effect> = Effect extends { readonly level: CharacterLevel }
-  ? Omit<Effect, 'level'>
+type WithoutLevel<Effect> = Effect extends {
+  readonly characterLevel: CharacterLevel
+}
+  ? Omit<Effect, 'characterLevel'>
   : never
 
 type LevelEffect = WithoutLevel<Effect>
@@ -38,14 +40,14 @@ export class ClassFeatureModel extends FeatureModel<ClassFeature> {
     return this.ref.levelEffects || []
   }
 
-  getClassEffects(currentLevel: CharacterLevel): EffectModel[] {
+  getClassEffects(characterLevel: CharacterLevel): EffectModel[] {
     return [
       ...this.effects,
       ...this.levelEffects.flatMap(
         (levelEffect, index) =>
           effectFactory(
             this.characterModel,
-            { ...levelEffect, level: currentLevel } as Effect, // TODO: remove when has at least one level effect
+            { ...(levelEffect as Effect), characterLevel } as Effect, // TODO: remove when has at least one level effect
             createKey(this.key, 'levelEffect', index),
             { feature: this.ref.name },
           ) || [],

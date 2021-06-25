@@ -38,9 +38,8 @@ import { MapHooks } from 'components/MapHooks'
 import { FeatEffectModel } from '../../Effect/effects/FeatEffect'
 import { observer } from 'mobx-react-lite'
 import { computed, toJS } from 'mobx'
-import { EffectTypeMap } from 'models/Character/EffectsModel'
 import { CharacterRace } from 'models/Character/Race/Race'
-import { EffectModel } from 'models/Character/Effect/Effect'
+import { EffectTypeMap } from 'models/Character/Effect/Effect'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
@@ -74,9 +73,9 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
   @computed
   get checkOptions() {
     return {
-      abilityEffect: this.currentEffects.ability,
-      equipmentPossessionEffect: this.currentEffects.equipmentPossession,
-      spellCastingEffect: this.currentEffects.spellCasting,
+      abilityEffect: this.currentEffectMap.ability,
+      equipmentPossessionEffect: this.currentEffectMap.equipmentPossession,
+      spellCastingEffect: this.currentEffectMap.spellCasting,
       raceRef: this.characterModel.race.ref,
     }
   }
@@ -112,7 +111,7 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
   }
 
   @computed
-  get effects(): EffectModel[] {
+  protected get choiceEffects() {
     return [
       new FeatEffectModel(
         this.characterModel,
@@ -123,7 +122,7 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
             : [],
         },
         createKey(this.key, this.knownState?.selected),
-      ).withChoice(this),
+      ),
     ]
   }
 
@@ -218,7 +217,7 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
                 },
               })
             }
-            effectMap={this.currentEffects}
+            effectMap={this.currentEffectMap}
             raceRef={this.characterModel.race.ref}
           />
         </>

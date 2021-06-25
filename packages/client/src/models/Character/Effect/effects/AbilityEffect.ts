@@ -1,7 +1,6 @@
 import { AbilitiesMap, ABILITY_TYPES } from 'common/reference/AbilityType'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
-import { Memoize } from 'models/utils/Memoize'
 
 export type AbilityEffect = DeepReadonly<{
   type: 'ability'
@@ -12,7 +11,6 @@ export type AbilityEffect = DeepReadonly<{
 const DEFAULT_MAX = 20
 
 export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'ability',
@@ -21,7 +19,6 @@ export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
     } as const
   }
 
-  @Memoize()
   get abilities() {
     return this.ref.abilities || {}
   }

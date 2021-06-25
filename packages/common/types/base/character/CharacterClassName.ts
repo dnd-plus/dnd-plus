@@ -16,6 +16,8 @@ export const CHARACTER_CLASS_NAMES = [
 
 export type CharacterClassName = typeof CHARACTER_CLASS_NAMES[number]
 
+export type CharacterTypeRecord<T> = { [K in CharacterClassName]?: T }
+
 export const CharacterClassNameDict: Record<CharacterClassName, string> = {
   artificer: 'Изобретатель',
   barbarian: 'Варвар',

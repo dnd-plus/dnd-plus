@@ -1,6 +1,7 @@
 import {
   CHARACTER_CLASS_NAMES,
   CharacterClassName,
+  CharacterTypeRecord,
 } from 'common/types/base/character/CharacterClassName'
 import { BaseDiceValue } from 'common/types/base/Dice'
 import { ArmorType, ArmorTypeDict } from 'common/reference/equipment/ArmorType'
@@ -35,6 +36,9 @@ import { uniq } from 'lodash-es'
 import { SpellCasting } from 'models/Character/Effect/effects/SpellCastingEffect'
 import { createSpellCastingFeatureDescription } from 'models/Character/Class/spellCasting'
 import { computed, makeObservable } from 'mobx'
+import { getMulticlassUnmetClaims } from 'models/Character/Class/getMulticlassUnmetClaims'
+import { createEffectMap, unionEffectModels } from 'models/utils/effect'
+import { withChildEffects } from 'models/Character/EffectsModel'
 
 export type CharacterClass = DeepReadonly<{
   type: CharacterClassName
@@ -143,6 +147,26 @@ export class ClassModel {
   @computed
   get refMap() {
     return mapValues(this.state, (type, item) => item && classesMap[type])
+  }
+
+  @computed
+  get mainRef() {
+    return this.mainType && this.refMap[this.mainType]
+  }
+
+  @computed
+  get incomingEffects() {
+    return this.characterModel.race.effects
+  }
+
+  @computed
+  get isEmpty() {
+    return this.sortedClassNames.length === 0
+  }
+
+  @computed
+  get isMulticlass() {
+    return this.sortedClassNames.length > 1
   }
 
   @computed
@@ -407,18 +431,62 @@ export class ClassModel {
   }
 
   @computed
-  get features() {
-    return Object.values(this.featuresMap).flatMap((features) => features || [])
+  get multiclassUnmetClaimsMap() {
+    const unmetClaimsMap: CharacterTypeRecord<Partial<AbilitiesMap>> = {}
+
+    this.levelList.forEach(({ type, level }, index) => {
+      if (level !== 1) return
+
+      const effects = withChildEffects(this.characterModel, [
+        ...this.incomingEffects,
+        ...this.levelList
+          .slice(0, index)
+          .flatMap(
+            ({ type, level }) =>
+              this.featuresMap[type]
+                ?.filter((feature) => feature.level === level)
+                .flatMap((feature) => feature.getClassEffects(level)) || [],
+          ),
+      ])
+
+      console.log(
+        unionEffectModels(this.characterModel, 'ability', effects).abilities,
+      )
+
+      unmetClaimsMap[type] = getMulticlassUnmetClaims(
+        unionEffectModels(this.characterModel, 'ability', effects).abilities,
+        (type !== this.mainType && this.mainRef?.multiclass.requirements) || [],
+        this.refMap[type]?.multiclass.requirements || [],
+      )
+    })
+
+    return unmetClaimsMap
+  }
+
+  @computed
+  get levelFeaturesList() {
+    return this.levelList.flatMap(({ type, level }) => {
+      return {
+        type,
+        level,
+        features:
+          this.multiclassUnmetClaimsMap[type] && type !== this.mainType
+            ? []
+            : this.featuresMap[type]?.filter(
+                (feature) => feature.level === level,
+              ) || [],
+      }
+    })
   }
 
   @computed
   get choicesCount() {
+    const features = this.levelFeaturesList.flatMap(({ features }) => features)
     return this.refList.length === 0
       ? 1
-      : 0 +
-          this.features.reduce((sum, feature) => {
-            return sum + feature.choicesCount
-          }, 0)
+      : features.reduce((sum, feature) => {
+          return sum + feature.choicesCount
+        }, 0)
   }
 
   @computed
@@ -444,22 +512,23 @@ export class ClassModel {
 
   @computed
   get effects(): EffectModel[] {
-    const levelEffectMap = mapValues(this.featuresMap, (type, features) => {
-      const levelEffects: (EffectModel[] | undefined)[] = []
+    return [
+      ...this.incomingEffects,
+      ...this.levelFeaturesList.flatMap(({ type, level, features }) =>
+        features.flatMap((feature) =>
+          feature
+            .getClassEffects(level)
+            .map((effect) => effect.withFrom({ class: type })),
+        ),
+      ),
+    ]
+  }
 
-      features?.forEach((feature) => {
-        ;(levelEffects[feature.level] = levelEffects[feature.level] || []).push(
-          ...feature.getClassEffects(this.levelMap[type]),
-        )
-      })
-
-      return levelEffects.map((effects) =>
-        effects?.map((effect) => effect.withFrom({ class: type })),
-      )
-    })
-
-    return this.levelList.flatMap(
-      ({ type, level }) => levelEffectMap[type][level] || [],
+  @computed
+  get effectMap() {
+    return createEffectMap(
+      this.characterModel,
+      withChildEffects(this.characterModel, this.effects),
     )
   }
 }

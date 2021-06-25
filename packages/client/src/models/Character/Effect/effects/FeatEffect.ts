@@ -8,7 +8,6 @@ import { effectFactory, EffectModel } from 'models/Character/Effect/Effect'
 import { createKey } from 'models/utils/createKey'
 import { checkFeatConditions } from 'models/Character/Feat/Feat'
 import { feats } from 'models/Character/Feat/feats'
-import { Memoize } from 'models/utils/Memoize'
 import { getFeatureChoiceEffects } from '../../FeatureChoice/FeatureChoice'
 
 export type FeatEffect = DeepReadonly<{
@@ -17,7 +16,6 @@ export type FeatEffect = DeepReadonly<{
 }>
 
 export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'feat',

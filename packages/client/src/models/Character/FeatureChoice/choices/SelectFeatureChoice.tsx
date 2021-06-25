@@ -50,7 +50,7 @@ export class SelectFeatureChoiceModel<
   }
 
   @computed
-  get effects() {
+  protected get choiceEffects() {
     return (this.selected?.effects || []).flatMap(
       (effect, index) =>
         effectFactory(

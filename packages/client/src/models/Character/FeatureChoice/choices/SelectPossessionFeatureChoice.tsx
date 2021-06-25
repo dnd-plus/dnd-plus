@@ -97,7 +97,7 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
   }
 
   @computed
-  get effects() {
+  protected get choiceEffects() {
     return this.selected ? [this.activeEffect] : []
   }
 
@@ -175,7 +175,7 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
 
   @computed
   protected get availableOptions() {
-    const { skills } = this.currentEffects.skillPossession
+    const { skills } = this.currentEffectMap.skillPossession
     return (
       this.minLevel &&
       keys(skills).filter(
@@ -210,7 +210,7 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
         skills: this.selected ? { [this.selected]: this.level } : {},
       },
       this.effectKey,
-    ).withChoice(this)
+    )
   }
 }
 

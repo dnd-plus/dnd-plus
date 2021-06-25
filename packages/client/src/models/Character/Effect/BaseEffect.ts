@@ -3,7 +3,6 @@ import { CharacterModel } from 'models/Character/CharacterModel'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 import type { EffectModelsMap } from './Effect'
 import { toJS } from 'mobx'
-import { FeatureChoiceModel } from 'models/Character/FeatureChoice/FeatureChoice'
 
 export type EffectFrom = {
   text?: string
@@ -46,13 +45,6 @@ export abstract class BaseEffectModel<
 
   withFrom(from: OneOfOptionalRequired<EffectFrom>): this {
     this.from = { ...this.from, ...from }
-    return this
-  }
-
-  choiceModel: FeatureChoiceModel | undefined
-
-  withChoice(choiceModel: FeatureChoiceModel): this {
-    this.choiceModel = choiceModel
     return this
   }
 

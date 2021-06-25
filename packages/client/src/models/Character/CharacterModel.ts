@@ -41,7 +41,7 @@ export class CharacterModel {
   )
 
   @observable
-  state = this.initialState
+  state: CharacterState = this.initialState
 
   @computed
   get hasState() {
@@ -81,4 +81,10 @@ export class CharacterModel {
 
   // must be last
   readonly effects = new EffectsModel(this)
+}
+
+export class CharacterMockModel extends CharacterModel {
+  constructor(initialState: Partial<CharacterState>) {
+    super({ _id: '', userId: '', name: '', ...initialState })
+  }
 }

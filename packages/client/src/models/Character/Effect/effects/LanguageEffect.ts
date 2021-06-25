@@ -1,6 +1,5 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
-import { Memoize } from 'models/utils/Memoize'
 import { LanguageType } from 'common/reference/LanguageType'
 
 export type LanguageEffect = DeepReadonly<{
@@ -9,7 +8,6 @@ export type LanguageEffect = DeepReadonly<{
 }>
 
 export class LanguageEffectModel extends BaseEffectModel<LanguageEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'language',
@@ -17,7 +15,6 @@ export class LanguageEffectModel extends BaseEffectModel<LanguageEffect> {
     } as const
   }
 
-  @Memoize()
   get languages() {
     return [...(this.ref.languages || [])]
   }

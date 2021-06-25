@@ -10,12 +10,7 @@ import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/
 import { DefenceEffectModel } from 'models/Character/Effect/effects/DefenceEffect'
 import { SavingThrowAdvantageEffectModel } from 'models/Character/Effect/effects/SavingThrowAdvantageEffect'
 import { SkillPossessionEffectModel } from 'models/Character/Effect/effects/SkillPossessionEffect'
-import {
-  BlindsightVisionEffectModel,
-  DarkVisionEffectModel,
-  TremorsenseVisionEffectModel,
-  TruesightVisionEffectModel,
-} from 'models/Character/Effect/effects/VisionEffect'
+import { VisionEffectModel } from 'models/Character/Effect/effects/VisionEffect'
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
 import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
@@ -23,8 +18,10 @@ import { FeatEffectModel } from 'models/Character/Effect/effects/FeatEffect'
 import { HitPointEffectModel } from 'models/Character/Effect/effects/HitPointEffect'
 import { ArmorClassEffectModel } from './effects/ArmorClassEffect'
 import { SpellCastingEffectModel } from 'models/Character/Effect/effects/SpellCastingEffect'
+import { EmptyEffectModel } from 'models/Character/Effect/effects/EmptyEffect'
 
 export const effectModelsMap = {
+  empty: EmptyEffectModel,
   ability: AbilityEffectModel,
   defence: DefenceEffectModel,
   equipmentPossession: EquipmentPossessionEffectModel,
@@ -34,10 +31,7 @@ export const effectModelsMap = {
   savingThrowAdvantage: SavingThrowAdvantageEffectModel,
   savingThrowPossession: SavingThrowPossessionEffectModel,
   skillPossession: SkillPossessionEffectModel,
-  blindsightVision: BlindsightVisionEffectModel,
-  darkVision: DarkVisionEffectModel,
-  tremorsenseVision: TremorsenseVisionEffectModel,
-  truesightVision: TruesightVisionEffectModel,
+  vision: VisionEffectModel,
   language: LanguageEffectModel,
   feat: FeatEffectModel,
   hitPoint: HitPointEffectModel,
@@ -59,6 +53,9 @@ export type Effect = {
     ? R
     : null
 }[keyof EffectModelsMap]
+export type EffectTypeMap = {
+  [K in EffectType]: InstanceType<EffectModelsMap[K]>
+}
 
 // eslint-disable-next-line unused-imports/no-unused-vars-ts,@typescript-eslint/ban-types
 const effectModelsMapGuard: Record<Effect['type'], Function> = effectModelsMap

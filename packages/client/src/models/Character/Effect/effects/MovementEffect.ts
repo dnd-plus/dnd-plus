@@ -1,6 +1,5 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
-import { Memoize } from 'models/utils/Memoize'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
 type MovementEffectCreator<T extends string> = DeepReadonly<
@@ -23,15 +22,12 @@ export type MovementEffect =
 abstract class MovementEffectModel<
   R extends MovementEffect,
 > extends BaseEffectModel<R> {
-  @Memoize()
   get absolute() {
     return this.ref.absolute ?? 0
   }
-  @Memoize()
   get relative() {
     return this.ref.relative ?? 0
   }
-  @Memoize()
   get speed() {
     return this.absolute + this.relative
   }
@@ -63,7 +59,6 @@ export class FlyMovementEffectModel extends MovementEffectModel<FlyMovementEffec
 }
 
 export class SwimMovementEffectModel extends MovementEffectModel<SwimMovementEffect> {
-  @Memoize()
   get emptyRef() {
     return {
       type: 'swimMovement',
