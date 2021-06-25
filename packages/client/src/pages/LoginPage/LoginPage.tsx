@@ -152,7 +152,7 @@ export function LoginPage() {
                       {isRegister ? 'Зарегистрироваться' : 'Войти'}
                     </Button>
                     <Button
-                      onClick={toggleIsOpenPopper}
+                      onClick={() => !isOpenPopper && toggleIsOpenPopper()}
                       style={{ width: 'auto' }}
                     >
                       <ArrowDropDown />
@@ -183,7 +183,6 @@ export function LoginPage() {
                                 onClick={() => {
                                   toggleIsRegister(false)
                                   toggleIsOpenPopper()
-                                  // form.resetFieldState(FORM_ERROR)
                                 }}
                               >
                                 Войти
@@ -193,7 +192,6 @@ export function LoginPage() {
                                 onClick={() => {
                                   toggleIsRegister(true)
                                   toggleIsOpenPopper()
-                                  // form.resetFieldState(FORM_ERROR)
                                 }}
                               >
                                 Зарегистрироваться
