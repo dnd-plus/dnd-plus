@@ -432,7 +432,7 @@ export class ClassModel {
 
   @computed
   get multiclassUnmetClaimsMap() {
-    const unmetClaimsMap: CharacterTypeRecord<Partial<AbilitiesMap>> = {}
+    const unmetClaimsMap: CharacterTypeRecord<Partial<AbilitiesMap>[]> = {}
 
     this.levelList.forEach(({ type, level }, index) => {
       if (level !== 1) return
@@ -448,10 +448,6 @@ export class ClassModel {
                 .flatMap((feature) => feature.getClassEffects(level)) || [],
           ),
       ])
-
-      console.log(
-        unionEffectModels(this.characterModel, 'ability', effects).abilities,
-      )
 
       unmetClaimsMap[type] = getMulticlassUnmetClaims(
         unionEffectModels(this.characterModel, 'ability', effects).abilities,

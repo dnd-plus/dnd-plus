@@ -251,8 +251,6 @@ const SelectClassList = observer(function SelectClassList({
 
   const classInfoFeaturesMap = classInfoModel.featuresMap
 
-  console.log(character.effects.ability.abilities)
-
   return (
     <>
       <List>
@@ -386,8 +384,8 @@ const ClassFeatures = observer(function ClassFeatures({
 })
 
 function getUnmetClaimsText(
-  baseClaims: Partial<AbilitiesMap> | undefined,
-  classClaims: Partial<AbilitiesMap> | undefined,
+  baseClaims: Partial<AbilitiesMap>[] | undefined,
+  classClaims: Partial<AbilitiesMap>[] | undefined,
 ) {
   if (!baseClaims && !classClaims) return undefined
 
@@ -396,8 +394,12 @@ function getUnmetClaimsText(
     : 'Не выполнены требования для этого класса: '
   return (
     text +
-    entries(baseClaims || classClaims)
-      .map(([ability, value]) => `${AbilityTypeDict[ability]} ${value}`)
-      .join(' и ')
+    (baseClaims || classClaims || [])
+      .map((claim) =>
+        entries(claim)
+          .map(([ability, value]) => `${AbilityTypeDict[ability]} ${value}`)
+          .join(' и '),
+      )
+      .join(' или ')
   )
 }

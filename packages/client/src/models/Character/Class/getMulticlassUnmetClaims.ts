@@ -6,7 +6,7 @@ export function getMulticlassUnmetClaims(
   ...requirementsList: DeepReadonly<Partial<AbilitiesMap>[]>[]
 ) {
   for (const requirements of requirementsList) {
-    let unmet: Partial<AbilitiesMap> | undefined
+    const unmets: Partial<AbilitiesMap>[] = []
 
     const isSatisfied =
       !requirements.length ||
@@ -23,14 +23,14 @@ export function getMulticlassUnmetClaims(
         })
 
         if (currentUnmet) {
-          unmet = currentUnmet
+          unmets.push(currentUnmet)
           return false
         }
         return true
       })
 
     if (!isSatisfied) {
-      return unmet
+      return unmets
     }
   }
 }
