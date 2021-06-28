@@ -432,10 +432,13 @@ export class ClassModel {
 
   @computed
   get multiclassUnmetClaimsMap() {
-    const unmetClaimsMap: CharacterTypeRecord<Partial<AbilitiesMap>[]> = {}
+    const unmetClaimsMap: CharacterTypeRecord<{
+      base: Partial<AbilitiesMap>[] | undefined
+      current: Partial<AbilitiesMap>[] | undefined
+    }> = {}
 
     this.levelList.forEach(({ type, level }, index) => {
-      if (level !== 1) return
+      if (level !== 1 || type === this.mainType) return
 
       const effects = withChildEffects(this.characterModel, [
         ...this.incomingEffects,
@@ -449,11 +452,20 @@ export class ClassModel {
           ),
       ])
 
-      unmetClaimsMap[type] = getMulticlassUnmetClaims(
-        unionEffectModels(this.characterModel, 'ability', effects).abilities,
-        (type !== this.mainType && this.mainRef?.multiclass.requirements) || [],
-        this.refMap[type]?.multiclass.requirements || [],
-      )
+      const claims = {
+        base: getMulticlassUnmetClaims(
+          unionEffectModels(this.characterModel, 'ability', effects).abilities,
+          this.mainRef?.multiclass.requirements || [],
+        ),
+        current: getMulticlassUnmetClaims(
+          unionEffectModels(this.characterModel, 'ability', effects).abilities,
+          this.refMap[type]?.multiclass.requirements || [],
+        ),
+      }
+
+      if (claims.base || claims.current) {
+        unmetClaimsMap[type] = claims
+      }
     })
 
     return unmetClaimsMap

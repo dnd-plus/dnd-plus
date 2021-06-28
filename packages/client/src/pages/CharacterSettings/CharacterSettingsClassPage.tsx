@@ -66,13 +66,10 @@ export const CharacterSettingsClassPage = observer(
       )
     } else {
       const unmetTextMap = mapValues(character.class.refMap, (type) => {
-        const { multiclassUnmetClaimsMap, mainType } = character.class
-        return (
-          type !== character.class.mainType &&
-          getUnmetClaimsText(
-            mainType && multiclassUnmetClaimsMap[mainType],
-            multiclassUnmetClaimsMap[type],
-          )
+        const { multiclassUnmetClaimsMap } = character.class
+        return getUnmetClaimsText(
+          multiclassUnmetClaimsMap[type]?.base,
+          multiclassUnmetClaimsMap[type]?.current,
         )
       })
 
@@ -390,7 +387,7 @@ function getUnmetClaimsText(
   if (!baseClaims && !classClaims) return undefined
 
   const text = baseClaims
-    ? 'Не выполнены требования имеющегося класса: '
+    ? 'Не выполнены требования основного класса: '
     : 'Не выполнены требования для этого класса: '
   return (
     text +
