@@ -1,6 +1,7 @@
 import { AbilitiesMap, ABILITY_TYPES } from 'common/reference/AbilityType'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { mapValues } from 'common/utils/typesafe'
 
 export type AbilityEffect = DeepReadonly<{
   type: 'ability'
@@ -20,7 +21,20 @@ export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
   }
 
   get abilities() {
-    return this.ref.abilities || {}
+    return {
+      strength: this.ref.abilities?.strength || 0,
+      dexterity: this.ref.abilities?.dexterity || 0,
+      constitution: this.ref.abilities?.constitution || 0,
+      intelligence: this.ref.abilities?.intelligence || 0,
+      wisdom: this.ref.abilities?.wisdom || 0,
+      charisma: this.ref.abilities?.charisma || 0,
+    }
+  }
+
+  get modifiers() {
+    return mapValues(this.abilities, (ability, value) =>
+      Math.floor((value - 10) / 2),
+    )
   }
 
   assign(effect: AbilityEffect) {

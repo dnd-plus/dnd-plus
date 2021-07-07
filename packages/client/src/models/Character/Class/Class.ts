@@ -376,15 +376,34 @@ export class ClassModel {
       const level = this.levelMap[type]
       if (!spellCasting || !level || spellCasting.fromLevel > level) return
 
-      let maxLevel = 0
-
       const spellSlots = spellCastingSlotsMap[spellCasting.type]?.[level - 1]
+      let maxLevel = 0
       if (spellSlots) {
         maxLevel = spellSlots.includes(0)
           ? spellSlots.indexOf(0)
           : spellSlots.length
       } else if (spellCasting.pact) {
         maxLevel = spellCasting.pact.spellsLevel[level - 1]
+      }
+
+      let maxNumber = 0
+      if (spellCasting.availableSpellsNumber) {
+        maxNumber = spellCasting.availableSpellsNumber?.[level - 1]
+      } else if (spellCasting.characterLevelSpellsNumberMod) {
+        const effectMap = createEffectMap(
+          this.characterModel,
+          this.effectsWithoutPreparedSpells,
+        )
+        maxNumber = Math.max(
+          1,
+          effectMap.ability.modifiers[spellCasting.ability] +
+            Math.floor(
+              level *
+                (spellCasting.characterLevelSpellsNumberMod === 'full'
+                  ? 1
+                  : 0.5),
+            ),
+        )
       }
 
       const key = createKey(type, 'spellCasting')
@@ -396,7 +415,7 @@ export class ClassModel {
           classType: type,
           classOnly: true,
           maxLevel: maxLevel as SpellLevel,
-          maxNumber: spellCasting.availableSpellsNumber?.[level - 1] || 0,
+          maxNumber,
           maxCantripsNumber:
             spellCasting.availableCantripsNumber?.[level - 1] || 0,
           variant: 'all',
@@ -428,9 +447,6 @@ export class ClassModel {
               type: 'spellCasting',
               spellCastingClassMap: {
                 [type]: spellCasting,
-              },
-              preparedSpellsClassMap: {
-                [type]: this.spellCastingChoiceMap[type]?.selectedSpellIds,
               },
             },
           ],
@@ -584,7 +600,7 @@ export class ClassModel {
   }
 
   @computed
-  get effects(): EffectModel[] {
+  get effectsWithoutPreparedSpells(): EffectModel[] {
     return [
       ...this.incomingEffects,
       ...this.levelFeaturesList.flatMap(({ type, level, features }) =>
@@ -595,6 +611,15 @@ export class ClassModel {
         ),
       ),
     ]
+  }
+
+  @computed
+  get effects(): EffectModel[] {
+    return this.effectsWithoutPreparedSpells.concat(
+      Object.values(this.spellCastingChoiceMap).flatMap(
+        (choice) => choice?.effects || [],
+      ),
+    )
   }
 
   @computed

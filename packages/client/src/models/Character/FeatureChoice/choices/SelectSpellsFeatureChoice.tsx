@@ -281,7 +281,7 @@ export function SpellsSelect(props: {
 
   return (
     <>
-      {isSeparateCantrips && (
+      {isSeparateCantrips && !!maxCantripsNumber && (
         <SBox mb={1}>
           <Typography>
             Заговоры: {sCantrips.length} / {maxCantripsNumber}
