@@ -116,12 +116,6 @@ export const {
     delete(state, { payload }: IdPayloadAction) {
       delete state[payload._id]
     },
-    setName(state, { payload }: IdPayloadAction<{ name: string }>) {
-      const character = state[payload._id]
-      if (payload.name && character) {
-        character.name = payload.name
-      }
-    },
   },
 })
 

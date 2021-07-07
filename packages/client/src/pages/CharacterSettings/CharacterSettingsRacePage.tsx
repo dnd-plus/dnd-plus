@@ -14,17 +14,17 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core'
 import React, { useState } from 'react'
 import { racesList } from 'models/Character/Race/racesList'
 import { CharacterRace } from 'models/Character/Race/Race'
 import { Info as InfoIcon } from '@material-ui/icons'
-import styled, { css, useTheme } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { useToggle } from 'react-use'
 import { SBox } from 'components/SBox'
 import { FeatureItem } from 'pages/CharacterSettings/components/FeatureItem'
 import { observer } from 'mobx-react-lite'
+import { useIsMobile } from 'hooks/useIsMobile'
 
 const SBigAvatar = styled(Avatar)(
   ({ theme }) => css`
@@ -129,7 +129,7 @@ function SelectRaceList({ onSelectRace }: { onSelectRace?: () => void }) {
         onClose={() => setRaceInfo(null)}
         fullWidth
         maxWidth={'md'}
-        fullScreen={useMediaQuery(useTheme().breakpoints.down('sm'))}
+        fullScreen={useIsMobile()}
       >
         {raceInfo && (
           <>

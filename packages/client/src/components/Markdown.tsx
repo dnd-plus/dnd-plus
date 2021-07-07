@@ -31,12 +31,12 @@ const SMarkdownToJsx = styled(MarkdownToJsx)`
 const overrides: MarkdownOptions['overrides'] = {
   p: (props: any) => (
     <SBox my={2}>
-      <Typography variant={'body1'} {...props} />
+      <Typography component={'div'} variant={'body1'} {...props} />
     </SBox>
   ),
   li: (props: any) => (
     <li {...props}>
-      <Typography variant={'body1'} {...props} />
+      <Typography component={'div'} variant={'body1'} {...props} />
     </li>
   ),
   button: Button,
@@ -52,7 +52,10 @@ const overrides: MarkdownOptions['overrides'] = {
   td: TableCell,
 }
 
-export function Markdown({ children, options }: MarkdownProps) {
+export const Markdown = React.memo(function Markdown({
+  children,
+  options,
+}: MarkdownProps) {
   return (
     <SMarkdownToJsx
       options={{
@@ -63,4 +66,4 @@ export function Markdown({ children, options }: MarkdownProps) {
       {children}
     </SMarkdownToJsx>
   )
-}
+})

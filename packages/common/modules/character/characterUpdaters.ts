@@ -16,6 +16,11 @@ export type WithCharacterReducer<
 export const characterUpdaters = extendType<
   Record<string, WithCharacterReducer>
 >()({
+  setName(character, { payload: { name } }: IdPayloadAction<{ name: string }>) {
+    if (name) {
+      character.name = name
+    }
+  },
   // BASE ABILITIES
   setBaseAbilitiesType(
     character,

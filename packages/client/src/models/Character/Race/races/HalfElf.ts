@@ -31,7 +31,7 @@ export const HalfElf: CharacterRace = {
     {
       name: 'Скорость',
       description: 'Базовая скорость вашего перемещения равна 30 футам.',
-      effects: [{ type: 'walkMovement', absolute: 30 }],
+      effects: [{ type: 'movement', walk: { absolute: 30 } }],
     },
     {
       name: 'Тёмное зрение',

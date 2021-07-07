@@ -10,6 +10,7 @@ import {
 import { spells } from 'models/Character/Spell/spells'
 import { entries, mapValues } from 'common/utils/typesafe'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import { spellCastingSlotsMap } from 'models/Character/Class/spellCasting'
 
 export type SpellCasting = {
   type: SpellCastingType
@@ -94,6 +95,25 @@ export class SpellCastingEffectModel extends BaseEffectModel<SpellCastingEffect>
 
       return { type: 'mage', level, pact }
     }
+  }
+
+  get spellSlots() {
+    const spellCasting = this.spellCasting
+    return spellCasting
+      ? spellCastingSlotsMap[spellCasting.type]?.[spellCasting.level - 1]
+      : undefined
+  }
+
+  get pact() {
+    const spellCasting = this.spellCasting
+    const pact = spellCasting?.pact
+    return (
+      spellCasting &&
+      pact && {
+        spellsNumber: pact.spellsNumber[spellCasting.level - 1],
+        spellsLevel: pact.spellsLevel[spellCasting.level - 1],
+      }
+    )
   }
 
   get preparedSpellsClassMap() {

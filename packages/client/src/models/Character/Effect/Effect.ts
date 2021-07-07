@@ -1,11 +1,7 @@
 import { BaseEffectModel, EffectFrom } from 'models/Character/Effect/BaseEffect'
 import { Tuple, Writable } from 'ts-essentials'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
-import {
-  FlyMovementEffectModel,
-  SwimMovementEffectModel,
-  WalkMovementEffectModel,
-} from 'models/Character/Effect/effects/MovementEffect'
+import { MovementEffectModel } from 'models/Character/Effect/effects/MovementEffect'
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
 import { DefenceEffectModel } from 'models/Character/Effect/effects/DefenceEffect'
 import { SavingThrowAdvantageEffectModel } from 'models/Character/Effect/effects/SavingThrowAdvantageEffect'
@@ -19,15 +15,15 @@ import { HitPointEffectModel } from 'models/Character/Effect/effects/HitPointEff
 import { ArmorClassEffectModel } from './effects/ArmorClassEffect'
 import { SpellCastingEffectModel } from 'models/Character/Effect/effects/SpellCastingEffect'
 import { EmptyEffectModel } from 'models/Character/Effect/effects/EmptyEffect'
+import { AttackEffectModel } from 'models/Character/Effect/effects/AttackEffect'
 
 export const effectModelsMap = {
   empty: EmptyEffectModel,
   ability: AbilityEffectModel,
+  attack: AttackEffectModel,
   defence: DefenceEffectModel,
   equipmentPossession: EquipmentPossessionEffectModel,
-  walkMovement: WalkMovementEffectModel,
-  flyMovement: FlyMovementEffectModel,
-  swimMovement: SwimMovementEffectModel,
+  movement: MovementEffectModel,
   savingThrowAdvantage: SavingThrowAdvantageEffectModel,
   savingThrowPossession: SavingThrowPossessionEffectModel,
   skillPossession: SkillPossessionEffectModel,

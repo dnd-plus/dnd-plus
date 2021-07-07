@@ -20,7 +20,7 @@ const baseDarkVisionFeature = {
 const baseMovementFeature = {
   name: 'Скорость',
   description: 'Ваша базовая скорость перемещения — 30 фт.',
-  effects: [{ type: 'walkMovement', absolute: 30 }],
+  effects: [{ type: 'movement', walk: { absolute: 30 } }],
 } as const
 
 const baseLanguageFeature = {
@@ -120,7 +120,7 @@ export const WoodElf: CharacterRace = {
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения - 35 фт.',
-      effects: [{ type: 'walkMovement', absolute: 35 }],
+      effects: [{ type: 'movement', walk: { absolute: 35 } }],
     },
     baseSizeFeature,
     baseDarkVisionFeature,

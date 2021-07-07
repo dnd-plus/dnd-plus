@@ -22,9 +22,7 @@ import {
   Divider,
   Grid,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core'
-import styled, { css, useTheme } from 'styled-components'
 import { checkFeatConditions, Feat } from 'models/Character/Feat/Feat'
 import { AddCircleOutline, CheckCircle, ErrorOutline } from '@material-ui/icons'
 import { Markdown } from 'components/Markdown'
@@ -40,6 +38,8 @@ import { observer } from 'mobx-react-lite'
 import { computed, toJS } from 'mobx'
 import { CharacterRace } from 'models/Character/Race/Race'
 import { EffectTypeMap } from 'models/Character/Effect/Effect'
+import { useIsMobile } from 'hooks/useIsMobile'
+import { DangerButton } from 'components/DangerButton'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
@@ -197,13 +197,13 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
             </Card>
           )}
           {!this.selected && (
-            <SDangerButton
+            <DangerButton
               variant={'outlined'}
               color={'inherit'}
               onClick={toggleIsOpen}
             >
               Выбрать черту
-            </SDangerButton>
+            </DangerButton>
           )}
           <FeatsListModal
             open={isOpen}
@@ -252,7 +252,7 @@ const FeatsListModal = observer(function FeatsListModal<F extends () => void>({
       onClose={onClose}
       fullWidth
       maxWidth={'md'}
-      fullScreen={useMediaQuery(useTheme().breakpoints.down('sm'))}
+      fullScreen={useIsMobile()}
     >
       <DialogTitle>Выбор черты</DialogTitle>
       <DialogContent>
@@ -355,13 +355,3 @@ const FeatsListModal = observer(function FeatsListModal<F extends () => void>({
     </Dialog>
   )
 })
-
-const SDangerButton = styled(Button)(
-  ({ theme }) => css`
-    border-color: ${theme.palette.error.dark};
-
-    &:hover {
-      border-color: ${theme.palette.error.main};
-    }
-  `,
-)

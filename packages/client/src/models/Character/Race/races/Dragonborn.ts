@@ -23,7 +23,7 @@ export const Dragonborn: CharacterRace = {
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения составляет 30 фт.',
-      effects: [{ type: 'walkMovement', absolute: 30 }],
+      effects: [{ type: 'movement', walk: { absolute: 30 } }],
     },
     {
       name: 'Наследие драконов',

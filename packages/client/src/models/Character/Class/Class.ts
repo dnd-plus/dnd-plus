@@ -34,11 +34,17 @@ import {
 } from 'models/Character/Feature/ClassFeature'
 import { uniq } from 'lodash-es'
 import { SpellCasting } from 'models/Character/Effect/effects/SpellCastingEffect'
-import { createSpellCastingFeatureDescription } from 'models/Character/Class/spellCasting'
+import {
+  createSpellCastingFeatureDescription,
+  spellCastingSlotsMap,
+} from 'models/Character/Class/spellCasting'
 import { computed, makeObservable } from 'mobx'
 import { getMulticlassUnmetClaims } from 'models/Character/Class/getMulticlassUnmetClaims'
 import { createEffectMap, unionEffectModels } from 'models/utils/effect'
 import { withChildEffects } from 'models/Character/EffectsModel'
+import { RuleSource } from 'common/types/RuleSource'
+import { SelectSpellsFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectSpellsFeatureChoice'
+import { SpellLevel } from 'models/Character/Spell/Spell'
 
 export type CharacterClass = DeepReadonly<{
   type: CharacterClassName
@@ -63,7 +69,7 @@ export type CharacterClass = DeepReadonly<{
   )
   spellCasting?: Omit<SpellCasting, 'level'>
   archetype: {
-    variants: CharacterClassArchetypeRef[]
+    variants: CharacterClassArchetype[]
     level: CharacterLevel
     name: string
     description: string
@@ -88,9 +94,11 @@ export type CharacterClass = DeepReadonly<{
   features: ClassFeature[]
 }>
 
-export type CharacterClassArchetypeRef = {
+export type CharacterClassArchetype = {
   type: string
+  source: RuleSource
   name: string
+  description: string
   spellCasting?: CharacterClass['spellCasting']
   features: ClassFeature[]
 }
@@ -348,10 +356,61 @@ export class ClassModel {
   }
 
   @computed
-  get spellCastingFeatureMap() {
-    return mapValues(this.refMap, (type, ref): ClassFeature | undefined => {
+  get spellCastingMap() {
+    return mapValues(this.refMap, (type, ref) => {
       const spellCasting =
         ref?.spellCasting || this.archetypeMap[type]?.selected?.spellCasting
+      return (
+        spellCasting && {
+          ...spellCasting,
+          level: this.levelMap[type],
+        }
+      )
+    })
+  }
+
+  @computed
+  get spellCastingChoiceMap() {
+    return mapValues(this.refMap, (type) => {
+      const spellCasting = this.spellCastingMap[type]
+      const level = this.levelMap[type]
+      if (!spellCasting || !level || spellCasting.fromLevel > level) return
+
+      let maxLevel = 0
+
+      const spellSlots = spellCastingSlotsMap[spellCasting.type]?.[level - 1]
+      if (spellSlots) {
+        maxLevel = spellSlots.includes(0)
+          ? spellSlots.indexOf(0)
+          : spellSlots.length
+      } else if (spellCasting.pact) {
+        maxLevel = spellCasting.pact.spellsLevel[level - 1]
+      }
+
+      const key = createKey(type, 'spellCasting')
+      return new SelectSpellsFeatureChoiceModel(
+        this.characterModel,
+        this.choicesStateMap[type]?.[key],
+        {
+          type: 'selectSpells',
+          classType: type,
+          classOnly: true,
+          maxLevel: maxLevel as SpellLevel,
+          maxNumber: spellCasting.availableSpellsNumber?.[level - 1] || 0,
+          maxCantripsNumber:
+            spellCasting.availableCantripsNumber?.[level - 1] || 0,
+          variant: 'all',
+        },
+        key,
+        this.setChoiceMap[type],
+      )
+    })
+  }
+
+  @computed
+  get spellCastingFeatureMap() {
+    return mapValues(this.refMap, (type, ref): ClassFeature | undefined => {
+      const spellCasting = this.spellCastingMap[type]
 
       return (
         spellCasting &&
@@ -368,10 +427,10 @@ export class ClassModel {
             {
               type: 'spellCasting',
               spellCastingClassMap: {
-                [type]: spellCasting && {
-                  ...spellCasting,
-                  level: this.levelMap[type],
-                },
+                [type]: spellCasting,
+              },
+              preparedSpellsClassMap: {
+                [type]: this.spellCastingChoiceMap[type]?.selectedSpellIds,
               },
             },
           ],
@@ -489,12 +548,18 @@ export class ClassModel {
 
   @computed
   get choicesCount() {
+    if (this.refList.length === 0) return 1
+
     const features = this.levelFeaturesList.flatMap(({ features }) => features)
-    return this.refList.length === 0
-      ? 1
-      : features.reduce((sum, feature) => {
-          return sum + feature.choicesCount
-        }, 0)
+    const featuresChoicesCount = features.reduce((sum, feature) => {
+      return sum + feature.choicesCount
+    }, 0)
+    const spellsChoicesCount = Object.values(this.spellCastingChoiceMap).reduce(
+      (sum, choice) => sum + (choice?.choicesCount || 0),
+      0,
+    )
+
+    return featuresChoicesCount + spellsChoicesCount
   }
 
   @computed

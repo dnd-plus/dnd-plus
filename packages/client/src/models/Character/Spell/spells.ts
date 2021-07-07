@@ -2054,7 +2054,10 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'reaction', to: 'MANUAL_reaction' },
+    castTime: {
+      type: 'reaction',
+      to: 'когда по вам попадает атака или вы становитесь целью волшебной стрелы',
+    },
     duration: { type: 'round', value: 1 },
     attackRoll: true,
     tags: ['Warding'],
@@ -3829,7 +3832,10 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'reaction', to: 'MANUAL_reaction' },
+    castTime: {
+      type: 'reaction',
+      to: 'когда вы видите, как существо в пределах 60 футов от вас накладывает заклинание',
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Negation'],
@@ -6470,7 +6476,10 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшое перо или кусочек пуха',
-    castTime: { type: 'reaction', to: 'MANUAL_reaction' },
+    castTime: {
+      type: 'reaction',
+      to: 'когда вы или существо в пределах 60 футов от вас начинаете падать',
+    },
     duration: { type: 'minute', value: 1 },
     spellRange: 60,
     attackRoll: true,
@@ -12008,7 +12017,10 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'reaction', to: 'MANUAL_reaction' },
+    castTime: {
+      type: 'reaction',
+      to: 'получив урон звуком, кислотой, огнём, холодом или электричеством',
+    },
     duration: { type: 'round', value: 1 },
     attackRoll: true,
     tags: ['Damage', 'Warding'],
@@ -13188,3 +13200,5 @@ d8 | Тип урона
     attackRoll: false,
   },
 ]
+
+spells.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))

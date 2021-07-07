@@ -85,16 +85,6 @@ module.exports = function characterModule(server: Server) {
 
   const characterType = createCharacterType(server)
 
-  characterType(characterActions.setName, {
-    async process(ctx, { payload: { name } }, meta) {
-      if (!name) {
-        server.undo(meta)
-      } else {
-        ctx.data.character.name = name
-      }
-    },
-  })
-
   characterType(
     characterActions.delete,
     {

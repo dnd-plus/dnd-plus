@@ -13,7 +13,7 @@ const BaseDwarf = extendType<Partial<CharacterRace>>()({
       name: 'Скорость',
       description:
         'Ваша базовая скорость перемещения — 25 фт. Ношение тяжёлых доспехов не снижает вашу скорость.',
-      effects: [{ type: 'walkMovement', absolute: 25 }],
+      effects: [{ type: 'movement', walk: { absolute: 25 } }],
     },
     {
       name: 'Размер',

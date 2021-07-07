@@ -25,7 +25,7 @@ export const Tiefling: CharacterRace = {
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость передвижения составляет 30 фт.',
-      effects: [{ type: 'walkMovement', absolute: 30 }],
+      effects: [{ type: 'movement', walk: { absolute: 30 } }],
     },
     {
       name: 'Тёмное зрение',

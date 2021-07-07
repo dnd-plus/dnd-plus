@@ -12,7 +12,7 @@ const BaseGnome = extendType<Partial<CharacterRace>>()({
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения — 25 фт.',
-      effects: [{ type: 'walkMovement', absolute: 25 }],
+      effects: [{ type: 'movement', walk: { absolute: 25 } }],
     },
     {
       name: 'Размер',
@@ -136,7 +136,7 @@ export const DeepGnome: CharacterRace = {
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость перемещения — 25 фт.',
-      effects: [{ type: 'walkMovement', absolute: 25 }],
+      effects: [{ type: 'movement', walk: { absolute: 25 } }],
     },
     {
       name: 'Размер',

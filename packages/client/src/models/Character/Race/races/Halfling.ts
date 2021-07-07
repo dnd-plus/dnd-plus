@@ -11,7 +11,7 @@ const CommonHalfling = extendType<Partial<CharacterRace>>()({
     {
       name: 'Скорость',
       description: 'Ваша базовая скорость передвижения составляет 25 фт.',
-      effects: [{ type: 'walkMovement', absolute: 25 }],
+      effects: [{ type: 'movement', walk: { absolute: 25 } }],
     },
     {
       name: 'Размер',

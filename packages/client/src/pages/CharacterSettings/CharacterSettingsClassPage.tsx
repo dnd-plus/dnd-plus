@@ -1,6 +1,10 @@
 import { useCharacterModel } from 'models/Character/CharacterModelContext'
 import { useMemo, useState } from 'react'
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Badge,
   Button,
   Dialog,
   DialogActions,
@@ -15,7 +19,6 @@ import {
   ListItemText,
   Paper,
   Typography,
-  useMediaQuery,
 } from '@material-ui/core'
 import { classesList } from 'models/Character/Class/classes'
 import {
@@ -24,10 +27,9 @@ import {
 } from 'common/types/base/character/CharacterClassName'
 import { ClassIcon } from 'models/Character/Class/classIconMap'
 import React from 'react'
-import { Add, Info as InfoIcon, Remove } from '@material-ui/icons'
+import { Add, ExpandMore, Info as InfoIcon, Remove } from '@material-ui/icons'
 import { CharacterClass, ClassModel } from 'models/Character/Class/Class'
 import { SBox } from 'components/SBox'
-import { useTheme } from 'styled-components'
 import { FeatureItem } from 'pages/CharacterSettings/components/FeatureItem'
 import { CharacterMockModel } from 'models/Character/CharacterModel'
 import { useToggle } from 'react-use'
@@ -37,7 +39,7 @@ import { MAX_CHARACTER_LEVEL } from 'common/types/base/character/Level'
 import { AbilitiesMap, AbilityTypeDict } from 'common/reference/AbilityType'
 import { entries, mapValues } from 'common/utils/typesafe'
 import { getMulticlassUnmetClaims } from 'models/Character/Class/getMulticlassUnmetClaims'
-import theme from 'theme'
+import { useIsMobile } from 'hooks/useIsMobile'
 
 export const CharacterSettingsClassPage = observer(
   function CharacterSettingsClassPage() {
@@ -46,7 +48,7 @@ export const CharacterSettingsClassPage = observer(
 
     const [isSelectClass, toggleIsSelectClass] = useToggle(false)
 
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const isMobile = useIsMobile()
 
     if (!refList.length || isSelectClass) {
       return (
@@ -103,6 +105,8 @@ export const CharacterSettingsClassPage = observer(
         <>
           <Typography variant={'h4'}>Классы</Typography>
           {refList.map(({ type }) => {
+            const spellCastingChoice =
+              character.class.spellCastingChoiceMap[type]
             return (
               <Paper key={type}>
                 <SBox
@@ -141,10 +145,27 @@ export const CharacterSettingsClassPage = observer(
                     <Add />
                   </IconButton>
                 </SBox>
+                {spellCastingChoice && (
+                  <Accordion>
+                    <Badge
+                      style={{ width: '100%', display: 'block' }}
+                      color={'error'}
+                      badgeContent={spellCastingChoice.choicesCount}
+                      anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    >
+                      <AccordionSummary expandIcon={<ExpandMore />}>
+                        <Typography variant={'h6'}>Заклинания</Typography>
+                      </AccordionSummary>
+                    </Badge>
+                    <AccordionDetails>
+                      <div>{spellCastingChoice.node}</div>
+                    </AccordionDetails>
+                  </Accordion>
+                )}
               </Paper>
             )
           })}
-          <SBox mb={2}>
+          <SBox my={2}>
             <Button
               color={'primary'}
               disabled={character.class.level >= MAX_CHARACTER_LEVEL}
@@ -300,7 +321,7 @@ const SelectClassList = observer(function SelectClassList({
         onClose={() => setClassInfo(undefined)}
         fullWidth
         maxWidth={'md'}
-        fullScreen={useMediaQuery(useTheme().breakpoints.down('sm'))}
+        fullScreen={useIsMobile()}
       >
         {classInfo && (
           <>

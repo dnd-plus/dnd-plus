@@ -1,5 +1,5 @@
 import { MagicSchool } from 'common/types/base/spell/MagicSchool'
-import { CastDuration, Duration } from 'common/types/base/Duration'
+import { CastDuration, SpellDuration } from 'common/types/base/Duration'
 import { CharacterClassName } from 'common/types/base/character/CharacterClassName'
 import { RuleSource } from 'common/types/RuleSource'
 import { Target } from 'common/types/base/character/Feature/Target'
@@ -14,26 +14,30 @@ type SpellNextLevel = OneOfOptionalRequired<
   }
 >
 
+export type SpellArea = {
+  type:
+    | 'line'
+    | 'cone'
+    | 'cube'
+    | 'sphere'
+    | 'cylinder'
+    | 'square'
+    | 'squareFeet'
+  size: number
+}
+
+export type SpellLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
 export type Spell = {
   id: number
   name: string
   nameEn: string
-  level: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+  level: SpellLevel
   school: MagicSchool
   ritual: boolean
   concentration: boolean
   needModel?: true
-  area?: {
-    type:
-      | 'line'
-      | 'cone'
-      | 'cube'
-      | 'sphere'
-      | 'cylinder'
-      | 'square'
-      | 'squareFeet'
-    size: number
-  }
+  area?: SpellArea
   target?: Target
   saveThrow?: AbilityType
   attackRoll: boolean
@@ -51,7 +55,7 @@ export type Spell = {
   components?: string
   needComponents: boolean
   consumeComponents: boolean
-  duration?: Duration | { type: 'special'; text?: string }
+  duration?: SpellDuration
   classes: CharacterClassName[]
   description: string
   source: RuleSource

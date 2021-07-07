@@ -1,1 +1,1 @@
-export type RuleSource = 'PHB' | 'XGTE'
+export type RuleSource = 'PHB' | 'XGTE' | 'TCOE'

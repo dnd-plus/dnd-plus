@@ -2,68 +2,59 @@ import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
 
-type MovementEffectCreator<T extends string> = DeepReadonly<
+type MovementEffectItem =
+  | OneOfOptionalRequired<{
+      absolute?: number
+      relative?: number
+    }>
+  | undefined
+
+type MovementEffect = DeepReadonly<
   OneOfOptionalRequired<{
-    type: T
-    absolute?: number
-    relative?: number
+    type: 'movement'
+    walk?: MovementEffectItem
+    fly?: MovementEffectItem
+    swim?: MovementEffectItem
   }>
 >
 
-export type WalkMovementEffect = MovementEffectCreator<'walkMovement'>
-export type FlyMovementEffect = MovementEffectCreator<'flyMovement'>
-export type SwimMovementEffect = MovementEffectCreator<'swimMovement'>
-
-export type MovementEffect =
-  | WalkMovementEffect
-  | FlyMovementEffect
-  | SwimMovementEffect
-
-abstract class MovementEffectModel<
-  R extends MovementEffect,
-> extends BaseEffectModel<R> {
-  get absolute() {
-    return this.ref.absolute ?? 0
+export class MovementEffectModel extends BaseEffectModel<MovementEffect> {
+  private getItem(effectItem: MovementEffectItem) {
+    return {
+      absolute: effectItem?.absolute || 0,
+      relative: effectItem?.relative || 0,
+    }
   }
-  get relative() {
-    return this.ref.relative ?? 0
+
+  get emptyRef() {
+    return {
+      type: 'movement',
+      walk: this.getItem(undefined),
+      fly: this.getItem(undefined),
+      swim: this.getItem(undefined),
+    } as const
   }
-  get speed() {
-    return this.absolute + this.relative
+
+  get walk() {
+    return this.getItem(this.ref.walk)
+  }
+  get fly() {
+    return this.getItem(this.ref.fly)
+  }
+  get swim() {
+    return this.getItem(this.ref.swim)
+  }
+
+  private assignItem(item1: MovementEffectItem, item2: MovementEffectItem) {
+    return {
+      absolute: Math.max(item1?.absolute || 0, item2?.absolute || 0),
+      relative: (item1?.relative || 0) + (item2?.relative || 0),
+    }
   }
 
   assign(effect: MovementEffect) {
-    this.ref.absolute = Math.max(this.absolute, effect.absolute || 0)
-    this.ref.relative = this.relative + (effect.relative || 0)
-  }
-}
-
-export class WalkMovementEffectModel extends MovementEffectModel<WalkMovementEffect> {
-  get emptyRef() {
-    return {
-      type: 'walkMovement',
-      absolute: 0,
-      relative: 0,
-    } as const
-  }
-}
-
-export class FlyMovementEffectModel extends MovementEffectModel<FlyMovementEffect> {
-  get emptyRef() {
-    return {
-      type: 'flyMovement',
-      absolute: 0,
-      relative: 0,
-    } as const
-  }
-}
-
-export class SwimMovementEffectModel extends MovementEffectModel<SwimMovementEffect> {
-  get emptyRef() {
-    return {
-      type: 'swimMovement',
-      absolute: 0,
-      relative: 0,
-    } as const
+    this.ref.walk = this.assignItem(this.ref.walk, effect.walk)
+    this.ref.fly = this.assignItem(this.ref.fly, effect.fly)
+    this.ref.swim = this.assignItem(this.ref.swim, effect.swim)
   }
 }

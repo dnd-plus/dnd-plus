@@ -3,6 +3,8 @@ export type Duration = {
   value: number
 }
 
+export type SpellDuration = Duration | { type: 'special'; text: string }
+
 export type CastDuration =
   | Duration
   | {

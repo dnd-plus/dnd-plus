@@ -353,7 +353,7 @@ export const feats: Feat[] = [
 *   Когда вы используете действие Рывок, труднопроходимая местность в этом ходу не замедляет ваше перемещение.
 *   Если вы совершаете рукопашную атак по существу, вы до конца этого хода не провоцируете от него атаки, вне зависимости от того, попадёте или нет.
 `,
-    effects: [{ type: 'walkMovement', relative: 10 }],
+    effects: [{ type: 'movement', walk: { relative: 10 } }],
   },
   {
     id: 21,
@@ -1040,7 +1040,7 @@ p>В ваших венах течет кровь героев дварфов. В
       text: 'Дварф или Маленькая раса',
       conditions: [{ race: 'Dwarf' }, { size: 'small' }],
     },
-    effects: [{ type: 'walkMovement', relative: 5 }],
+    effects: [{ type: 'movement', walk: { relative: 5 } }],
     choices: [
       { type: 'selectAbility', available: ['strength', 'dexterity'] },
       { type: 'selectSkill', availableSkills: ['acrobatics', 'athletics'] },

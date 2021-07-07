@@ -12,7 +12,7 @@ import {
   PropsFor,
   ComposedStyleFunction,
 } from '@material-ui/system'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 // Borrowed from Box.d.ts
 type BoxStyleFunction = ComposedStyleFunction<
@@ -29,7 +29,10 @@ type BoxStyleFunction = ComposedStyleFunction<
     // typeof typography,
   ]
 >
-type SystemProps = PropsFor<BoxStyleFunction>
+type SystemProps = PropsFor<BoxStyleFunction> & { gap?: number }
+
+export type SBoxProps = SystemProps &
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 export const SBox = styled.div<SystemProps>`
   ${/* borders */ ''}
@@ -42,4 +45,10 @@ export const SBox = styled.div<SystemProps>`
   ${/* sizing */ ''}
   ${spacing}
   ${/* typography */ ''}
+  ${({ gap, theme }) =>
+    gap
+      ? css`
+          gap: ${theme.spacing(gap)}px;
+        `
+      : ''}
 `
