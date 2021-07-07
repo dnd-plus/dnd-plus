@@ -8,7 +8,7 @@ export function useFuse<T>(
   const [term, setTerm] = useState('')
 
   const fuseOptions = {
-    threshold: options?.threshold || 0.2,
+    threshold: options?.threshold || 0.4,
     ...options,
   }
 
