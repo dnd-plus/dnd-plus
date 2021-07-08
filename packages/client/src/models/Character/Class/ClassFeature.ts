@@ -8,6 +8,11 @@ import { DeepReadonly } from 'ts-essentials'
 import { Feature, FeatureModel } from 'models/Character/Feature/Feature'
 import { createKey } from 'models/utils/createKey'
 import { computed } from 'mobx'
+import {
+  levelChoiceMap,
+  LevelFeatureChoice,
+  LevelFeatureChoiceCreatorParams,
+} from 'models/Character/Class/LevelFeatureChoice/LevelFeatureChoice'
 
 type WithoutLevel<Effect> = Effect extends {
   readonly characterLevel: CharacterLevel
@@ -22,6 +27,7 @@ export type ClassFeature = Feature &
     level: CharacterLevel
     improvement?: true
     levelEffects?: LevelEffect[]
+    levelChoices?: LevelFeatureChoice[]
   }>
 
 export class ClassFeatureModel extends FeatureModel<ClassFeature> {
@@ -53,5 +59,19 @@ export class ClassFeatureModel extends FeatureModel<ClassFeature> {
           ) || [],
       ),
     ]
+  }
+
+  getLevelChoices(params: LevelFeatureChoiceCreatorParams) {
+    return (
+      this.ref.levelChoices?.flatMap(({ type, ...info }) => {
+        const choiceData = levelChoiceMap[type](params)
+        return choiceData
+          ? {
+              ...choiceData,
+              ...info,
+            }
+          : []
+      }) || []
+    )
   }
 }

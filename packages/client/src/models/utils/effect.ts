@@ -7,6 +7,7 @@ import {
 } from 'client/src/models/Character/Effect/Effect'
 import { createKey } from 'client/src/models/utils/createKey'
 import { CharacterModel } from 'client/src/models/Character/CharacterModel'
+import { withChildEffects } from 'models/Character/EffectsModel'
 
 export function unionEffectModels<T extends keyof EffectModelsMap>(
   characterModel: CharacterModel,
@@ -38,11 +39,16 @@ export function compareEffectArrays(a: EffectModel[], b: EffectModel[]) {
 export function createEffectMap(
   characterModel: CharacterModel,
   effects: EffectModel[],
+  produceChildEffects: boolean,
 ) {
+  const resultEffects = produceChildEffects
+    ? withChildEffects(characterModel, effects)
+    : effects
+
   return EFFECT_TYPES.reduce(
     (obj, type) => ({
       ...obj,
-      [type]: unionEffectModels(characterModel, type, effects),
+      [type]: unionEffectModels(characterModel, type, resultEffects),
     }),
     {} as EffectTypeMap,
   )

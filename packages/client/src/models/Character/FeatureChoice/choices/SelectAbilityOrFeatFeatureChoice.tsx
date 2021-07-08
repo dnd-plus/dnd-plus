@@ -5,10 +5,10 @@ import { BaseFeatureChoiceModel } from 'models/Character/FeatureChoice/BaseFeatu
 import { FeatureChoiceModel } from 'models/Character/FeatureChoice/FeatureChoice'
 import { SelectFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectFeatFeatureChoice'
 import { SelectAbilityFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityFeatureChoice'
-import { MapHooks } from 'components/MapHooks'
 import { Button, Grid } from '@material-ui/core'
 import { computed } from 'mobx'
 import { SBox } from 'components/SBox'
+import { observer } from 'mobx-react-lite'
 
 export type SelectAbilityOrFeatFeatureChoice = DeepReadonly<{
   type: 'selectAbilityOrFeat'
@@ -90,45 +90,43 @@ export class SelectAbilityOrFeatFeatureChoiceModel extends BaseFeatureChoiceMode
     return this.getActiveChoices().flatMap((choice) => choice.effects)
   }
 
-  readonly hook = () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [variant, setVariant] = useState(this.selectedVariant)
-    const activeChoices = this.getActiveChoices(variant)
-
-    return {
-      node: (
-        <>
-          <Grid container spacing={2}>
-            <Grid item>
-              <Button
-                onClick={() => setVariant('ability')}
-                color={variant === 'ability' ? 'primary' : 'default'}
-              >
-                Характеристики
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={() => setVariant('feat')}
-                color={variant === 'feat' ? 'primary' : 'default'}
-              >
-                Черта
-              </Button>
-            </Grid>
-          </Grid>
-          <SBox mt={2}>
-            <MapHooks
-              key={variant}
-              hooks={activeChoices.map((choice) => choice.hook)}
-              render={(items) =>
-                items.map(({ node }, index) => (
-                  <React.Fragment key={index}>{node}</React.Fragment>
-                ))
-              }
-            />
-          </SBox>
-        </>
-      ),
-    }
+  @computed
+  get node() {
+    return <SelectAbilityOrFeat model={this} />
   }
 }
+
+const SelectAbilityOrFeat = observer(
+  ({ model }: { model: SelectAbilityOrFeatFeatureChoiceModel }) => {
+    const [variant, setVariant] = useState(model.selectedVariant)
+    const activeChoices = model.getActiveChoices(variant)
+
+    return (
+      <>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button
+              onClick={() => setVariant('ability')}
+              color={variant === 'ability' ? 'primary' : 'default'}
+            >
+              Характеристики
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => setVariant('feat')}
+              color={variant === 'feat' ? 'primary' : 'default'}
+            >
+              Черта
+            </Button>
+          </Grid>
+        </Grid>
+        <SBox mt={2}>
+          {activeChoices.map(({ node }, index) => (
+            <React.Fragment key={index}>{node}</React.Fragment>
+          ))}
+        </SBox>
+      </>
+    )
+  },
+)

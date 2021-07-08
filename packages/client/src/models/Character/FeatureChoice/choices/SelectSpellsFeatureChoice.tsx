@@ -15,6 +15,7 @@ import { SBox } from 'components/SBox'
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   InputAdornment,
@@ -147,10 +148,6 @@ export class SelectSpellsFeatureChoiceModel extends BaseFeatureChoiceModel<
         selectInPopup
       />
     )
-  }
-
-  readonly hook = () => {
-    return { node: this.node }
   }
 }
 
@@ -290,7 +287,12 @@ export function SpellsSelect(props: {
       )}
       <SBox mb={1}>
         <Typography>
-          Заклинания: {sSpells.length} / {maxNumber}
+          Заклинания{' '}
+          <Typography component={'span'} variant={'subtitle2'}>
+            ({maxLevel > 1 && '1 - '}
+            {maxLevel} уровень)
+          </Typography>{' '}
+          : {sSpells.length} / {maxNumber}
         </Typography>
       </SBox>
       {selected.length > 0 && (
@@ -334,6 +336,9 @@ export function SpellsSelect(props: {
             <SpellsSelect {...props} selectInPopup={false} />
           </SBox>
         </DialogContent>
+        <DialogActions>
+          <Button onClick={() => toggleIsOpen(false)}>Закрыть</Button>
+        </DialogActions>
       </Dialog>
       {canPick && !selectInPopup && (
         <>

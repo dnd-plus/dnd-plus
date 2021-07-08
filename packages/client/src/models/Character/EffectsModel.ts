@@ -32,8 +32,8 @@ export function withChildEffects(
   effects: EffectModel[],
 ): EffectModel[] {
   const nextEffects = effects.slice()
-  const effectMap = createEffectMap(characterModel, nextEffects)
-  const currentEffectMap = createEffectMap(characterModel, [])
+  const effectMap = createEffectMap(characterModel, nextEffects, false)
+  const currentEffectMap = createEffectMap(characterModel, [], false)
 
   for (let i = 0; i < nextEffects.length; i++) {
     const effect = nextEffects[i]

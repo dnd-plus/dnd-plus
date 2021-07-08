@@ -13,6 +13,7 @@ import { DeepReadonly } from 'ts-essentials'
 import { ChoiceSelect } from 'components/ChoiceSelect'
 import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
 import { computed } from 'mobx'
+import { observer } from 'mobx-react-lite'
 
 export type SelectAbilityFeatureChoice = DeepReadonly<{
   type: 'selectAbility'
@@ -89,50 +90,61 @@ export class SelectAbilityFeatureChoiceModel extends BaseFeatureChoiceModel<
     ]
   }
 
-  readonly hook = () => {
-    const selected = this.items
-    return {
-      node: this.items.map((value, index) => {
-        return (
-          <ChoiceSelect
-            key={index}
-            label={'Выбор характеристики'}
-            value={value}
-            options={this.options.map((option) => {
-              const isExist = this.items.includes(option) && value !== option
-
-              return {
-                value: option,
-                disabled: isExist,
-                text: (
-                  <>
-                    <span
-                      style={
-                        isExist ? { textDecoration: 'line-through' } : undefined
-                      }
-                    >
-                      {AbilityTypeDict[option]}
-                    </span>
-                    {isExist && (
-                      <Typography variant={'caption'}>
-                        &nbsp; выбрано
-                      </Typography>
-                    )}
-                  </>
-                ),
-              }
-            })}
-            onChange={(e) => {
-              selected.splice(index, 1, String(e.target.value))
-
-              this.setChoiceAction({
-                key: this.key,
-                value: { selected },
-              })
-            }}
-          />
-        )
-      }),
-    }
+  @computed
+  get node() {
+    return <SelectAbility model={this} />
   }
 }
+
+const SelectAbility = observer(
+  ({ model }: { model: SelectAbilityFeatureChoiceModel }) => {
+    const selected = model.selected
+    return (
+      <>
+        {model.items.map((value, index) => {
+          return (
+            <ChoiceSelect
+              key={index}
+              label={'Выбор характеристики'}
+              value={value}
+              options={model.options.map((option) => {
+                const isExist = model.items.includes(option) && value !== option
+
+                return {
+                  value: option,
+                  disabled: isExist,
+                  text: (
+                    <>
+                      <span
+                        style={
+                          isExist
+                            ? { textDecoration: 'line-through' }
+                            : undefined
+                        }
+                      >
+                        {AbilityTypeDict[option]}
+                      </span>
+                      {isExist && (
+                        <Typography variant={'caption'}>
+                          &nbsp; выбрано
+                        </Typography>
+                      )}
+                    </>
+                  ),
+                }
+              })}
+              onChange={(e) => {
+                selected.splice(index, 1, String(e.target.value))
+
+                model.setChoiceAction({
+                  key: model.key,
+                  value: { selected },
+                })
+              }}
+            />
+          )
+        })}
+      </>
+    )
+  },
+)

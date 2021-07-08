@@ -3,6 +3,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Avatar,
   Divider,
   Typography,
 } from '@material-ui/core'
@@ -10,18 +11,7 @@ import {
   MagicSchool,
   MagicSchoolDict,
 } from 'common/types/base/spell/MagicSchool'
-import { SvgIconProps } from '@material-ui/core/SvgIcon'
-import { ReactElement, ReactNode } from 'react'
-import {
-  ClassesNecromancer,
-  GameUiQuestScroll,
-  ItemCrystal,
-  SkillControl,
-  SkillMagicFireWall,
-  SkillMagicIce,
-  SkillShieldTripple,
-  SkillVision,
-} from 'components/DndIcons'
+import { ReactNode } from 'react'
 import { SBox } from 'components/SBox'
 import { ReactComponent as ConcentrationIcon } from 'images/concentration.svg'
 import { ReactComponent as RitualIcon } from 'images/ritual.svg'
@@ -34,19 +24,24 @@ import styled from 'styled-components'
 import theme from 'theme'
 import { useIsMobile } from 'hooks/useIsMobile'
 import { stopPropagation } from 'utils/events'
+import evocationImage from 'images/magicSchool/evocation.png'
+import conjurationImage from 'images/magicSchool/conjuration.png'
+import illusionImage from 'images/magicSchool/illusion.png'
+import necromancyImage from 'images/magicSchool/necromancy.png'
+import abjurationImage from 'images/magicSchool/abjuration.png'
+import enchantmentImage from 'images/magicSchool/enchantment.png'
+import transmutationImage from 'images/magicSchool/transmutation.png'
+import divinationImage from 'images/magicSchool/divination.png'
 
-export const magicSchoolIconMap: Record<
-  MagicSchool,
-  (props: SvgIconProps) => ReactElement
-> = {
-  evocation: SkillMagicFireWall,
-  conjuration: SkillMagicIce,
-  illusion: SkillVision,
-  necromancy: ClassesNecromancer,
-  abjuration: SkillShieldTripple,
-  enchantment: SkillControl,
-  transmutation: ItemCrystal,
-  divination: GameUiQuestScroll,
+export const magicSchoolImageMap: Record<MagicSchool, string> = {
+  evocation: evocationImage,
+  conjuration: conjurationImage,
+  illusion: illusionImage,
+  necromancy: necromancyImage,
+  abjuration: abjurationImage,
+  enchantment: enchantmentImage,
+  transmutation: transmutationImage,
+  divination: divinationImage,
 }
 
 function getDurationText(
@@ -109,14 +104,17 @@ function getAreaText(area: SpellArea) {
   }
 }
 
-const SIcon = styled.svg`
-  height: 46px;
-  width: 46px;
-  object-fit: contain;
+const SAvatar = styled(Avatar)`
+  height: 52px;
+  width: 124px;
+  justify-content: flex-start;
 
-  ${theme.breakpoints.down('sm')} {
-    height: 32px;
-    width: 32px;
+  img {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 2px;
+    height: 100%;
   }
 `
 
@@ -133,25 +131,35 @@ export function SpellItem({
   spell: Spell
   summary?: ReactNode
 }) {
-  const Icon = magicSchoolIconMap[spell.school]
-
   const levelText = spell.level === 0 ? 'Заговор' : `${spell.level} уровень`
 
   const isMobile = useIsMobile()
 
-  const summaryProps = {
-    onFocus: stopPropagation,
-    onClick: stopPropagation,
-    display: 'flex',
-    alignItems: 'center',
-  }
+  const summaryEl = summary && (
+    <SBox
+      onFocus={stopPropagation}
+      onClick={stopPropagation}
+      display={'flex'}
+      alignItems={'center'}
+      justifyContent={'flex-end'}
+      ml={1}
+    >
+      {summary}
+    </SBox>
+  )
 
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMore />}>
-        <SBox display={'flex'} alignItems={'center'} flexGrow={1}>
-          <SIcon as={Icon} titleAccess={MagicSchoolDict[spell.school]} />
-          <SBox ml={2} mr={'auto'} flexGrow={1}>
+      <AccordionSummary expandIcon={!isMobile && <ExpandMore />}>
+        <SBox display={!isMobile && 'flex'} alignItems={'center'} flexGrow={1}>
+          <SBox display={'flex'} justifyContent={'space-between'}>
+            <SAvatar
+              variant='rounded'
+              src={spell.image || magicSchoolImageMap[spell.school]}
+            />
+            {isMobile && summaryEl}
+          </SBox>
+          <SBox ml={!isMobile && 2} mt={isMobile && 1} mr={'auto'} flexGrow={1}>
             <SBox display={'flex'} alignItems={'center'}>
               <Typography variant={'h6'}>{spell.name}</Typography>
               {spell.concentration && (
@@ -165,19 +173,10 @@ export function SpellItem({
               {spell.needComponents &&
                 !spell.consumeComponents &&
                 ' • обязательные компоненты'}
-              {spell.consumeComponents && '  компоненты расходуются'}
+              {spell.consumeComponents && ' • компоненты расходуются'}
             </Typography>
-            {isMobile && summary && (
-              <SBox {...summaryProps} justifyContent={'flex-end'}>
-                {summary}
-              </SBox>
-            )}
           </SBox>
-          {!isMobile && summary && (
-            <SBox {...summaryProps} ml={1}>
-              {summary}
-            </SBox>
-          )}
+          {!isMobile && summaryEl}
         </SBox>
       </AccordionSummary>
       <AccordionDetails>

@@ -32,7 +32,6 @@ import {
   featureChoiceFactory,
   FeatureChoiceModel,
 } from 'models/Character/FeatureChoice/FeatureChoice'
-import { MapHooks } from 'components/MapHooks'
 import { FeatEffectModel } from '../../Effect/effects/FeatEffect'
 import { observer } from 'mobx-react-lite'
 import { computed, toJS } from 'mobx'
@@ -146,85 +145,81 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
     return (this.isAvailable ? 0 : 1) + this.innerChoicesCount
   }
 
-  readonly hook = () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [isOpen, toggleIsOpen] = useToggle(false)
-
-    return {
-      node: (
-        <>
-          {this.selected && (
-            <Card>
-              <CardContent>
-                <Typography gutterBottom variant={'h5'}>
-                  {this.selected.name}
-                </Typography>
-                <SBox mb={1}>
-                  <Markdown>{this.selected.description}</Markdown>
-                </SBox>
-                {!this.isAvailable && (
-                  <SBox color={'error.dark'}>
-                    <Typography variant={'h6'}>
-                      Не выполнено условие:
-                    </Typography>
-                    <Typography variant={'body1'}>
-                      {this.selected.demands?.text}
-                    </Typography>
-                  </SBox>
-                )}
-                {!!this.choiceModels.length && (
-                  <SBox mt={1}>
-                    <MapHooks
-                      key={this.selected.id}
-                      hooks={this.choiceModels.map(({ hook }) => hook)}
-                      render={(choices) =>
-                        choices.map(({ node }, key) => (
-                          <React.Fragment key={key}>{node}</React.Fragment>
-                        ))
-                      }
-                    />
-                  </SBox>
-                )}
-              </CardContent>
-              <CardActions>
-                <Button
-                  color={this.isAvailable ? 'default' : 'primary'}
-                  onClick={toggleIsOpen}
-                >
-                  Сменить
-                </Button>
-              </CardActions>
-            </Card>
-          )}
-          {!this.selected && (
-            <DangerButton
-              variant={'outlined'}
-              color={'inherit'}
-              onClick={toggleIsOpen}
-            >
-              Выбрать черту
-            </DangerButton>
-          )}
-          <FeatsListModal
-            open={isOpen}
-            value={this.selected}
-            onClose={() => toggleIsOpen()}
-            onChange={(feat) =>
-              this.setChoiceAction({
-                key: this.key,
-                value: {
-                  selected: feat.id,
-                },
-              })
-            }
-            effectMap={this.currentEffectMap}
-            raceRef={this.characterModel.race.ref}
-          />
-        </>
-      ),
-    }
+  @computed
+  get node() {
+    return <SelectFeat model={this} />
   }
 }
+
+const SelectFeat = observer(
+  ({ model }: { model: SelectFeatFeatureChoiceModel }) => {
+    const [isOpen, toggleIsOpen] = useToggle(false)
+
+    return (
+      <>
+        {model.selected && (
+          <Card>
+            <CardContent>
+              <Typography gutterBottom variant={'h5'}>
+                {model.selected.name}
+              </Typography>
+              <SBox mb={1}>
+                <Markdown>{model.selected.description}</Markdown>
+              </SBox>
+              {!model.isAvailable && (
+                <SBox color={'error.dark'}>
+                  <Typography variant={'h6'}>Не выполнено условие:</Typography>
+                  <Typography variant={'body1'}>
+                    {model.selected.demands?.text}
+                  </Typography>
+                </SBox>
+              )}
+              {!!model.choiceModels.length && (
+                <SBox mt={1}>
+                  {model.choiceModels.map(({ node }, key) => (
+                    <React.Fragment key={key}>{node}</React.Fragment>
+                  ))}
+                </SBox>
+              )}
+            </CardContent>
+            <CardActions>
+              <Button
+                color={model.isAvailable ? 'default' : 'primary'}
+                onClick={toggleIsOpen}
+              >
+                Сменить
+              </Button>
+            </CardActions>
+          </Card>
+        )}
+        {!model.selected && (
+          <DangerButton
+            variant={'outlined'}
+            color={'inherit'}
+            onClick={toggleIsOpen}
+          >
+            Выбрать черту
+          </DangerButton>
+        )}
+        <FeatsListModal
+          open={isOpen}
+          value={model.selected}
+          onClose={() => toggleIsOpen()}
+          onChange={(feat) =>
+            model.setChoiceAction({
+              key: model.key,
+              value: {
+                selected: feat.id,
+              },
+            })
+          }
+          effectMap={model.currentEffectMap}
+          raceRef={model.characterModel.race.ref}
+        />
+      </>
+    )
+  },
+)
 
 const FeatsListModal = observer(function FeatsListModal<F extends () => void>({
   open,

@@ -9,14 +9,13 @@ import {
 } from '@material-ui/core'
 import { SBox } from 'components/SBox'
 import { Markdown } from 'components/Markdown'
-import { MapHooks } from 'components/MapHooks'
 import React from 'react'
 import { observer } from 'mobx-react-lite'
 import { ExpandMore } from '@material-ui/icons'
 import {
   ClassFeature,
   ClassFeatureModel,
-} from 'models/Character/Feature/ClassFeature'
+} from 'models/Character/Class/ClassFeature'
 import { GameUiPlusLevelUp } from 'components/DndIcons'
 
 export const FeatureItem = observer(function FeatureItem({
@@ -60,14 +59,9 @@ export const FeatureItem = observer(function FeatureItem({
               Array.isArray(feature.choices) &&
               feature.choices?.length > 0 && (
                 <SBox mt={1}>
-                  <MapHooks
-                    hooks={feature.choices.map(({ hook }) => hook)}
-                    render={(choices) =>
-                      choices.map(({ node }, key) => (
-                        <React.Fragment key={key}>{node}</React.Fragment>
-                      ))
-                    }
-                  />
+                  {feature.choices.map(({ node }, key) => (
+                    <React.Fragment key={key}>{node}</React.Fragment>
+                  ))}
                 </SBox>
               )}
           </SBox>

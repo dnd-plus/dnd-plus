@@ -14,6 +14,7 @@ import { SelectFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/cho
 import { EffectModel } from '../Effect/Effect'
 import { noop } from 'lodash-es'
 import { SelectAbilityOrFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityOrFeatFeatureChoice'
+import { SelectSpellsFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectSpellsFeatureChoice'
 
 const choiceModelsMap = {
   select: SelectFeatureChoiceModel,
@@ -23,6 +24,7 @@ const choiceModelsMap = {
   selectLanguage: SelectLanguageFeatureChoiceModel,
   selectFeat: SelectFeatFeatureChoiceModel,
   selectAbilityOrFeat: SelectAbilityOrFeatFeatureChoiceModel,
+  selectSpells: SelectSpellsFeatureChoiceModel,
 } as const
 
 type FeatureChoiceModelsMap = typeof choiceModelsMap

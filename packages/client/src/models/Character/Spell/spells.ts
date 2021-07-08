@@ -10,7 +10,9 @@ export const spells: Spell[] = [
     ritual: false,
     concentration: false,
     needModel: true,
-    target: { type: 'enemy' },
+    target: {
+      type: 'enemy',
+    },
     description: `
 Вы указываете пальцем, и существо, причинившее вам урон, мгновенно окружается пламенем. Существо должно совершить спасбросок Ловкости. Оно получает урон огнём 2d10 при провале, или половину этого урона при успехе.
 
@@ -31,10 +33,27 @@ export const spells: Spell[] = [
     saveThrow: 'dexterity',
     attackRoll: false,
     nextLevel: {
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 10 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 10,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'fire', dice: { count: 2, value: 10 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 2,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/1.jpg',
   },
   {
     id: 2,
@@ -63,13 +82,23 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'кусок квасцов, пропитанный уксусом для эффекта антипатии или капля мёда для эффекта симпатии',
-    castTime: { type: 'hour', value: 1 },
-    duration: { type: 'day', value: 10 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
+    duration: {
+      type: 'day',
+      value: 10,
+    },
     spellRange: 60,
-    area: { type: 'cube', size: 200 },
+    area: {
+      type: 'cube',
+      size: 200,
+    },
     saveThrow: 'wisdom',
     attackRoll: false,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/2.jpg',
   },
   {
     id: 3,
@@ -79,7 +108,9 @@ export const spells: Spell[] = [
     school: 'evocation',
     ritual: false,
     concentration: true,
-    target: { type: 'self' },
+    target: {
+      type: 'self',
+    },
     needModel: true,
     description:
       'От вас исходит аура живительной энергии с радиусом 30 фт.. Пока заклинание активно, аура перемещается вместе с вами, оставаясь с центром на вас. Вы можете бонусным действием восстанавливать одному любому существу в ауре (включая себя) 2d6 хитов.',
@@ -90,10 +121,19 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    area: { type: 'sphere', size: 30 },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/3.jpg',
   },
   {
     id: 4,
@@ -113,11 +153,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    target: { type: 'self' },
-    area: { type: 'sphere', size: 30 },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    target: {
+      type: 'self',
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: false,
+    image: '/magicImages/4.jpg',
   },
   {
     id: 5,
@@ -137,11 +188,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    target: { type: 'self' },
-    area: { type: 'sphere', size: 30 },
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    target: {
+      type: 'self',
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: false,
+    image: '/magicImages/5.jpg',
   },
   {
     id: 6,
@@ -149,7 +211,9 @@ export const spells: Spell[] = [
     nameEn: 'Holy aura',
     level: 8,
     school: 'abjuration',
-    target: { type: 'self' },
+    target: {
+      type: 'self',
+    },
     ritual: false,
     concentration: true,
     needModel: true,
@@ -164,11 +228,20 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'крошечный контейнер, стоящий как минимум 1 000 зм, хранящий священную реликвию, такую как лоскут ткани с мантии святого или кусочек пергамента с религиозным текстом',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
-    area: { type: 'sphere', size: 30 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     attackRoll: false,
     tags: ['Buff', 'Debuff'],
+    image: '/magicImages/6.jpg',
   },
   {
     id: 7,
@@ -193,12 +266,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок овечьей шерсти',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
-    area: { type: 'cube', size: 15 },
+    area: {
+      type: 'cube',
+      size: 15,
+    },
     attackRoll: false,
     tags: ['Control'],
+    image: '/magicImages/7.jpg',
   },
   {
     id: 8,
@@ -208,7 +290,10 @@ export const spells: Spell[] = [
     school: 'abjuration',
     ritual: false,
     concentration: true,
-    target: { type: 'ally', from: 'range' },
+    target: {
+      type: 'ally',
+      from: 'range',
+    },
     needModel: true,
     description:
       'От вас начинает исходить покров теней и тишины, скрывающий вас и ваших спутников от обнаружения. Пока заклинание активно, все существа, выбранные вами в пределах 30 фт. (включая вас) получают бонус +10 к проверкам Ловкости (Скрытность), и их нельзя выследить без помощи магии. Существо, получившее этот бонус, не оставляет за собой следов.',
@@ -220,11 +305,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'пепел от сожжённого листа омелы и еловая ветка',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
     tags: ['Buff', 'Exploration'],
+    image: '/magicImages/8.jpg',
   },
   {
     id: 9,
@@ -234,9 +325,16 @@ export const spells: Spell[] = [
     school: 'enchantment',
     ritual: false,
     concentration: true,
-    target: { type: 'ally', count: 3 },
+    target: {
+      type: 'ally',
+      count: 3,
+    },
     needModel: true,
-    nextLevel: { target: { count: 1 } },
+    nextLevel: {
+      target: {
+        count: 1,
+      },
+    },
     description: `
 Вы благословляете до трёх существ на свой выбор в пределах дистанции. Каждый раз, когда до окончания заклинания цель совершает бросок атаки или спасбросок, она может бросить d4 и добавить выпавшее число к результату.
 
@@ -250,11 +348,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля святой воды',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
     tags: ['Buff'],
+    image: '/magicImages/9.jpg',
   },
   {
     id: 10,
@@ -264,7 +368,9 @@ export const spells: Spell[] = [
     school: 'evocation',
     ritual: false,
     concentration: true,
-    target: { type: 'self' },
+    target: {
+      type: 'self',
+    },
     needModel: true,
     description:
       'Ваша молитва наполняет вас божественной энергией. Пока заклинание активно, ваши атаки оружием причиняют при попадании дополнительный урон 1d4.',
@@ -275,10 +381,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
     tags: ['Damage'],
+    image: '/magicImages/10.jpg',
   },
   {
     id: 11,
@@ -305,11 +417,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: false,
     tags: ['Damage'],
+    image: '/magicImages/11.jpg',
   },
   {
     id: 12,
@@ -319,7 +437,10 @@ export const spells: Spell[] = [
     school: 'evocation',
     ritual: false,
     concentration: false,
-    target: { type: 'enemy', from: 'range' },
+    target: {
+      type: 'enemy',
+      from: 'range',
+    },
     needModel: true,
     description: `
 Вы произносите божественное слово, наделённое силой, сформировавшей мир на заре творения. Выберите любое количество существ, которых вы видите в пределах дистанции. Все эти существа, слышащие вас, должны совершить спасбросок Харизмы. При провале существо попадает под действие эффекта, основанного на текущем количестве хитов:
@@ -338,11 +459,14 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
+    castTime: {
+      type: 'bonusAction',
+    },
     spellRange: 30,
     saveThrow: 'charisma',
     attackRoll: false,
     tags: ['Control', 'Debuff', 'Banishment'],
+    image: '/magicImages/12.jpg',
   },
   {
     id: 13,
@@ -353,15 +477,33 @@ export const spells: Spell[] = [
     ritual: false,
     concentration: false,
     needModel: true,
-    target: { type: 'enemy' },
+    target: {
+      type: 'enemy',
+    },
     description: `
 Вы кидаете кислотный шарик. Выберите одно существо, которое вы можете видеть в пределах дистанции или два существа, которых вы можете видеть в пределах дистанции, находящихся в пределах 5 фт. друг от друга. Цель должна преуспеть в спасброске Ловкости, иначе она получает урон кислотой 1d6.
 
 Урон этого заклинания увеличивается на 1d6, когда вы достигаете 5 уровня (2d6), 11 уровня (3d6) и 17 уровня (4d6).
 `,
-    damage: [{ damageType: 'acid', dice: { count: 1, value: 6 } }],
+    damage: [
+      {
+        damageType: 'acid',
+        dice: {
+          count: 1,
+          value: 6,
+        },
+      },
+    ],
     cantripByCharacterLevel: {
-      damage: [{ damageType: 'acid', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'acid',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
     source: 'PHB',
     classes: ['fighter', 'rogue', 'sorcerer', 'wizard', 'artificer'],
@@ -370,9 +512,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/13.jpg',
   },
   {
     id: 14,
@@ -396,9 +541,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'колчан, содержащий как минимум один боеприпас',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/14.jpg',
   },
   {
     id: 15,
@@ -414,10 +565,28 @@ export const spells: Spell[] = [
 
 **На больших уровнях:** Если вы накладываете это заклинание, используя ячейку 2 уровня или выше, первичный урон увеличивается на 1d12 за каждый уровень ячейки выше первого.
 `,
-    target: { type: 'enemy' },
-    damage: [{ damageType: 'lightning', dice: { count: 1, value: 12 } }],
+    target: {
+      type: 'enemy',
+    },
+    damage: [
+      {
+        damageType: 'lightning',
+        dice: {
+          count: 1,
+          value: 12,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'lightning', dice: { count: 1, value: 12 } }],
+      damage: [
+        {
+          damageType: 'lightning',
+          dice: {
+            count: 1,
+            value: 12,
+          },
+        },
+      ],
     },
     source: 'PHB',
     classes: ['sorcerer', 'warlock', 'wizard'],
@@ -427,10 +596,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'веточка дерева, в которое ударила молния',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
+    image: '/magicImages/15.jpg',
   },
   {
     id: 16,
@@ -457,11 +632,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'миниатюрная дверь из слоновой кости, кусочек полированного мрамора и крошечная серебряная ложка; каждый предмет должен стоить как минимум 5 зм',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 300,
     attackRoll: true,
     tags: ['Utility', 'Exploration'],
+    image: '/magicImages/16.jpg',
   },
   {
     id: 17,
@@ -487,12 +669,26 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'крошечный серебряный свисток, кусочек кости и нитка',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     attackRoll: false,
-    damage: [{ damageType: 'piercing', dice: { count: 4, value: 8 } }],
+    damage: [
+      {
+        damageType: 'piercing',
+        dice: {
+          count: 4,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Warding'],
+    image: '/magicImages/17.jpg',
   },
   {
     id: 18,
@@ -512,10 +708,16 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: true,
     components: 'порошок рубина на 50 зм, расходуемый заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     attackRoll: false,
     tags: ['Creation'],
+    image: '/magicImages/18.jpg',
   },
   {
     id: 19,
@@ -542,11 +744,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'горсть песка, капля чернил и перо, выдернутое у спящей птицы',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     saveThrow: 'wisdom',
     attackRoll: false,
     tags: ['Damage', 'Communication'],
+    image: '/magicImages/19.jpg',
   },
   {
     id: 20,
@@ -566,10 +775,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка талька и толченого серебра',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
     tags: ['Detection'],
+    image: '/magicImages/20.jpg',
   },
   {
     id: 21,
@@ -607,12 +822,26 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля воды и щепотка пыли',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 300,
     attackRoll: false,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 2, value: 8 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 2,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Control'],
+    image: '/magicImages/21.jpg',
   },
   {
     id: 22,
@@ -667,11 +896,21 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'горящее благовоние и кусочки земли и дерева, смешанные с водой',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'hour', value: 8 },
-    area: { type: 'sphere', size: 26400 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
+    area: {
+      type: 'sphere',
+      size: 26400,
+    },
     attackRoll: false,
     tags: ['Control', 'Environment'],
+    image: '/magicImages/22.jpg',
   },
   {
     id: 23,
@@ -698,12 +937,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'язык змеи и либо кусочек медовых сот, либо капля сладкого масла',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: false,
     tags: ['Control', 'Social'],
+    image: '/magicImages/23.jpg',
   },
   {
     id: 24,
@@ -714,7 +959,9 @@ export const spells: Spell[] = [
     ritual: false,
     concentration: false,
     needModel: true,
-    target: { type: 'notSelf' },
+    target: {
+      type: 'notSelf',
+    },
     description:
       'Вы касаетесь существа, мёртвого не больше минуты. Это существо возвращается к жизни с 1 хитом. Это заклинание не может оживить существ, умерших от старости, а также не восстанавливает отсутствующие части тел.',
     source: 'PHB',
@@ -725,9 +972,12 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: true,
     components: 'бриллиант, стоящий 300 зм, расходуемый заклинанием',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: false,
     tags: ['Healing'],
+    image: '/magicImages/24.jpg',
   },
   {
     id: 25,
@@ -752,15 +1002,37 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    area: { type: 'cube', size: 15 },
+    castTime: {
+      type: 'action',
+    },
+    area: {
+      type: 'cube',
+      size: 15,
+    },
     saveThrow: 'constitution',
     attackRoll: false,
     nextLevel: {
-      damage: [{ damageType: 'thunder', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'thunder',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'thunder', dice: { count: 2, value: 8 } }],
+    damage: [
+      {
+        damageType: 'thunder',
+        dice: {
+          count: 2,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/25.jpg',
   },
   {
     id: 26,
@@ -793,10 +1065,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/26.jpg',
   },
   {
     id: 27,
@@ -807,7 +1085,9 @@ export const spells: Spell[] = [
     ritual: false,
     concentration: false,
     needModel: true,
-    target: { type: 'enemy' },
+    target: {
+      type: 'enemy',
+    },
     description: `
 Вы создаете три светящихся дротика из магической силы. Каждый дротик попадает в существо на ваш выбор, видимое в пределах дистанции. Каждый дротик причиняет урон силовым полем 1d4 + 1. Все дротики атакуют одновременно, и вы можете направить их как в одно существо, так и в разных.
 
@@ -820,11 +1100,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
-    damage: [{ damageType: 'force', dice: { count: 1, value: 4 } }],
+    damage: [
+      {
+        damageType: 'force',
+        dice: {
+          count: 1,
+          value: 4,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/27.jpg',
   },
   {
     id: 28,
@@ -850,11 +1141,18 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'кусочек медовых сот и порошок нефрита, стоящий как минимум 10 зм, расходуемые заклинанием',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Communication'],
+    image: '/magicImages/28.jpg',
   },
   {
     id: 29,
@@ -878,10 +1176,16 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'золотая пыль, стоящая как минимум 25 зм, расходуемая заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     attackRoll: true,
     tags: ['Utility', 'Warding'],
+    image: '/magicImages/29.jpg',
   },
   {
     id: 30,
@@ -913,11 +1217,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'драгоценный камень, кристалл, реликварий или другой украшенный контейнер, стоящий как минимум 500 зм',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/30.jpg',
   },
   {
     id: 31,
@@ -946,11 +1257,20 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок овечьей шерсти',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
-    area: { type: 'cube', size: 10 },
+    area: {
+      type: 'cube',
+      size: 10,
+    },
+    image: '/magicImages/31.jpg',
   },
   {
     id: 32,
@@ -972,16 +1292,38 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     saveThrow: 'wisdom',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'psychic', dice: { count: 1, value: 10 } }],
+      damage: [
+        {
+          damageType: 'psychic',
+          dice: {
+            count: 1,
+            value: 10,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'psychic', dice: { count: 4, value: 10 } }],
+    damage: [
+      {
+        damageType: 'psychic',
+        dice: {
+          count: 4,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/32.jpg',
   },
   {
     id: 33,
@@ -1011,9 +1353,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'бриллиант, стоящий как минимум 1 000 зм, расходуемый заклинанием',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/33.jpg',
   },
   {
     id: 34,
@@ -1037,14 +1383,31 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 10, value: 8 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 10,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/34.jpg',
   },
   {
     id: 35,
@@ -1071,10 +1434,14 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля крови, кусочек плоти и щепотка костной пыли',
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Creation'],
+    image: '/magicImages/35.jpg',
   },
   {
     id: 36,
@@ -1101,11 +1468,17 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'бриллиант, стоящий как минимум 5 000 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Teleportation', 'Control'],
+    image: '/magicImages/36.jpg',
   },
   {
     id: 37,
@@ -1127,10 +1500,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/37.jpg',
   },
   {
     id: 38,
@@ -1149,10 +1528,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/38.jpg',
   },
   {
     id: 39,
@@ -1179,9 +1564,12 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'бриллиантовая пыль, стоящая как минимум 100 зм, расходуемая заклинанием',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/39.jpg',
   },
   {
     id: 40,
@@ -1210,9 +1598,13 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'особые палочки, костяшки или фигурки с отметинами, стоящие как минимум 25 зм',
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Foreknowledge'],
+    image: '/magicImages/40.jpg',
   },
   {
     id: 41,
@@ -1237,10 +1629,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок марли и клуб дыма',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Movement'],
+    image: '/magicImages/41.jpg',
   },
   {
     id: 42,
@@ -1262,10 +1660,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing', 'Buff'],
+    image: '/magicImages/42.jpg',
   },
   {
     id: 43,
@@ -1289,11 +1693,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/43.jpg',
   },
   {
     id: 44,
@@ -1317,13 +1727,22 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'зажженная палочка благовоний или хрустальный сосуд, заполненный фосфоресцирующим материалом',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 30 },
+    area: {
+      type: 'cube',
+      size: 30,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/44.jpg',
   },
   {
     id: 45,
@@ -1345,12 +1764,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/45.jpg',
   },
   {
     id: 46,
@@ -1369,9 +1794,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/46.jpg',
   },
   {
     id: 47,
@@ -1394,10 +1825,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'маринованное щупальце осьминога',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 150,
     attackRoll: true,
+    image: '/magicImages/47.jpg',
   },
   {
     id: 48,
@@ -1424,15 +1861,37 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'лист сумаха',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     nextLevel: {
       everyLevel: 2,
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'fire', dice: { count: 3, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 3,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/48.jpg',
   },
   {
     id: 49,
@@ -1457,19 +1916,45 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка пыли и несколько капель воды',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 300,
-    area: { type: 'cylinder', size: 20 },
+    area: {
+      type: 'cylinder',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     damage: [
-      { damageType: 'bludgeoning', dice: { count: 2, value: 8 } },
-      { damageType: 'cold', dice: { count: 4, value: 6 } },
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 2,
+          value: 8,
+        },
+      },
+      {
+        damageType: 'cold',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
     ],
     nextLevel: {
-      damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
     tags: ['Damage', 'Control'],
+    image: '/magicImages/49.jpg',
   },
   {
     id: 50,
@@ -1491,9 +1976,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/50.jpg',
   },
   {
     id: 51,
@@ -1523,11 +2014,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Damage', 'Control', 'Debuff'],
+    image: '/magicImages/51.jpg',
   },
   {
     id: 52,
@@ -1546,9 +2043,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/52.jpg',
   },
   {
     id: 53,
@@ -1578,11 +2081,17 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'железный клинок и небольшая сумка со смесью из глины, перегноя и песка',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 2 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 2,
+    },
     spellRange: 120,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/53.jpg',
   },
   {
     id: 54,
@@ -1606,9 +2115,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'алмаз, стоящий как минимум 1 000 зм, и как минимум 1 кубический дюйм плоти существа, расходуемый заклинанием, а также сосуд, стоящий как минимум 2 000 зм с запираемой крышкой и достаточно большой, чтобы вместить существо реднего размера, например, огромная урна, гроб, яма в земле или кристаллический контейнер, заполненный солёной водой',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/54.jpg',
   },
   {
     id: 55,
@@ -1630,11 +2143,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/55.jpg',
   },
   {
     id: 56,
@@ -1656,9 +2175,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/56.jpg',
   },
   {
     id: 57,
@@ -1693,10 +2215,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'яичная скорлупа и перчатка из змеиной кожи',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: true,
+    image: '/magicImages/57.jpg',
   },
   {
     id: 58,
@@ -1720,12 +2248,21 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 60 },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/58.jpg',
   },
   {
     id: 59,
@@ -1748,9 +2285,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'чашка воды',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/59.jpg',
   },
   {
     id: 60,
@@ -1770,10 +2313,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек выделанной кожи',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/60.jpg',
   },
   {
     id: 61,
@@ -1801,10 +2350,16 @@ export const spells: Spell[] = [
     consumeComponents: false,
     needComponents: false,
     components: 'маленькая глиняная модель зиккурата',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Communication', 'Social'],
+    image: '/magicImages/361.jpg',
   },
   {
     id: 62,
@@ -1837,16 +2392,38 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек слюды',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 10 },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'thunder', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'thunder',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'thunder', dice: { count: 3, value: 8 } }],
+    damage: [
+      {
+        damageType: 'thunder',
+        dice: {
+          count: 3,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/61.jpg',
   },
   {
     id: 63,
@@ -1876,9 +2453,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 10,
     attackRoll: true,
+    image: '/magicImages/360.jpg',
   },
   {
     id: 64,
@@ -1902,10 +2482,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Teleportation', 'Buff'],
+    image: '/magicImages/359.jpg',
   },
   {
     id: 65,
@@ -1927,10 +2513,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Teleportation', 'Movement'],
+    image: '/magicImages/62.jpg',
   },
   {
     id: 66,
@@ -1952,8 +2544,11 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
+    image: '/magicImages/358.jpg',
   },
   {
     id: 67,
@@ -1974,14 +2569,31 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'кусочек щупальца гигантского осьминога или гигантского кальмара',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
-    area: { type: 'square', size: 20 },
+    area: {
+      type: 'square',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 3, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 3,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/357.jpg',
   },
   {
     id: 68,
@@ -2008,10 +2620,17 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'сапфир стоимостью 1 000 зм',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     attackRoll: true,
     tags: ['Teleportation', 'Detection'],
+    image: '/magicImages/63.jpg',
   },
   {
     id: 69,
@@ -2031,11 +2650,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой пергамент со святыми письменами',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/356.jpg',
   },
   {
     id: 70,
@@ -2058,9 +2683,13 @@ export const spells: Spell[] = [
       type: 'reaction',
       to: 'когда по вам попадает атака или вы становитесь целью волшебной стрелы',
     },
-    duration: { type: 'round', value: 1 },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Warding'],
+    image: '/magicImages/355.jpg',
   },
   {
     id: 71,
@@ -2081,9 +2710,15 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'небольшое количество грима, наносимое на лицо при накладывании этого заклинания',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/64.jpg',
   },
   {
     id: 72,
@@ -2106,12 +2741,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек пищи',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Social'],
+    image: '/magicImages/65.jpg',
   },
   {
     id: 73,
@@ -2131,9 +2772,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'омела, лист клевера и дубинка или боевой посох',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/66.jpg',
   },
   {
     id: 74,
@@ -2153,10 +2800,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'пригоршня дубовой коры',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/67.jpg',
   },
   {
     id: 75,
@@ -2181,11 +2834,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'символ веры',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Damage', 'Control'],
+    image: '/magicImages/68.jpg',
   },
   {
     id: 76,
@@ -2204,9 +2863,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/69.jpg',
   },
   {
     id: 77,
@@ -2226,12 +2891,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'семь острых шипов или семь заострённых веточек',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     attackRoll: true,
     tags: ['Damage', 'Control'],
+    image: '/magicImages/354.jpg',
   },
   {
     id: 78,
@@ -2251,10 +2925,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'ветка омелы',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
-    heal: { value: 1 },
+    heal: {
+      value: 1,
+    },
     tags: ['Healing'],
+    image: '/magicImages/352.jpg',
   },
   {
     id: 79,
@@ -2277,12 +2956,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'маленькие пирожные и перо, которым нужно махать в воздухе',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/70.jpg',
   },
   {
     id: 80,
@@ -2311,10 +2996,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/353.jpg',
   },
   {
     id: 81,
@@ -2339,10 +3030,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'как минимум четыре стрелы или арбалетных болта',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 5,
     attackRoll: true,
+    image: '/magicImages/71.jpg',
   },
   {
     id: 82,
@@ -2370,12 +3067,21 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'кусок овечьей шерсти и порошок нефрита, стоящий как минимум 25 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 30 },
+    area: {
+      type: 'cube',
+      size: 30,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/72.jpg',
   },
   {
     id: 83,
@@ -2402,13 +3108,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля патоки',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 40 },
+    area: {
+      type: 'cube',
+      size: 40,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/73.jpg',
   },
   {
     id: 84,
@@ -2427,9 +3142,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'round', value: 6 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'round',
+      value: 6,
+    },
     attackRoll: true,
+    image: '/magicImages/351.jpg',
   },
   {
     id: 85,
@@ -2448,10 +3170,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/350.jpg',
   },
   {
     id: 86,
@@ -2474,9 +3202,12 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'алмаз, стоящий как минимум 50 зм',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 90,
     attackRoll: true,
+    image: '/magicImages/349.jpg',
   },
   {
     id: 87,
@@ -2501,13 +3232,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'крошечный шарик из гуано летучей мыши и серы',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Damage'],
+    image: '/magicImages/74.jpg',
   },
   {
     id: 88,
@@ -2527,11 +3267,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'усочек пробки',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/348.jpg',
   },
   {
     id: 89,
@@ -2559,11 +3305,21 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'немного святой воды, редкие благовония и толчёный рубин, стоящий как минимум 1 000 зм',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'day', value: 1 },
-    area: { type: 'squareFeet', size: 40000 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'day',
+      value: 1,
+    },
+    area: {
+      type: 'squareFeet',
+      size: 40000,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/75.jpg',
   },
   {
     id: 90,
@@ -2583,11 +3339,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'огонь и святая вода',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Buff', 'Movement'],
+    image: '/magicImages/347.jpg',
   },
   {
     id: 91,
@@ -2624,10 +3387,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 10,
     attackRoll: false,
+    image: '/magicImages/346.jpg',
   },
   {
     id: 92,
@@ -2663,11 +3432,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'day', value: 7 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'day',
+      value: 7,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/76.jpg',
   },
   {
     id: 93,
@@ -2686,10 +3461,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Deception'],
+    image: '/magicImages/345.jpg',
   },
   {
     id: 94,
@@ -2708,8 +3489,11 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: false,
+    image: '/magicImages/344.jpg',
   },
   {
     id: 95,
@@ -2730,10 +3514,13 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'раздвоенный металлический прут, стоящий как минимум 250 зм, настроенный на конкретный план существования',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Teleportation', 'Banishment'],
+    image: '/magicImages/343.jpg',
   },
   {
     id: 96,
@@ -2755,15 +3542,34 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'necrotic', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'necrotic', dice: { count: 8, value: 8 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 8,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/342.jpg',
   },
   {
     id: 97,
@@ -2799,12 +3605,19 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'рисунок или резная статуэтка, изображающая цель, и особый компонент, зависящий от выбранной версии заклинания, стоящий как минимум 500 зм за каждую Кость Хитов цели',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'special', text: 'пока не будет рассеяно' },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не будет рассеяно',
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/77.jpg',
   },
   {
     id: 98,
@@ -2827,12 +3640,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка мелкого песка, лепестки розы или сверчок',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/341.jpg',
   },
   {
     id: 99,
@@ -2856,10 +3678,16 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'святая вода или порошок серебра и железа, расходуемые заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Buff', 'Debuff', 'Warding'],
+    image: '/magicImages/78.jpg',
   },
   {
     id: 100,
@@ -2879,11 +3707,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'стружка корня лакрицы',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/340.jpg',
   },
   {
     id: 101,
@@ -2902,9 +3736,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/79.jpg',
   },
   {
     id: 102,
@@ -2923,13 +3763,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Social'],
+    image: '/magicImages/339.jpg',
   },
   {
     id: 103,
@@ -2964,10 +3813,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'мех или перо зверя',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/338.jpg',
   },
   {
     id: 104,
@@ -2991,10 +3846,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/80.jpg',
   },
   {
     id: 105,
@@ -3013,9 +3874,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/337.jpg',
   },
   {
     id: 106,
@@ -3043,10 +3910,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/81.jpg',
   },
   {
     id: 107,
@@ -3066,13 +3939,22 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'порошок рубина, стоящий 1 500 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 100,
-    area: { type: 'cube', size: 20 },
+    area: {
+      type: 'cube',
+      size: 20,
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/336.jpg',
   },
   {
     id: 108,
@@ -3094,10 +3976,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/82.jpg',
   },
   {
     id: 109,
@@ -3117,12 +4005,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'белое перо или сердце курицы',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
-    area: { type: 'cone', size: 30 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
+    area: {
+      type: 'cone',
+      size: 30,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/335.jpg',
   },
   {
     id: 110,
@@ -3145,12 +4042,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой прямой кусочек железа',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/334.jpg',
   },
   {
     id: 111,
@@ -3179,13 +4082,27 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка земли, кусочек камня и комочек глины',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 500,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 5, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 5,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/83.jpg',
   },
   {
     id: 112,
@@ -3207,9 +4124,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/84.jpg',
   },
   {
     id: 113,
@@ -3234,13 +4154,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'тухлое яйцо или несколько гнилых листьев капусты',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/85.jpg',
   },
   {
     id: 114,
@@ -3284,11 +4213,21 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'ртуть, фосфор и толчённые алмаз с опалом, общей стоимостью как минимум 1 000 зм, расходуемые заклинанием',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'special', text: 'пока не рассеется или не сработает' },
-    area: { type: 'sphere', size: 60 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется или не сработает',
+    },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
     attackRoll: true,
     tags: ['Damage', 'Debuff'],
+    image: '/magicImages/86.jpg',
   },
   {
     id: 115,
@@ -3312,9 +4251,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'благовония, стоящие как минимум 250 зм, расходуемые заклинанием, и четыре пластинки из слоновой кости, стоящие как минимум 50 зм каждая',
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/87.jpg',
   },
   {
     id: 116,
@@ -3349,12 +4292,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'неприятный для цели предмет',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control', 'Banishment'],
+    image: '/magicImages/88.jpg',
   },
   {
     id: 117,
@@ -3373,9 +4322,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/89.jpg',
   },
   {
     id: 118,
@@ -3399,11 +4354,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 10 },
+    area: {
+      type: 'cube',
+      size: 10,
+    },
     attackRoll: true,
     tags: ['Creation'],
+    image: '/magicImages/90.jpg',
   },
   {
     id: 119,
@@ -3433,12 +4395,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/91.jpg',
   },
   {
     id: 120,
@@ -3463,13 +4431,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'магнетит и железные опилки',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 100,
-    area: { type: 'cylinder', size: 50 },
+    area: {
+      type: 'cylinder',
+      size: 50,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/92.jpg',
   },
   {
     id: 121,
@@ -3490,9 +4467,12 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'мягкая глина, из которой делается грубая копия желаемого каменного предмета',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/93.jpg',
   },
   {
     id: 122,
@@ -3518,10 +4498,16 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'смесь порошков из бриллианта, изумруда, рубина и сапфира, стоящая как минимум 5 000 зм, расходуемая заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     attackRoll: true,
     tags: ['Deception'],
+    image: '/magicImages/94.jpg',
   },
   {
     id: 123,
@@ -3546,9 +4532,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/95.jpg',
   },
   {
     id: 124,
@@ -3578,9 +4567,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Creation', 'Healing', 'Buff'],
+    image: '/magicImages/96.jpg',
   },
   {
     id: 125,
@@ -3606,9 +4598,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'немного святой воды и бриллианты, стоящие как минимум 25 000 зм, расходуемые заклинанием',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/97.jpg',
   },
   {
     id: 126,
@@ -3629,10 +4625,16 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'мазь для глаз, стоящая 25 зм; изготавливается из грибного порошка, шафрана и жира; расходуется заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/98.jpg',
   },
   {
     id: 127,
@@ -3669,12 +4671,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля ртути, немного гуммиарабика и клуб дыма',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Buff', 'Shapechanging'],
+    image: '/magicImages/99.jpg',
   },
   {
     id: 128,
@@ -3709,12 +4717,22 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'тонкий свинцовый лист, кусок матового стекла, шарик из ваты или ткани и толченый хризолит',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 100 },
+    area: {
+      type: 'cube',
+      size: 100,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/100.jpg',
   },
   {
     id: 129,
@@ -3743,10 +4761,16 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: true,
     components: 'пыль бриллианта, стоящего 100 зм, расходуемая заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/101.jpg',
   },
   {
     id: 130,
@@ -3777,11 +4801,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой кусочек гранита',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/102.jpg',
   },
   {
     id: 131,
@@ -3803,14 +4833,36 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'radiant', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'radiant', dice: { count: 2, value: 6 } }],
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/103.jpg',
   },
   {
     id: 132,
@@ -3839,6 +4891,7 @@ export const spells: Spell[] = [
     spellRange: 60,
     attackRoll: true,
     tags: ['Negation'],
+    image: '/magicImages/104.jpg',
   },
   {
     id: 133,
@@ -3863,15 +4916,37 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой кристаллический или стеклянный конус',
-    castTime: { type: 'action' },
-    area: { type: 'cone', size: 60 },
+    castTime: {
+      type: 'action',
+    },
+    area: {
+      type: 'cone',
+      size: 60,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'cold', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'cold',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'cold', dice: { count: 8, value: 8 } }],
+    damage: [
+      {
+        damageType: 'cold',
+        dice: {
+          count: 8,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/105.jpg',
   },
   {
     id: 134,
@@ -3895,10 +4970,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: false,
+    image: '/magicImages/106.jpg',
   },
   {
     id: 135,
@@ -3917,9 +4998,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: false,
+    image: '/magicImages/107.jpg',
   },
   {
     id: 136,
@@ -3943,16 +5030,38 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'порошок растолчённой чёрной жемчужины, стоящей как минимум 500 зм',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 60 },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'necrotic', dice: { count: 2, value: 6 } }],
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 2,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'necrotic', dice: { count: 8, value: 6 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 8,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/108.jpg',
   },
   {
     id: 137,
@@ -3978,11 +5087,18 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'редкие мелки и чернила с основой из драгоценных камней стоимостью 50 зм, расходуемые заклинанием',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/109.jpg',
   },
   {
     id: 138,
@@ -4006,11 +5122,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Control', 'Banishment'],
+    image: '/magicImages/110.jpg',
   },
   {
     id: 139,
@@ -4036,12 +5158,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'либо маленькая кожаная петля, либо кусочек золотой проволоки, согнутый в форме кубка с длинной ножкой',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/111.jpg',
   },
   {
     id: 140,
@@ -4065,10 +5193,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: true,
+    image: '/magicImages/112.jpg',
   },
   {
     id: 141,
@@ -4095,12 +5229,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой кусочек кварца',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Damage', 'Control'],
+    image: '/magicImages/113.jpg',
   },
   {
     id: 142,
@@ -4126,9 +5266,12 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'изысканный сундук, 90?60?60 сантиметров, созданный из редких материалов, и стоящий как минимум 5 000 зм, и его копия Крошечного размера, изготовленная из того же материала, стоящая как минимум 50 зм',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/114.jpg',
   },
   {
     id: 143,
@@ -4153,11 +5296,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'маленькая кристаллическая бусина',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
-    area: { type: 'sphere', size: 10 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/115.jpg',
   },
   {
     id: 144,
@@ -4179,11 +5332,19 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
+    castTime: {
+      type: 'bonusAction',
+    },
     spellRange: 60,
     attackRoll: true,
-    heal: { dice: { count: 1, value: 4 } },
+    heal: {
+      dice: {
+        count: 1,
+        value: 4,
+      },
+    },
     tags: ['Healing'],
+    image: '/magicImages/116.jpg',
   },
   {
     id: 145,
@@ -4205,10 +5366,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
-    heal: { dice: { count: 1, value: 8 } },
+    heal: {
+      dice: {
+        count: 1,
+        value: 8,
+      },
+    },
     tags: ['Healing'],
+    image: '/magicImages/117.jpg',
   },
   {
     id: 146,
@@ -4238,17 +5407,42 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'несколько семечек лунносемянника и кусочек опалесцирующего полевого шпата',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
-    area: { type: 'cylinder', size: 5 },
+    area: {
+      type: 'cylinder',
+      size: 5,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'radiant', dice: { count: 1, value: 10 } }],
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 10,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'radiant', dice: { count: 2, value: 10 } }],
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 2,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/118.jpg',
   },
   {
     id: 147,
@@ -4270,9 +5464,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/119.jpg',
   },
   {
     id: 148,
@@ -4294,12 +5491,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/120.jpg',
   },
   {
     id: 149,
@@ -4321,9 +5524,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/121.jpg',
   },
   {
     id: 150,
@@ -4347,10 +5553,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 500,
     attackRoll: false,
+    image: '/magicImages/122.jpg',
   },
   {
     id: 151,
@@ -4375,11 +5587,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'мех летучей мыши',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/123.jpg',
   },
   {
     id: 152,
@@ -4409,13 +5627,23 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'святая вода или порошок серебра и железа, стоящий как минимум 100 зм, расходуемые заклинанием',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 10,
-    area: { type: 'cylinder', size: 10 },
+    area: {
+      type: 'cylinder',
+      size: 10,
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/124.jpg',
   },
   {
     id: 153,
@@ -4437,10 +5665,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/125.jpg',
   },
   {
     id: 154,
@@ -4475,10 +5709,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок овечьей шерсти',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/126.jpg',
   },
   {
     id: 155,
@@ -4497,9 +5737,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/127.jpg',
   },
   {
     id: 156,
@@ -4518,9 +5761,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/128.jpg',
   },
   {
     id: 157,
@@ -4542,10 +5791,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Shapechanging'],
+    image: '/magicImages/129.jpg',
   },
   {
     id: 158,
@@ -4564,11 +5819,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/130.jpg',
   },
   {
     id: 159,
@@ -4591,14 +5852,33 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'порошок из листьев ревеня и желудок гадюки',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 90,
     attackRoll: true,
-    damage: [{ damageType: 'acid', dice: { count: 4, value: 4 } }],
+    damage: [
+      {
+        damageType: 'acid',
+        dice: {
+          count: 4,
+          value: 4,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'acid', dice: { count: 1, value: 4 } }],
+      damage: [
+        {
+          damageType: 'acid',
+          dice: {
+            count: 1,
+            value: 4,
+          },
+        },
+      ],
     },
     tags: ['Damage'],
+    image: '/magicImages/131.jpg',
   },
   {
     id: 160,
@@ -4621,11 +5901,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочки яичной скорлупы двух разных видов существ',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Communication'],
+    image: '/magicImages/132.jpg',
   },
   {
     id: 161,
@@ -4647,10 +5933,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/133.jpg',
   },
   {
     id: 162,
@@ -4675,13 +5967,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка пыли и несколько капель воды',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 150,
-    area: { type: 'cylinder', size: 40 },
+    area: {
+      type: 'cylinder',
+      size: 40,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/134.jpg',
   },
   {
     id: 163,
@@ -4703,16 +6004,34 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 5280,
-    area: { type: 'sphere', size: 40 },
+    area: {
+      type: 'sphere',
+      size: 40,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     damage: [
-      { damageType: 'fire', dice: { count: 20, value: 6 } },
-      { damageType: 'bludgeoning', dice: { count: 20, value: 6 } },
+      {
+        damageType: 'fire',
+        dice: {
+          count: 20,
+          value: 6,
+        },
+      },
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 20,
+          value: 6,
+        },
+      },
     ],
     tags: ['Damage'],
+    image: '/magicImages/135.jpg',
   },
   {
     id: 164,
@@ -4734,11 +6053,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: true,
     tags: ['Damage', 'Debuff'],
+    image: '/magicImages/136.jpg',
   },
   {
     id: 165,
@@ -4757,10 +6082,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
+    image: '/magicImages/137.jpg',
   },
   {
     id: 166,
@@ -4784,10 +6115,16 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'миниатюрный платиновый меч с рукояткой и навершием из меди и цинка, стоящий 250 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/138.jpg',
   },
   {
     id: 167,
@@ -4810,12 +6147,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'камень, ветка, и кусочек зеленого растения',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 300,
-    area: { type: 'cube', size: 150 },
+    area: {
+      type: 'cube',
+      size: 150,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/139.jpg',
   },
   {
     id: 168,
@@ -4837,9 +6184,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
+    image: '/magicImages/140.jpg',
   },
   {
     id: 169,
@@ -4869,12 +6219,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'язык змеи и либо кусочек медовых сот, либо капля сладкого масла',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Social'],
+    image: '/magicImages/141.jpg',
   },
   {
     id: 170,
@@ -4896,11 +6252,19 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
+    castTime: {
+      type: 'bonusAction',
+    },
     spellRange: 60,
     attackRoll: true,
-    heal: { dice: { count: 1, value: 4 } },
+    heal: {
+      dice: {
+        count: 1,
+        value: 4,
+      },
+    },
     tags: ['Healing'],
+    image: '/magicImages/142.jpg',
   },
   {
     id: 171,
@@ -4922,12 +6286,23 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 30 },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     attackRoll: true,
-    heal: { dice: { count: 1, value: 8 } },
+    heal: {
+      dice: {
+        count: 1,
+        value: 8,
+      },
+    },
     tags: ['Healing'],
+    image: '/magicImages/143.jpg',
   },
   {
     id: 172,
@@ -4946,11 +6321,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
-    heal: { value: 700 },
+    heal: {
+      value: 700,
+    },
     tags: ['Healing'],
+    image: '/magicImages/144.jpg',
   },
   {
     id: 173,
@@ -4972,11 +6352,20 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 30,
     attackRoll: true,
-    heal: { dice: { count: 1, value: 8 } },
+    heal: {
+      dice: {
+        count: 1,
+        value: 8,
+      },
+    },
     tags: ['Healing'],
+    image: '/magicImages/145.jpg',
   },
   {
     id: 174,
@@ -5002,9 +6391,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/146.jpg',
   },
   {
     id: 175,
@@ -5029,15 +6424,37 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек меха и жезл из янтаря, кристалла или стекла',
-    castTime: { type: 'action' },
-    area: { type: 'line', size: 100 },
+    castTime: {
+      type: 'action',
+    },
+    area: {
+      type: 'line',
+      size: 100,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'lightning', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'lightning',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'lightning', dice: { count: 8, value: 6 } }],
+    damage: [
+      {
+        damageType: 'lightning',
+        dice: {
+          count: 8,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/147.jpg',
   },
   {
     id: 176,
@@ -5091,11 +6508,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'фокусировка, стоящая как минимум 1 000 зм, такая как хрустальный шар, серебряное зеркало или чаша со святой водой',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/148.jpg',
   },
   {
     id: 177,
@@ -5117,13 +6541,32 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'necrotic', dice: { count: 1, value: 10 } }],
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 1,
+            value: 10,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'necrotic', dice: { count: 3, value: 10 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 3,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/149.jpg',
   },
   {
     id: 178,
@@ -5145,15 +6588,37 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: true,
-    damage: [{ damageType: 'radiant', dice: { count: 4, value: 6 } }],
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'radiant', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
     tags: ['Damage', 'Buff'],
+    image: '/magicImages/150.jpg',
   },
   {
     id: 179,
@@ -5172,10 +6637,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Social'],
+    image: '/magicImages/151.jpg',
   },
   {
     id: 180,
@@ -5200,17 +6671,42 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'несколько крупинок сахара, немного зёрнышек и капля жира',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 300,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'piercing', dice: { count: 1, value: 10 } }],
+      damage: [
+        {
+          damageType: 'piercing',
+          dice: {
+            count: 1,
+            value: 10,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'piercing', dice: { count: 4, value: 10 } }],
+    damage: [
+      {
+        damageType: 'piercing',
+        dice: {
+          count: 4,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/152.jpg',
   },
   {
     id: 181,
@@ -5233,19 +6729,45 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка серы',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
-    area: { type: 'cylinder', size: 10 },
+    area: {
+      type: 'cylinder',
+      size: 10,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     damage: [
-      { damageType: 'radiant', dice: { count: 4, value: 6 } },
-      { damageType: 'fire', dice: { count: 4, value: 6 } },
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
+      {
+        damageType: 'fire',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
     ],
     nextLevel: {
-      damage: [{ damageType: 'radiant', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
     tags: ['Damage'],
+    image: '/magicImages/153.jpg',
   },
   {
     id: 182,
@@ -5273,10 +6795,17 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'свинцовые чернила, стоящие как минимум 10 зм, расходуемые заклинанием',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'day', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'day',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Communication'],
+    image: '/magicImages/154.jpg',
   },
   {
     id: 183,
@@ -5307,10 +6836,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'ресница в смоле',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/155.jpg',
   },
   {
     id: 184,
@@ -5335,11 +6870,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'часть тетивы и кусочек дерева',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/156.jpg',
   },
   {
     id: 185,
@@ -5360,10 +6901,16 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'щепотка алмазной пыли, стоящая 25 зм, которой посыпается цель, расходуемая заклинанием',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Deception'],
+    image: '/magicImages/157.jpg',
   },
   {
     id: 186,
@@ -5387,10 +6934,16 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'щепотка соли и по одной медной монетке на каждый глаз трупа, которые должны оставаться там все время, пока активно заклинание',
-    castTime: { type: 'action' },
-    duration: { type: 'day', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'day',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Warding'],
+    image: '/magicImages/158.jpg',
   },
   {
     id: 187,
@@ -5412,12 +6965,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/159.jpg',
   },
   {
     id: 188,
@@ -5444,9 +7003,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой лоскут шелка',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     attackRoll: false,
+    image: '/magicImages/160.jpg',
   },
   {
     id: 189,
@@ -5472,12 +7037,19 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'day', value: 30 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'day',
+      value: 30,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/161.jpg',
   },
   {
     id: 190,
@@ -5500,11 +7072,20 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'осколок стекла',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
-    area: { type: 'cube', size: 5 },
+    area: {
+      type: 'cube',
+      size: 5,
+    },
+    image: '/magicImages/162.jpg',
   },
   {
     id: 191,
@@ -5530,17 +7111,42 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'poison', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'poison',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'poison', dice: { count: 5, value: 8 } }],
+    damage: [
+      {
+        damageType: 'poison',
+        dice: {
+          count: 5,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/163.jpg',
   },
   {
     id: 192,
@@ -5562,13 +7168,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 15 },
+    area: {
+      type: 'sphere',
+      size: 15,
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/164.jpg',
   },
   {
     id: 193,
@@ -5591,11 +7206,20 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'лист тиса',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
-    area: { type: 'sphere', size: 30 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/165.jpg',
   },
   {
     id: 194,
@@ -5617,11 +7241,20 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
-    area: { type: 'sphere', size: 30 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/166.jpg',
   },
   {
     id: 195,
@@ -5653,11 +7286,20 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
-    area: { type: 'sphere', size: 30 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/167.jpg',
   },
   {
     id: 196,
@@ -5686,11 +7328,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'медная монетка',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Social', 'Detection'],
+    image: '/magicImages/168.jpg',
   },
   {
     id: 197,
@@ -5717,12 +7365,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок овечьей шерсти',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 20 },
+    area: {
+      type: 'cube',
+      size: 20,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/169.jpg',
   },
   {
     id: 198,
@@ -5747,10 +7404,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'благовоние и флакон святой или нечестивой воды',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Foreknowledge'],
+    image: '/magicImages/170.jpg',
   },
   {
     id: 199,
@@ -5778,9 +7442,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Utility', 'Environment', 'Exploration', 'Foreknowledge'],
+    image: '/magicImages/171.jpg',
   },
   {
     id: 200,
@@ -5799,9 +7467,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/172.jpg',
   },
   {
     id: 201,
@@ -5823,12 +7497,23 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 7, value: 10 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 7,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/173.jpg',
   },
   {
     id: 202,
@@ -5855,16 +7540,38 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой кусочек фосфора',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'fire', dice: { count: 5, value: 8 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 5,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/174.jpg',
   },
   {
     id: 203,
@@ -5888,15 +7595,37 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    area: { type: 'cone', size: 15 },
+    castTime: {
+      type: 'action',
+    },
+    area: {
+      type: 'cone',
+      size: 15,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'fire', dice: { count: 3, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 3,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/175.jpg',
   },
   {
     id: 204,
@@ -5918,9 +7647,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
+    image: '/magicImages/176.jpg',
   },
   {
     id: 205,
@@ -5943,16 +7675,38 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'крошечный шарик из гуано летучей мыши и серы',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'fire', dice: { count: 8, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 8,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/177.jpg',
   },
   {
     id: 206,
@@ -5977,10 +7731,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек фосфора или светлячок',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Damage', 'Buff'],
+    image: '/magicImages/178.jpg',
   },
   {
     id: 207,
@@ -6002,13 +7762,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'cube', size: 20 },
+    area: {
+      type: 'cube',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/179.jpg',
   },
   {
     id: 208,
@@ -6036,9 +7805,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'бриллиант, стоящий как минимум 500 зм, расходуемый заклинанием',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/180.jpg',
   },
   {
     id: 209,
@@ -6065,12 +7838,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка извести, воды и земли',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/182.jpg',
   },
   {
     id: 210,
@@ -6093,9 +7872,13 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'жемчужина, стоящая как минимум 100 зм, и перо совы',
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/183.jpg',
   },
   {
     id: 211,
@@ -6119,13 +7902,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
-    area: { type: 'square', size: 20 },
+    area: {
+      type: 'square',
+      size: 20,
+    },
     saveThrow: 'strength',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/184.jpg',
   },
   {
     id: 212,
@@ -6149,9 +7941,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/185.jpg',
   },
   {
     id: 213,
@@ -6173,9 +7971,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/186.jpg',
   },
   {
     id: 214,
@@ -6197,9 +8001,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/187.jpg',
   },
   {
     id: 215,
@@ -6226,16 +8033,38 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'маленький хрустальный шар',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 300,
-    area: { type: 'sphere', size: 60 },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'cold', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'cold',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'cold', dice: { count: 10, value: 6 } }],
+    damage: [
+      {
+        damageType: 'cold',
+        dice: {
+          count: 10,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/188.jpg',
   },
   {
     id: 216,
@@ -6263,12 +8092,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'полусферический кусочек чистого кристалла и такая же по размерам полусфера из гуммиарабика',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/189.jpg',
   },
   {
     id: 217,
@@ -6294,10 +8129,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/190.jpg',
   },
   {
     id: 218,
@@ -6325,10 +8163,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Deception', 'Warding'],
+    image: '/magicImages/191.jpg',
   },
   {
     id: 219,
@@ -6364,7 +8208,10 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'благовония и растолченный бриллиант, стоящий как минимум 200 зм, расходуемый заклинанием',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     duration: {
       type: 'special',
       text: 'пока не будут рассеяны или пока не сработают',
@@ -6372,6 +8219,7 @@ export const spells: Spell[] = [
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Damage', 'Control', 'Warding'],
+    image: '/magicImages/192.jpg',
   },
   {
     id: 220,
@@ -6395,10 +8243,16 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'пара платиновых колец, стоящая как минимум 50 зм каждое, которые вы с целью должны носить на время действия заклинания',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/193.jpg',
   },
   {
     id: 221,
@@ -6428,12 +8282,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Social'],
+    image: '/magicImages/194.jpg',
   },
   {
     id: 222,
@@ -6452,11 +8312,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 10,
-    area: { type: 'sphere', size: 5 },
+    area: {
+      type: 'sphere',
+      size: 5,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/195.jpg',
   },
   {
     id: 223,
@@ -6480,10 +8346,14 @@ export const spells: Spell[] = [
       type: 'reaction',
       to: 'когда вы или существо в пределах 60 футов от вас начинаете падать',
     },
-    duration: { type: 'minute', value: 1 },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Utility', 'Exploration'],
+    image: '/magicImages/196.jpg',
   },
   {
     id: 224,
@@ -6505,9 +8375,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/197.jpg',
   },
   {
     id: 225,
@@ -6531,11 +8407,22 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 2, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/198.jpg',
   },
   {
     id: 226,
@@ -6555,10 +8442,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля битума и паук',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Movement'],
+    image: '/magicImages/199.jpg',
   },
   {
     id: 227,
@@ -6587,13 +8480,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек паутины',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'cube', size: 20 },
+    area: {
+      type: 'cube',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/200.jpg',
   },
   {
     id: 228,
@@ -6617,10 +8519,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 500,
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/201.jpg',
   },
   {
     id: 229,
@@ -6639,12 +8544,23 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: [{ damageType: 'necrotic', dice: { count: 7, value: 8 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 7,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Creation', 'Damage', 'Control'],
+    image: '/magicImages/202.jpg',
   },
   {
     id: 230,
@@ -6668,10 +8584,14 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'инкрустируемая драгоценными камнями чаша, стоящая как минимум 1 000 зм, расходуемая заклинанием',
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Healing', 'Buff', 'Social'],
+    image: '/magicImages/203.jpg',
   },
   {
     id: 231,
@@ -6697,12 +8617,19 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'ювелирное украшение, стоящее как минимум 1 000 зм, расходуемое заклинанием',
-    castTime: { type: 'hour', value: 1 },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 60,
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/204.jpg',
   },
   {
     id: 232,
@@ -6734,10 +8661,14 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/205.jpg',
   },
   {
     id: 233,
@@ -6763,12 +8694,23 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'кусочек меха; кусок янтаря, стекла или кристаллический жезл; три серебряные булавки',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'lightning', dice: { count: 10, value: 8 } }],
+    damage: [
+      {
+        damageType: 'lightning',
+        dice: {
+          count: 10,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/206.jpg',
   },
   {
     id: 234,
@@ -6791,10 +8733,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек фосфора, гнилушка или светлячок',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: false,
+    image: '/magicImages/207.jpg',
   },
   {
     id: 235,
@@ -6822,11 +8770,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'камыш или соломинка',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/208.jpg',
   },
   {
     id: 236,
@@ -6849,13 +8803,25 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'полоска белой ткани',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     attackRoll: true,
-    heal: { value: 5 },
-    nextLevel: { heal: { value: 5 } },
+    heal: {
+      value: 5,
+    },
+    nextLevel: {
+      heal: {
+        value: 5,
+      },
+    },
     tags: ['Healing', 'Buff'],
+    image: '/magicImages/209.jpg',
   },
   {
     id: 237,
@@ -6883,10 +8849,17 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'снег или лёд в количестве, достаточном для создания точной копии существа; немного волос, обрезков ногтей или других частей тела этого существа, помещаемые в снег или лёд; и толчёный рубин стоимостью 1 500 зм, которым посыпается копия, и который расходуется заклинанием',
-    castTime: { type: 'hour', value: 12 },
-    duration: { type: 'special', text: 'пока не рассеется' },
+    castTime: {
+      type: 'hour',
+      value: 12,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
     attackRoll: true,
     tags: ['Utility', 'Deception'],
+    image: '/magicImages/210.jpg',
   },
   {
     id: 238,
@@ -6912,11 +8885,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'фокусировка, стоящая как минимум 100 зм, и либо украшенный камнями рог для подслушивания, либо стеклянный глаз для подсматривания',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 5280,
     attackRoll: true,
     tags: ['Scrying', 'Detection', 'Utility'],
+    image: '/magicImages/211.jpg',
   },
   {
     id: 239,
@@ -6944,12 +8924,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/212.jpg',
   },
   {
     id: 240,
@@ -6971,12 +8957,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/213.jpg',
   },
   {
     id: 241,
@@ -7000,12 +8992,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/214.jpg',
   },
   {
     id: 242,
@@ -7025,9 +9023,12 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек меха ищейки',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/215.jpg',
   },
   {
     id: 243,
@@ -7046,10 +9047,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/216.jpg',
   },
   {
     id: 244,
@@ -7078,10 +9082,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'раздвоенная веточка',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/217.jpg',
   },
   {
     id: 245,
@@ -7102,10 +9112,17 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'набор инструментов для ворожбы — такой как кости, палочки из слоновой кости, карты, зубы или резные руны — стоящий 100 зм, а также предмет из места, которое вы хотите найти',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'day', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'day',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/218.jpg',
   },
   {
     id: 246,
@@ -7124,10 +9141,14 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/219.jpg',
   },
   {
     id: 247,
@@ -7156,10 +9177,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек меха ищейки',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/220.jpg',
   },
   {
     id: 248,
@@ -7180,10 +9207,14 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'стоящие 10 зм уголь, благовония и травы, сжигаемые в огне или латунной жаровне',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/221.jpg',
   },
   {
     id: 249,
@@ -7214,10 +9245,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'перо из крыла любой птицы',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/222.jpg',
   },
   {
     id: 250,
@@ -7239,12 +9276,21 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
-    heal: { value: 70 },
-    nextLevel: { heal: { value: 10 } },
+    heal: {
+      value: 70,
+    },
+    nextLevel: {
+      heal: {
+        value: 10,
+      },
+    },
     tags: ['Healing'],
+    image: '/magicImages/223.jpg',
   },
   {
     id: 251,
@@ -7265,10 +9311,16 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'нефритовый обруч, стоящий как минимум 1 500 зм, который вы должны надеть на голову перед накладыванием заклинания',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Shapechanging'],
+    image: '/magicImages/224.jpg',
   },
   {
     id: 252,
@@ -7288,10 +9340,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка сажи и соли',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Social'],
+    image: '/magicImages/225.jpg',
   },
   {
     id: 253,
@@ -7310,12 +9368,23 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: [{ damageType: 'necrotic', dice: { count: 14, value: 6 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 14,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Debuff'],
+    image: '/magicImages/226.jpg',
   },
   {
     id: 254,
@@ -7338,12 +9407,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля крови',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/227.jpg',
   },
   {
     id: 255,
@@ -7363,11 +9438,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'семя гороха',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     saveThrow: 'strength',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/228.jpg',
   },
   {
     id: 256,
@@ -7387,10 +9468,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок тонкой медной проволоки',
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Communication'],
+    image: '/magicImages/229.jpg',
   },
   {
     id: 257,
@@ -7409,10 +9496,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/230.jpg',
   },
   {
     id: 258,
@@ -7441,8 +9534,12 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'два магнетита',
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/231.jpg',
   },
   {
     id: 259,
@@ -7465,11 +9562,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек пищи',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Communication', 'Social'],
+    image: '/magicImages/232.jpg',
   },
   {
     id: 260,
@@ -7489,12 +9592,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кокон гусеницы',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control', 'Shapechanging'],
+    image: '/magicImages/233.jpg',
   },
   {
     id: 261,
@@ -7513,11 +9622,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Shapechanging'],
+    image: '/magicImages/234.jpg',
   },
   {
     id: 262,
@@ -7536,11 +9651,20 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
-    area: { type: 'sphere', size: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     attackRoll: true,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/235.jpg',
   },
   {
     id: 263,
@@ -7575,11 +9699,20 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка толчёного железа или железная стружка',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
-    area: { type: 'sphere', size: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     attackRoll: true,
     tags: ['Control', 'Negation', 'Warding'],
+    image: '/magicImages/236.jpg',
   },
   {
     id: 264,
@@ -7599,10 +9732,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'перо колибри',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Buff', 'Debuff', 'Foreknowledge'],
+    image: '/magicImages/237.jpg',
   },
   {
     id: 265,
@@ -7623,10 +9763,17 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'ваша статуэтка, вырезанная из слоновой кости, украшенная драгоценными камнями и стоящая как минимум 1 500 зм',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'day', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'day',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/238.jpg',
   },
   {
     id: 266,
@@ -7647,9 +9794,12 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'благовония и жертвенное подношение, подходящее вашей религии, стоящие вместе как минимум 25 зм, расходуемые заклинанием',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Foreknowledge'],
+    image: '/magicImages/239.jpg',
   },
   {
     id: 267,
@@ -7678,11 +9828,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/241.jpg',
   },
   {
     id: 268,
@@ -7702,9 +9858,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'метательное оружие или один боеприпас',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
-    area: { type: 'cone', size: 60 },
+    area: {
+      type: 'cone',
+      size: 60,
+    },
+    image: '/magicImages/242.jpg',
   },
   {
     id: 269,
@@ -7724,10 +9886,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'метательное оружие или один боеприпас',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
     attackRoll: true,
-    area: { type: 'cylinder', size: 40 },
+    area: {
+      type: 'cylinder',
+      size: 40,
+    },
+    image: '/magicImages/243.jpg',
   },
   {
     id: 270,
@@ -7757,11 +9925,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'по одной ягоде падуба за каждое призываемое существо',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/244.jpg',
   },
   {
     id: 271,
@@ -7790,11 +9964,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/245.jpg',
   },
   {
     id: 272,
@@ -7816,17 +9997,42 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
-    area: { type: 'cylinder', size: 60 },
+    area: {
+      type: 'cylinder',
+      size: 60,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'lightning', dice: { count: 3, value: 10 } }],
+    damage: [
+      {
+        damageType: 'lightning',
+        dice: {
+          count: 3,
+          value: 10,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'lightning', dice: { count: 1, value: 10 } }],
+      damage: [
+        {
+          damageType: 'lightning',
+          dice: {
+            count: 1,
+            value: 10,
+          },
+        },
+      ],
     },
     tags: ['Damage'],
+    image: '/magicImages/246.jpg',
   },
   {
     id: 273,
@@ -7848,11 +10054,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/247.jpg',
   },
   {
     id: 274,
@@ -7874,11 +10087,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/248.jpg',
   },
   {
     id: 275,
@@ -7902,11 +10122,18 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'вода и песок для водяного, горящее благовоние для воздушного, мягкая глина для земляного или сера и фосфор для огненного',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: true,
     tags: ['Summoning'],
+    image: '/magicImages/249.jpg',
   },
   {
     id: 276,
@@ -7938,12 +10165,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/250.jpg',
   },
   {
     id: 277,
@@ -7965,14 +10198,36 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
-    damage: [{ damageType: 'necrotic', dice: { count: 3, value: 6 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 3,
+          value: 6,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'necrotic', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
     tags: ['Healing', 'Damage'],
+    image: '/magicImages/251.jpg',
   },
   {
     id: 278,
@@ -7991,12 +10246,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/252.jpg',
   },
   {
     id: 279,
@@ -8015,11 +10276,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/240.jpg',
   },
   {
     id: 280,
@@ -8039,9 +10307,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка кладбищенской земли',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/253.jpg',
   },
   {
     id: 281,
@@ -8060,12 +10334,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/254.jpg',
   },
   {
     id: 282,
@@ -8085,9 +10365,13 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: true,
     components: 'агат, стоящий как минимум 1 000 зм, расходуемый заклинанием',
-    castTime: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Creation'],
+    image: '/magicImages/255.jpg',
   },
   {
     id: 283,
@@ -8108,11 +10392,17 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'ваша небольшая копия, изготовленная из материала, стоящего не менее 5 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'day', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'day',
+      value: 1,
+    },
     spellRange: 500,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/256.jpg',
   },
   {
     id: 284,
@@ -8136,11 +10426,18 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'для каждого существа требуется по одному гиацинту, стоящему как минимум 1 000 зм, и по одному бруску серебра с орнаментом, стоящему как минимум 100 зм; все компоненты расходуются заклинанием',
-    castTime: { type: 'hour', value: 1 },
-    duration: { type: 'special', text: 'особая' },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'особая',
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/257.jpg',
   },
   {
     id: 285,
@@ -8169,11 +10466,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/258.jpg',
   },
   {
     id: 286,
@@ -8193,10 +10496,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'задняя лапка кузнечика',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/259.jpg',
   },
   {
     id: 287,
@@ -8219,10 +10528,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшое количество алкоголя или дистиллированного спирта',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/260.jpg',
   },
   {
     id: 288,
@@ -8241,11 +10556,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/261.jpg',
   },
   {
     id: 289,
@@ -8268,17 +10589,42 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок сала, щепотка серы и толченого железа',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 5 },
+    area: {
+      type: 'sphere',
+      size: 5,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'fire', dice: { count: 2, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
+    image: '/magicImages/262.jpg',
   },
   {
     id: 290,
@@ -8312,12 +10658,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Damage', 'Control'],
+    image: '/magicImages/263.jpg',
   },
   {
     id: 291,
@@ -8353,11 +10705,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    area: { type: 'cone', size: 60 },
+    castTime: {
+      type: 'action',
+    },
+    area: {
+      type: 'cone',
+      size: 60,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Damage', 'Control'],
+    image: '/magicImages/264.jpg',
   },
   {
     id: 292,
@@ -8376,10 +10734,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Communication', 'Social'],
+    image: '/magicImages/265.jpg',
   },
   {
     id: 293,
@@ -8399,11 +10763,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'горящие благовония',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Communication', 'Social'],
+    image: '/magicImages/266.jpg',
   },
   {
     id: 294,
@@ -8422,10 +10792,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Communication', 'Social'],
+    image: '/magicImages/267.jpg',
   },
   {
     id: 295,
@@ -8444,10 +10820,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Deception', 'Warding'],
+    image: '/magicImages/268.jpg',
   },
   {
     id: 296,
@@ -8466,12 +10848,27 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     damage: [
-      { damageType: 'thunder', dice: { count: 5, value: 6 } },
-      { damageType: 'radiant', dice: { count: 5, value: 6 } },
+      {
+        damageType: 'thunder',
+        dice: {
+          count: 5,
+          value: 6,
+        },
+      },
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 5,
+          value: 6,
+        },
+      },
     ],
+    image: '/magicImages/269.jpg',
   },
   {
     id: 297,
@@ -8497,11 +10894,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Debuff'],
+    image: '/magicImages/270.jpg',
   },
   {
     id: 298,
@@ -8524,15 +10927,37 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок железа и пламя',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 2, value: 8 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 2,
+          value: 8,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'fire', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'fire',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
     tags: ['Damage', 'Debuff'],
+    image: '/magicImages/271.jpg',
   },
   {
     id: 299,
@@ -8555,15 +10980,34 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'магнетит и щепотка пыли',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'force', dice: { count: 3, value: 6 } }],
+      damage: [
+        {
+          damageType: 'force',
+          dice: {
+            count: 3,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'force', dice: { count: 10, value: 6 } }],
+    damage: [
+      {
+        damageType: 'force',
+        dice: {
+          count: 10,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/272.jpg',
   },
   {
     id: 300,
@@ -8588,11 +11032,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'святая вода или порошок серебра и железа',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
+    image: '/magicImages/273.jpg',
   },
   {
     id: 301,
@@ -8625,10 +11075,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/274.jpg',
   },
   {
     id: 302,
@@ -8648,10 +11101,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'молитвенный барабан и святая вода',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/275.jpg',
   },
   {
     id: 303,
@@ -8670,12 +11130,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/277.jpg',
   },
   {
     id: 304,
@@ -8694,10 +11160,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/278.jpg',
   },
   {
     id: 305,
@@ -8719,8 +11188,11 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
+    image: '/magicImages/279.jpg',
   },
   {
     id: 306,
@@ -8744,11 +11216,20 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'щепотка порошка или песка, окрашенного в красный, желтый и синий цвет',
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
-    area: { type: 'cone', size: 15 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
+    area: {
+      type: 'cone',
+      size: 15,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/280.jpg',
   },
   {
     id: 307,
@@ -8776,9 +11257,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'светлячок или фосфоресцирующий мох',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/281.jpg',
   },
   {
     id: 308,
@@ -8799,10 +11286,16 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'кожаный ремешок, обмотанный вокруг предплечья или аналогичной конечности',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Movement'],
+    image: '/magicImages/282.jpg',
   },
   {
     id: 309,
@@ -8821,10 +11314,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Communication', 'Foreknowledge'],
+    image: '/magicImages/283.jpg',
   },
   {
     id: 310,
@@ -8872,12 +11372,22 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'травы, масла и благовония, стоящие как минимум 1 000 зм, расходуемые заклинанием',
-    castTime: { type: 'hour', value: 24 },
-    duration: { type: 'special', text: 'пока не рассеется' },
-    area: { type: 'sphere', size: 60 },
+    castTime: {
+      type: 'hour',
+      value: 24,
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не рассеется',
+    },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
     saveThrow: 'charisma',
     attackRoll: true,
     tags: ['Control', 'Buff', 'Debuff', 'Environment'],
+    image: '/magicImages/284.jpg',
   },
   {
     id: 311,
@@ -8899,9 +11409,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
+    image: '/magicImages/285.jpg',
   },
   {
     id: 312,
@@ -8924,10 +11437,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: '<st eng=petrified>окаменевший</st> глаз тритона',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: true,
+    image: '/magicImages/286.jpg',
   },
   {
     id: 313,
@@ -8947,11 +11466,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'колокольчик и серебряная проволочка',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Detection'],
+    image: '/magicImages/287.jpg',
   },
   {
     id: 314,
@@ -8971,11 +11497,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка порошка толчёного прозрачного драгоценного камня',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
     attackRoll: true,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/288.jpg',
   },
   {
     id: 315,
@@ -8995,13 +11527,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусок масла или свиного сала',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'square', size: 10 },
+    area: {
+      type: 'square',
+      size: 10,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/289.jpg',
   },
   {
     id: 316,
@@ -9024,10 +11565,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка земли',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Buff', 'Movement'],
+    image: '/magicImages/290.jpg',
   },
   {
     id: 317,
@@ -9048,12 +11595,23 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'пригоршня глиняных, кристаллических, стеклянных или минеральных шариков',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
     saveThrow: 'intelligence',
     attackRoll: true,
-    damage: [{ damageType: 'psychic', dice: { count: 4, value: 6 } }],
+    damage: [
+      {
+        damageType: 'psychic',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Debuff'],
+    image: '/magicImages/291.jpg',
   },
   {
     id: 318,
@@ -9072,10 +11630,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Movement'],
+    image: '/magicImages/292.jpg',
   },
   {
     id: 319,
@@ -9094,10 +11658,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 5,
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/293.jpg',
   },
   {
     id: 320,
@@ -9116,8 +11683,11 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: false,
+    image: '/magicImages/294.jpg',
   },
   {
     id: 321,
@@ -9136,10 +11706,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/295.jpg',
   },
   {
     id: 322,
@@ -9158,10 +11731,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Damage', 'Control'],
+    image: '/magicImages/296.jpg',
   },
   {
     id: 323,
@@ -9187,10 +11763,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Shapechanging'],
+    image: '/magicImages/297.jpg',
   },
   {
     id: 324,
@@ -9209,14 +11791,31 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
-    area: { type: 'sphere', size: 30 },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
-    damage: [{ damageType: 'psychic', dice: { count: 4, value: 10 } }],
+    damage: [
+      {
+        damageType: 'psychic',
+        dice: {
+          count: 4,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/298.jpg',
   },
   {
     id: 325,
@@ -9247,13 +11846,22 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'три ореховые скорлупки',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
-    area: { type: 'sphere', size: 10 },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/299.jpg',
   },
   {
     id: 326,
@@ -9272,9 +11880,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/300.jpg',
   },
   {
     id: 327,
@@ -9294,11 +11905,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка кунжутного семени',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/301.jpg',
   },
   {
     id: 328,
@@ -9317,10 +11934,16 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/302.jpg',
   },
   {
     id: 329,
@@ -9340,13 +11963,30 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'увеличительное стекло',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
-    area: { type: 'line', size: 60 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
+    area: {
+      type: 'line',
+      size: 60,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: [{ damageType: 'radiant', dice: { count: 6, value: 8 } }],
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 6,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Debuff'],
+    image: '/magicImages/303.jpg',
   },
   {
     id: 330,
@@ -9366,13 +12006,27 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'огонь и кусочек солнечного камня',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 60 },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
-    damage: [{ damageType: 'radiant', dice: { count: 12, value: 6 } }],
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 12,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Debuff'],
+    image: '/magicImages/304.jpg',
   },
   {
     id: 331,
@@ -9392,10 +12046,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек медной проволоки',
-    castTime: { type: 'action' },
-    duration: { type: 'round', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: false,
+    image: '/magicImages/305.jpg',
   },
   {
     id: 332,
@@ -9415,9 +12075,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'крошечный плащ',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
+    image: '/magicImages/306.jpg',
   },
   {
     id: 333,
@@ -9445,11 +12111,17 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'капля воды, если вода создаётся, или несколько песчинок, если вода уничтожается',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
-    area: { type: 'cube', size: 30 },
+    area: {
+      type: 'cube',
+      size: 30,
+    },
     attackRoll: true,
     tags: ['Creation'],
+    image: '/magicImages/308.jpg',
   },
   {
     id: 334,
@@ -9473,10 +12145,14 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'глиняный горшок с могильной землёй, глиняный горшок с солоноватой водой и по одному чёрному ониксу стоимостью 150 зм на каждый труп',
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Creation', 'Control'],
+    image: '/magicImages/309.jpg',
   },
   {
     id: 335,
@@ -9495,10 +12171,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Creation'],
+    image: '/magicImages/310.jpg',
   },
   {
     id: 336,
@@ -9520,9 +12199,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
+    image: '/magicImages/311.jpg',
   },
   {
     id: 337,
@@ -9542,13 +12227,27 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'крошечный веер и перо экзотического происхождения',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     saveThrow: 'strength',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 3, value: 8 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 3,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/312.jpg',
   },
   {
     id: 338,
@@ -9567,13 +12266,27 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 90,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'slashing', dice: { count: 6, value: 10 } }],
+    damage: [
+      {
+        damageType: 'slashing',
+        dice: {
+          count: 6,
+          value: 10,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
+    image: '/magicImages/313.jpg',
   },
   {
     id: 339,
@@ -9595,9 +12308,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
+    image: '/magicImages/314.jpg',
   },
   {
     id: 340,
@@ -9616,12 +12335,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 30,
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Summoning', 'Control'],
+    image: '/magicImages/315.jpg',
   },
   {
     id: 341,
@@ -9661,11 +12386,21 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'горящее благовоние, немного серы и масла, завязанная узлом тетива, немного крови бурого увальня и маленький серебряный жезл, стоящий как минимум 10 зм',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'hour', value: 24 },
-    area: { type: 'squareFeet', size: 2500 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
+    area: {
+      type: 'squareFeet',
+      size: 2500,
+    },
     attackRoll: true,
     tags: ['Control', 'Warding'],
+    image: '/magicImages/316.jpg',
   },
   {
     id: 342,
@@ -9689,11 +12424,20 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'стеклянная или кристаллическая бусина, рассыпающаяся, когда заклинание заканчивается',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
-    area: { type: 'sphere', size: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     attackRoll: true,
     tags: ['Negation', 'Warding'],
+    image: '/magicImages/317.jpg',
   },
   {
     id: 343,
@@ -9712,11 +12456,21 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'day', value: 10 },
-    area: { type: 'square', size: 5280 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'day',
+      value: 10,
+    },
+    area: {
+      type: 'square',
+      size: 5280,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/318.jpg',
   },
   {
     id: 344,
@@ -9740,11 +12494,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Control', 'Movement'],
+    image: '/magicImages/319.jpg',
   },
   {
     id: 345,
@@ -9764,9 +12524,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'два переплетённых серебряных кольца',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     attackRoll: false,
+    image: '/magicImages/320.jpg',
   },
   {
     id: 346,
@@ -9786,11 +12552,17 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля ртути',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
     tags: ['Movement', 'Utility'],
+    image: '/magicImages/323.jpg',
   },
   {
     id: 347,
@@ -9813,16 +12585,38 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'пригоршня шипов',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'piercing', dice: { count: 7, value: 8 } }],
+    damage: [
+      {
+        damageType: 'piercing',
+        dice: {
+          count: 7,
+          value: 8,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'piercing', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'piercing',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
     tags: ['Damage', 'Control'],
+    image: '/magicImages/324.jpg',
   },
   {
     id: 348,
@@ -9845,9 +12639,12 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'стебель растения с шипами',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: true,
+    image: '/magicImages/325.jpg',
   },
   {
     id: 349,
@@ -9866,12 +12663,21 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/326.jpg',
   },
   {
     id: 350,
@@ -9891,10 +12697,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'экстракт зерна и петля из пергамента',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Utility'],
+    image: '/magicImages/327.jpg',
   },
   {
     id: 351,
@@ -9916,12 +12728,21 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 120,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     attackRoll: true,
     tags: ['Control', 'Environment'],
+    image: '/magicImages/328.jpg',
   },
   {
     id: 352,
@@ -9940,9 +12761,12 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
+    castTime: {
+      type: 'bonusAction',
+    },
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/329.jpg',
   },
   {
     id: 353,
@@ -9962,12 +12786,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'мех летучей мыши и либо капля дегтя, либо кусочек угля',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 15 },
+    area: {
+      type: 'sphere',
+      size: 15,
+    },
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/330.jpg',
   },
   {
     id: 354,
@@ -9987,12 +12820,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'маленькое серебряное зеркало',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Buff', 'Warding'],
+    image: '/magicImages/331.jpg',
   },
   {
     id: 355,
@@ -10017,12 +12856,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка толченого железа',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/332.jpg',
   },
   {
     id: 356,
@@ -10055,12 +12900,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'небольшой прямой кусочек железа',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     saveThrow: 'wisdom',
     attackRoll: true,
     tags: ['Control'],
+    image: '/magicImages/333.jpg',
   },
   {
     id: 364,
@@ -10160,11 +13011,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: true,
     tags: ['Creation', 'Damage'],
+    image: '/magicImages/181.jpg',
   },
   {
     id: 365,
@@ -10250,9 +13107,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'редкие масла и мази, стоящие как минимум 1 000 зм, расходуемые заклинанием',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Healing'],
+    image: '/magicImages/276.jpg',
   },
   {
     id: 366,
@@ -10304,12 +13165,22 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'крошечный кусочек материи того же вида, из которого вы планируете создать предмет',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'special', text: 'особая' },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'special',
+      text: 'особая',
+    },
     spellRange: 30,
-    area: { type: 'cube', size: 5 },
+    area: {
+      type: 'cube',
+      size: 5,
+    },
     attackRoll: true,
     tags: ['Creation'],
+    image: '/magicImages/307.jpg',
   },
   {
     id: 367,
@@ -10433,10 +13304,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 10,
     attackRoll: true,
     tags: ['Teleportation'],
+    image: '/magicImages/321.jpg',
   },
   {
     id: 368,
@@ -10465,10 +13339,16 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка сушеной морковки или агат',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: true,
     tags: ['Buff'],
+    image: '/magicImages/322.jpg',
   },
   {
     id: 448,
@@ -10490,11 +13370,19 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
     attackRoll: true,
-    area: { type: 'sphere', size: 30 },
+    area: {
+      type: 'sphere',
+      size: 30,
+    },
   },
   {
     id: 449,
@@ -10520,10 +13408,18 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 300,
-    area: { type: 'cube', size: 100 },
+    area: {
+      type: 'cube',
+      size: 100,
+    },
     saveThrow: 'strength',
     attackRoll: true,
     tags: ['Control'],
@@ -10553,7 +13449,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -10575,12 +13473,25 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'бумага или лист в форме воронки',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     saveThrow: 'strength',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 6, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 6,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -10604,8 +13515,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля воды',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 60,
     attackRoll: true,
     tags: ['Control', 'Warding'],
@@ -10637,10 +13553,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля воды',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
-    area: { type: 'sphere', size: 5 },
+    area: {
+      type: 'sphere',
+      size: 5,
+    },
     saveThrow: 'strength',
     attackRoll: true,
     tags: ['Control'],
@@ -10665,8 +13589,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -10689,8 +13618,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -10720,8 +13654,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: true,
   },
@@ -10747,7 +13686,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 90,
     attackRoll: true,
   },
@@ -10768,8 +13709,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: false,
   },
   {
@@ -10793,8 +13739,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка песка',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -10818,14 +13769,32 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 10,
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 1,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -10851,10 +13820,18 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'Острый перец',
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
-    area: { type: 'cone', size: 15 },
+    area: {
+      type: 'cone',
+      size: 15,
+    },
   },
   {
     id: 462,
@@ -10877,14 +13854,35 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля желчи гигантского слизня',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'acid', dice: { count: 10, value: 4 } }],
+    damage: [
+      {
+        damageType: 'acid',
+        dice: {
+          count: 10,
+          value: 4,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'acid', dice: { count: 2, value: 4 } }],
+      damage: [
+        {
+          damageType: 'acid',
+          dice: {
+            count: 2,
+            value: 4,
+          },
+        },
+      ],
     },
     tags: ['Damage'],
   },
@@ -10914,9 +13912,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
-    area: { type: 'sphere', size: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
+    area: {
+      type: 'sphere',
+      size: 10,
+    },
     attackRoll: true,
     tags: ['Control', 'Debuff', 'Warding'],
   },
@@ -10938,8 +13944,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'немного меха завернутого в ткань',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
     tags: ['Communication', 'Buff'],
   },
@@ -10968,11 +13979,24 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'миниатюрная рука из глины',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 2, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
+    ],
   },
   {
     id: 466,
@@ -10997,15 +14021,36 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек обсидиана',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 20 },
+    area: {
+      type: 'cube',
+      size: 20,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 12 } }],
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 12,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'bludgeoning', dice: { count: 3, value: 12 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 3,
+          value: 12,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -11028,8 +14073,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: false,
   },
@@ -11057,11 +14107,19 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: true,
-    area: { type: 'cone', size: 60 },
+    area: {
+      type: 'cone',
+      size: 60,
+    },
   },
   {
     id: 469,
@@ -11094,8 +14152,14 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'рубин стоимостью не менее 999 зм',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 90,
     attackRoll: false,
   },
@@ -11121,12 +14185,25 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 8, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 8,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
   },
   {
@@ -11153,8 +14230,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -11180,14 +14262,32 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     saveThrow: 'dexterity',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'bludgeoning', dice: { count: 3, value: 8 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 3,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -11221,8 +14321,14 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'крошечная серебряная клетка стоимостью 100 зм',
-    castTime: { type: 'reaction', to: 'MANUAL_reaction' },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'reaction',
+      to: 'MANUAL_reaction',
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     spellRange: 60,
     attackRoll: true,
   },
@@ -11250,8 +14356,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -11280,12 +14391,25 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
-    area: { type: 'cylinder', size: 30 },
+    area: {
+      type: 'cylinder',
+      size: 30,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 6, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 6,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Control'],
   },
   {
@@ -11314,8 +14438,14 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: false,
   },
   {
@@ -11339,17 +14469,42 @@ export const spells: Spell[] = [
     consumeComponents: false,
     needComponents: false,
     components: 'капля воды или кусочек льда',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
-    area: { type: 'sphere', size: 5 },
+    area: {
+      type: 'sphere',
+      size: 5,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     damage: [
-      { damageType: 'piercing', dice: { count: 1, value: 10 } },
-      { damageType: 'cold', dice: { count: 2, value: 6 } },
+      {
+        damageType: 'piercing',
+        dice: {
+          count: 1,
+          value: 10,
+        },
+      },
+      {
+        damageType: 'cold',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
     ],
     nextLevel: {
-      damage: [{ damageType: 'cold', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'cold',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
     tags: ['Damage'],
   },
@@ -11377,7 +14532,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -11402,11 +14559,24 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'селитра, сера и шарик сосновой смолы',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 2, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage'],
   },
   {
@@ -11429,11 +14599,24 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
-    damage: [{ damageType: 'psychic', dice: { count: 5, value: 10 } }],
+    damage: [
+      {
+        damageType: 'psychic',
+        dice: {
+          count: 5,
+          value: 10,
+        },
+      },
+    ],
   },
   {
     id: 481,
@@ -11462,8 +14645,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'кокон гусеницы',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 120,
     attackRoll: false,
   },
@@ -11498,7 +14686,10 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: true,
     components: 'бриллиант стоимостью не менее 500 зм, расходуемый заклинанием',
-    castTime: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 5280,
     attackRoll: false,
   },
@@ -11523,7 +14714,9 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'живая блоха',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: true,
   },
@@ -11544,8 +14737,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Control', 'Communication'],
   },
@@ -11567,8 +14765,13 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'небольшой кусочек адамантина стоит не менее 500 зм, потребляемый при заклинании',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: false,
   },
   {
@@ -11593,8 +14796,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
   },
@@ -11620,9 +14828,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
-    area: { type: 'cube', size: 15 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
+    area: {
+      type: 'cube',
+      size: 15,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Damage', 'Control', 'Movement', 'Warding'],
@@ -11649,8 +14865,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Control', 'Movement', 'Warding'],
@@ -11678,9 +14899,17 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
-    area: { type: 'cone', size: 15 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
+    area: {
+      type: 'cone',
+      size: 15,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Damage', 'Control', 'Warding'],
@@ -11707,8 +14936,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
     tags: ['Damage', 'Warding'],
@@ -11735,8 +14969,13 @@ export const spells: Spell[] = [
     consumeComponents: false,
     components:
       'глазное яблоко нежити, заключенное в драгоценный камень стоимостью не менее 150 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -11759,7 +14998,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
   },
@@ -11784,11 +15025,19 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля смолы, смешанная с каплей ртути',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 150,
     attackRoll: true,
-    area: { type: 'sphere', size: 60 },
+    area: {
+      type: 'sphere',
+      size: 60,
+    },
   },
   {
     id: 494,
@@ -11810,8 +15059,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -11836,10 +15090,15 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'чешуя красного дракона',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: true,
-    area: { type: 'line', size: 5 },
+    area: {
+      type: 'line',
+      size: 5,
+    },
   },
   {
     id: 496,
@@ -11861,7 +15120,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     attackRoll: true,
   },
   {
@@ -11884,8 +15145,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Warding'],
   },
@@ -11909,7 +15175,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -11931,8 +15199,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'горсть песка',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 90,
     attackRoll: true,
     tags: ['Control', 'Debuff'],
@@ -11959,9 +15232,14 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
-    area: { type: 'cube', size: 5 },
+    area: {
+      type: 'cube',
+      size: 5,
+    },
     saveThrow: 'constitution',
     attackRoll: true,
     tags: ['Control', 'Debuff'],
@@ -11992,8 +15270,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -12021,7 +15304,10 @@ export const spells: Spell[] = [
       type: 'reaction',
       to: 'получив урон звуком, кислотой, огнём, холодом или электричеством',
     },
-    duration: { type: 'round', value: 1 },
+    duration: {
+      type: 'round',
+      value: 1,
+    },
     attackRoll: true,
     tags: ['Damage', 'Warding'],
   },
@@ -12045,12 +15331,30 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
-    damage: [{ damageType: 'necrotic', dice: { count: 1, value: 8 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 1,
+          value: 8,
+        },
+      },
+    ],
     cantripByCharacterLevel: {
-      damage: [{ damageType: 'necrotic', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'necrotic',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
   },
   {
@@ -12083,7 +15387,10 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -12108,10 +15415,20 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'сломанная кость и квадрат черного шелка',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: true,
-    damage: [{ damageType: 'necrotic', dice: { count: 5, value: 12 } }],
+    damage: [
+      {
+        damageType: 'necrotic',
+        dice: {
+          count: 5,
+          value: 12,
+        },
+      },
+    ],
   },
   {
     id: 506,
@@ -12140,13 +15457,29 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'глина и вода',
-    castTime: { type: 'action' },
-    duration: { type: 'special', text: 'пока не развеяно' },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'special',
+      text: 'пока не развеяно',
+    },
     spellRange: 120,
-    area: { type: 'cube', size: 40 },
+    area: {
+      type: 'cube',
+      size: 40,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 4, value: 8 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 4,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -12178,8 +15511,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'сосуд с кровью гуманоида, убитого за последние 24 часа',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -12208,8 +15546,13 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'сосуд с кровью гуманоида, убитого за последние 24 часа',
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -12231,11 +15574,21 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'капля воды',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 4, value: 8 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 4,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -12258,8 +15611,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 90,
     saveThrow: 'constitution',
     attackRoll: true,
@@ -12285,8 +15643,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
   },
@@ -12312,7 +15675,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 90,
     attackRoll: true,
   },
@@ -12338,10 +15703,23 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
-    damage: [{ damageType: 'fire', dice: { count: 1, value: 6 } }],
+    damage: [
+      {
+        damageType: 'fire',
+        dice: {
+          count: 1,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Buff'],
   },
   {
@@ -12369,16 +15747,40 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'щепотка пыли',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
-    area: { type: 'cube', size: 5 },
+    area: {
+      type: 'cube',
+      size: 5,
+    },
     saveThrow: 'strength',
     attackRoll: true,
     nextLevel: {
-      damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 8 } }],
+      damage: [
+        {
+          damageType: 'bludgeoning',
+          dice: {
+            count: 1,
+            value: 8,
+          },
+        },
+      ],
     },
-    damage: [{ damageType: 'bludgeoning', dice: { count: 1, value: 8 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 1,
+          value: 8,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -12401,7 +15803,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 5,
     attackRoll: true,
   },
@@ -12422,7 +15826,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -12449,11 +15855,19 @@ export const spells: Spell[] = [
     needComponents: true,
     consumeComponents: false,
     components: 'кулон солнечных лучей, стоимостью не менее 100 зм',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
-    area: { type: 'cylinder', size: 30 },
+    area: {
+      type: 'cylinder',
+      size: 30,
+    },
   },
   {
     id: 518,
@@ -12495,8 +15909,14 @@ export const spells: Spell[] = [
     consumeComponents: true,
     components:
       'омела, расходуемая заклинанием, которая была собрана золотым серпом под светом полной луны',
-    castTime: { type: 'minute', value: 10 },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'minute',
+      value: 10,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     attackRoll: false,
   },
   {
@@ -12521,8 +15941,13 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -12552,8 +15977,14 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: true,
     components: '25 футов веревки, потребляемую при заклинании',
-    castTime: { type: 'minute', value: 1 },
-    duration: { type: 'hour', value: 8 },
+    castTime: {
+      type: 'minute',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 8,
+    },
     attackRoll: false,
   },
   {
@@ -12576,10 +16007,15 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
   },
   {
     id: 522,
@@ -12603,7 +16039,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 60,
     attackRoll: false,
   },
@@ -12628,7 +16066,9 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'священный символ',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 5,
     attackRoll: true,
   },
@@ -12655,13 +16095,29 @@ export const spells: Spell[] = [
     needComponents: false,
     consumeComponents: false,
     components: 'соломинка',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 300,
-    area: { type: 'cylinder', size: 10 },
+    area: {
+      type: 'cylinder',
+      size: 10,
+    },
     saveThrow: 'dexterity',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 10, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 10,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control'],
   },
   {
@@ -12697,7 +16153,9 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 120,
     attackRoll: true,
   },
@@ -12722,10 +16180,15 @@ d8 | Тип урона
     needComponents: false,
     consumeComponents: false,
     components: 'кусок льда или маленькая белый осколок камня',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 90,
     attackRoll: true,
-    area: { type: 'sphere', size: 5 },
+    area: {
+      type: 'sphere',
+      size: 5,
+    },
   },
   {
     id: 527,
@@ -12755,7 +16218,10 @@ d8 | Тип урона
     consumeComponents: true,
     components:
       'Глина, пепел и корень мандрагоры, расходуемые заклинанием, и кинжал с инкрустированными драгоценными камнями стоимостью не менее 1000 зм',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
   },
   {
@@ -12780,11 +16246,19 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 60,
     attackRoll: true,
-    area: { type: 'cube', size: 5 },
+    area: {
+      type: 'cube',
+      size: 5,
+    },
   },
   {
     id: 529,
@@ -12813,13 +16287,34 @@ d8 | Тип урона
     needComponents: false,
     consumeComponents: false,
     components: 'ручное зеркальце',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     spellRange: 120,
     attackRoll: true,
-    damage: [{ damageType: 'radiant', dice: { count: 4, value: 6 } }],
+    damage: [
+      {
+        damageType: 'radiant',
+        dice: {
+          count: 4,
+          value: 6,
+        },
+      },
+    ],
     nextLevel: {
-      damage: [{ damageType: 'radiant', dice: { count: 1, value: 6 } }],
+      damage: [
+        {
+          damageType: 'radiant',
+          dice: {
+            count: 1,
+            value: 6,
+          },
+        },
+      ],
     },
   },
   {
@@ -12852,8 +16347,13 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -12880,13 +16380,29 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 150,
-    area: { type: 'sphere', size: 20 },
+    area: {
+      type: 'sphere',
+      size: 20,
+    },
     saveThrow: 'strength',
     attackRoll: true,
-    damage: [{ damageType: 'bludgeoning', dice: { count: 2, value: 6 } }],
+    damage: [
+      {
+        damageType: 'bludgeoning',
+        dice: {
+          count: 2,
+          value: 6,
+        },
+      },
+    ],
     tags: ['Damage', 'Control', 'Debuff'],
   },
   {
@@ -12913,8 +16429,13 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -12945,8 +16466,13 @@ d8 | Тип урона
     needComponents: false,
     consumeComponents: false,
     components: 'несколько волосков быка',
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 10 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 10,
+    },
     attackRoll: true,
   },
   {
@@ -12969,8 +16495,13 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'bonusAction' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'bonusAction',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     attackRoll: true,
   },
   {
@@ -12994,7 +16525,9 @@ d8 | Тип урона
     needComponents: false,
     consumeComponents: false,
     components: 'оружие ближнего боя стоимостью не менее 1 см',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: true,
   },
@@ -13019,10 +16552,15 @@ d8 | Тип урона
     needComponents: false,
     consumeComponents: false,
     components: 'кусочек губки',
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 150,
     attackRoll: true,
-    area: { type: 'cube', size: 30 },
+    area: {
+      type: 'cube',
+      size: 30,
+    },
   },
   {
     id: 537,
@@ -13041,8 +16579,13 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'minute', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'minute',
+      value: 1,
+    },
     spellRange: 300,
     saveThrow: 'strength',
     attackRoll: true,
@@ -13068,8 +16611,13 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
-    duration: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'action',
+    },
+    duration: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
   },
   {
@@ -13097,7 +16645,9 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: false,
   },
@@ -13134,8 +16684,14 @@ d8 | Тип урона
     needComponents: true,
     consumeComponents: false,
     components: 'святой символ, стоимостью не менее 5 зм',
-    castTime: { type: 'hour', value: 1 },
-    duration: { type: 'hour', value: 24 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
+    duration: {
+      type: 'hour',
+      value: 24,
+    },
     spellRange: 120,
     attackRoll: false,
   },
@@ -13170,7 +16726,10 @@ d8 | Тип урона
     needComponents: true,
     consumeComponents: true,
     components: 'порошок серебра стоимостью 25 зм, расходуемый заклинанием',
-    castTime: { type: 'hour', value: 1 },
+    castTime: {
+      type: 'hour',
+      value: 1,
+    },
     attackRoll: false,
   },
   {
@@ -13195,7 +16754,9 @@ d8 | Тип урона
     material: false,
     consumeComponents: false,
     needComponents: false,
-    castTime: { type: 'action' },
+    castTime: {
+      type: 'action',
+    },
     spellRange: 30,
     attackRoll: false,
   },

@@ -6,6 +6,7 @@ import { Target } from 'common/types/base/character/Feature/Target'
 import { Damage, Heal } from 'common/types/base/Damage'
 import { AbilityType } from 'common/reference/AbilityType'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import { DeepReadonly } from 'ts-essentials'
 
 type SpellNextLevel = OneOfOptionalRequired<
   Pick<Spell, 'heal' | 'damage' | 'spellRange'> & {
@@ -28,7 +29,7 @@ export type SpellArea = {
 
 export type SpellLevel = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-export type Spell = {
+export type Spell = DeepReadonly<{
   id: number
   name: string
   nameEn: string
@@ -59,5 +60,6 @@ export type Spell = {
   classes: CharacterClassName[]
   description: string
   source: RuleSource
+  image?: string
   tags?: string[]
-}
+}>

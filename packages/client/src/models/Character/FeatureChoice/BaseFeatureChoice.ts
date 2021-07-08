@@ -14,11 +14,11 @@ export type FeatureChoiceAction<V = unknown> = (payload: {
 
 export abstract class BaseFeatureChoiceModel<R extends { type: string }, ST> {
   constructor(
-    protected readonly characterModel: CharacterModel,
+    readonly characterModel: CharacterModel,
     public readonly state: unknown,
     public readonly ref: R,
     public readonly key: string,
-    protected readonly setChoiceAction: FeatureChoiceAction<ST>,
+    readonly setChoiceAction: FeatureChoiceAction<ST>,
   ) {
     makeObservable(this)
   }
@@ -33,7 +33,7 @@ export abstract class BaseFeatureChoiceModel<R extends { type: string }, ST> {
 
   @computed
   get currentEffectMap() {
-    return createEffectMap(this.characterModel, this.currentEffects)
+    return createEffectMap(this.characterModel, this.currentEffects, false)
   }
 
   @computed
@@ -52,7 +52,5 @@ export abstract class BaseFeatureChoiceModel<R extends { type: string }, ST> {
 
   protected abstract get choiceEffects(): EffectModel[]
 
-  abstract hook: () => {
-    node: ReactNode
-  }
+  abstract get node(): ReactNode
 }

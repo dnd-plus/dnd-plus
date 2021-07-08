@@ -61,27 +61,26 @@ export class SelectFeatureChoiceModel<
     )
   }
 
-  readonly hook = () => {
-    return {
-      node: (
-        <ChoiceSelect
-          label={this.ref.label}
-          value={this.knownState?.selected}
-          options={this.ref.options.map(({ name, group }, index) => ({
-            group,
-            text: name,
-            value: index,
-          }))}
-          onChange={(e) =>
-            this.setChoiceAction({
-              key: this.key,
-              value: {
-                selected: Number(e.target.value),
-              },
-            })
-          }
-        />
-      ),
-    }
+  @computed
+  get node() {
+    return (
+      <ChoiceSelect
+        label={this.ref.label}
+        value={this.knownState?.selected}
+        options={this.ref.options.map(({ name, group }, index) => ({
+          group,
+          text: name,
+          value: index,
+        }))}
+        onChange={(e) =>
+          this.setChoiceAction({
+            key: this.key,
+            value: {
+              selected: Number(e.target.value),
+            },
+          })
+        }
+      />
+    )
   }
 }

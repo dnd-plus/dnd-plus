@@ -31,6 +31,7 @@ import {
 } from 'common/reference/equipment/ToolType'
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
 import { computed } from 'mobx'
+import { observer } from 'mobx-react-lite'
 
 const SelectSkillFeatureChoiceState = t.readonly(
   t.type({
@@ -61,17 +62,17 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
   BaseSelectPossessionRefType<T, K, V, O>,
   t.TypeOf<typeof SelectSkillFeatureChoiceState>
 > {
-  protected abstract readonly label: string
-  protected abstract readonly dict: Readonly<Record<V, string>>
-  protected abstract readonly options: ReadonlyArray<V>
-  protected abstract readonly availableKey: K
-  protected abstract get unavailableOptions(): ReadonlyArray<V>
+  abstract readonly label: string
+  abstract readonly dict: Readonly<Record<V, string>>
+  abstract readonly options: ReadonlyArray<V>
+  abstract readonly availableKey: K
+  abstract get unavailableOptions(): ReadonlyArray<V>
 
-  protected get availableOptions(): ReadonlyArray<V> | undefined {
+  get availableOptions(): ReadonlyArray<V> | undefined {
     return undefined
   }
 
-  protected abstract get activeEffect(): EffectModel
+  abstract get activeEffect(): EffectModel
 
   @computed
   get knownState() {
@@ -97,7 +98,7 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
   }
 
   @computed
-  protected get choiceEffects() {
+  get choiceEffects() {
     return this.selected ? [this.activeEffect] : []
   }
 
@@ -106,55 +107,64 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
     return undefined
   }
 
-  readonly hook = () => {
-    const availableOptions = this.availableOptions || this.options
-    const options: ReadonlyArray<V> = availableOptions.filter(
-      (skill) => this.ref[this.availableKey]?.includes(skill) ?? true,
-    )
-
-    return {
-      node: (
-        <ChoiceSelect
-          label={this.label}
-          value={this.selected}
-          options={options.map((option) => {
-            const isExist =
-              this.unavailableOptions.includes(option) &&
-              option !== this.selected
-
-            return {
-              value: option,
-              disabled: isExist,
-              group: this.getOptionGroup(option),
-              text: (
-                <>
-                  <span
-                    style={
-                      isExist ? { textDecoration: 'line-through' } : undefined
-                    }
-                  >
-                    {this.dict[option]}
-                  </span>
-                  {isExist && (
-                    <Typography variant={'caption'}>&nbsp; есть</Typography>
-                  )}
-                </>
-              ),
-            }
-          })}
-          onChange={(e) =>
-            this.setChoiceAction({
-              key: this.key,
-              value: {
-                selected: String(e.target.value),
-              },
-            })
-          }
-        />
-      ),
-    }
+  @computed
+  get node() {
+    return <SelectPossession model={this} />
   }
 }
+
+const SelectPossession = observer(
+  <T extends string, K extends string, V extends string>({
+    model,
+  }: {
+    model: BaseSelectPossessionFeatureChoiceModel<T, K, V>
+  }) => {
+    const availableOptions = model.availableOptions || model.options
+    const options: ReadonlyArray<V> = availableOptions.filter(
+      (skill) => model.ref[model.availableKey]?.includes(skill) ?? true,
+    )
+
+    return (
+      <ChoiceSelect
+        label={model.label}
+        value={model.selected}
+        options={options.map((option) => {
+          const isExist =
+            model.unavailableOptions.includes(option) &&
+            option !== model.selected
+
+          return {
+            value: option,
+            disabled: isExist,
+            group: model.getOptionGroup(option),
+            text: (
+              <>
+                <span
+                  style={
+                    isExist ? { textDecoration: 'line-through' } : undefined
+                  }
+                >
+                  {model.dict[option]}
+                </span>
+                {isExist && (
+                  <Typography variant={'caption'}>&nbsp; есть</Typography>
+                )}
+              </>
+            ),
+          }
+        })}
+        onChange={(e) =>
+          model.setChoiceAction({
+            key: model.key,
+            value: {
+              selected: String(e.target.value),
+            },
+          })
+        }
+      />
+    )
+  },
+)
 
 export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureChoiceModel<
   'selectSkill',
@@ -165,16 +175,16 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
     minLevel?: Exclude<SkillPossessionLevel, null>
   }
 > {
-  protected readonly dict = SkillTypeDict
-  protected readonly options = SKILL_TYPES
-  protected readonly availableKey = 'availableSkills'
-  protected readonly minLevel = this.ref.minLevel
-  protected readonly level = this.ref.level || 'proficient'
-  protected readonly label =
+  readonly dict = SkillTypeDict
+  readonly options = SKILL_TYPES
+  readonly availableKey = 'availableSkills'
+  readonly minLevel = this.ref.minLevel
+  readonly level = this.ref.level || 'proficient'
+  readonly label =
     this.level === 'expertise' ? 'Экспертиза в навыке' : 'Владение навыком'
 
   @computed
-  protected get availableOptions() {
+  get availableOptions() {
     const { skills } = this.currentEffectMap.skillPossession
     return (
       this.minLevel &&
@@ -186,7 +196,7 @@ export class SelectSkillFeatureChoiceModel extends BaseSelectPossessionFeatureCh
   }
 
   @computed
-  protected get unavailableOptions() {
+  get unavailableOptions() {
     const { skills } = this.characterModel.effects.skillPossession
     return (
       keys(skills).filter(
@@ -219,13 +229,13 @@ export class SelectToolFeatureChoiceModel extends BaseSelectPossessionFeatureCho
   'availableTool',
   ToolType
 > {
-  protected readonly label = 'Владение инструментом'
-  protected readonly dict = ToolTypeDict
-  protected readonly options = TOOL_TYPES
-  protected readonly availableKey = 'availableTool'
+  readonly label = 'Владение инструментом'
+  readonly dict = ToolTypeDict
+  readonly options = TOOL_TYPES
+  readonly availableKey = 'availableTool'
 
   @computed
-  protected get unavailableOptions() {
+  get unavailableOptions() {
     return this.characterModel.effects.equipmentPossession.tool
   }
 
@@ -244,13 +254,13 @@ export class SelectLanguageFeatureChoiceModel extends BaseSelectPossessionFeatur
   'availableLanguages',
   LanguageType
 > {
-  protected readonly label = 'Владение языком'
-  protected readonly dict = LanguageTypeDict
-  protected readonly options = LANGUAGE_TYPES
-  protected readonly availableKey = 'availableLanguages'
+  readonly label = 'Владение языком'
+  readonly dict = LanguageTypeDict
+  readonly options = LANGUAGE_TYPES
+  readonly availableKey = 'availableLanguages'
 
   @computed
-  protected get unavailableOptions() {
+  get unavailableOptions() {
     return this.characterModel.effects.language.languages
   }
 

@@ -33,7 +33,7 @@ import { SBox } from 'components/SBox'
 import { FeatureItem } from 'pages/CharacterSettings/components/FeatureItem'
 import { CharacterMockModel } from 'models/Character/CharacterModel'
 import { useToggle } from 'react-use'
-import { ClassFeatureModel } from 'models/Character/Feature/ClassFeature'
+import { ClassFeatureModel } from 'models/Character/Class/ClassFeature'
 import { observer } from 'mobx-react-lite'
 import { MAX_CHARACTER_LEVEL } from 'common/types/base/character/Level'
 import { AbilitiesMap, AbilityTypeDict } from 'common/reference/AbilityType'
@@ -105,8 +105,6 @@ export const CharacterSettingsClassPage = observer(
         <>
           <Typography variant={'h4'}>Классы</Typography>
           {refList.map(({ type }) => {
-            const spellCastingChoice =
-              character.class.spellCastingChoiceMap[type]
             return (
               <Paper key={type}>
                 <SBox
@@ -145,22 +143,24 @@ export const CharacterSettingsClassPage = observer(
                     <Add />
                   </IconButton>
                 </SBox>
-                {spellCastingChoice && (
-                  <Accordion>
-                    <Badge
-                      style={{ width: '100%', display: 'block' }}
-                      color={'error'}
-                      badgeContent={spellCastingChoice.choicesCount}
-                      anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
-                    >
-                      <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography variant={'h6'}>Заклинания</Typography>
-                      </AccordionSummary>
-                    </Badge>
-                    <AccordionDetails>
-                      <div>{spellCastingChoice.node}</div>
-                    </AccordionDetails>
-                  </Accordion>
+                {character.class.levelChoicesMap[type].map(
+                  ({ title, choice }) => (
+                    <Accordion>
+                      <Badge
+                        style={{ width: '100%', display: 'block' }}
+                        color={'error'}
+                        badgeContent={choice.choicesCount}
+                        anchorOrigin={{ horizontal: 'left', vertical: 'top' }}
+                      >
+                        <AccordionSummary expandIcon={<ExpandMore />}>
+                          <Typography variant={'h6'}>{title}</Typography>
+                        </AccordionSummary>
+                      </Badge>
+                      <AccordionDetails>
+                        <div>{choice.node}</div>
+                      </AccordionDetails>
+                    </Accordion>
+                  ),
                 )}
               </Paper>
             )
