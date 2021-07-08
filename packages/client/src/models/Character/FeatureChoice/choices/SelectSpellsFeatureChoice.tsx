@@ -291,7 +291,7 @@ export function SpellsSelect(props: {
           <Typography component={'span'} variant={'subtitle2'}>
             ({maxLevel > 1 && '1 - '}
             {maxLevel} уровень)
-          </Typography>{' '}
+          </Typography>
           : {sSpells.length} / {maxNumber}
         </Typography>
       </SBox>
