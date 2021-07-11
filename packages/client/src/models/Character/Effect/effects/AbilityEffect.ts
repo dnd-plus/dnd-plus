@@ -2,6 +2,7 @@ import { AbilitiesMap, ABILITY_TYPES } from 'common/reference/AbilityType'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { mapValues } from 'common/utils/typesafe'
+import { computed } from 'mobx'
 
 export type AbilityEffect = DeepReadonly<{
   type: 'ability'
@@ -12,6 +13,7 @@ export type AbilityEffect = DeepReadonly<{
 const DEFAULT_MAX = 20
 
 export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'ability',
@@ -20,6 +22,7 @@ export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
     } as const
   }
 
+  @computed
   get abilities() {
     return {
       strength: this.ref.abilities?.strength || 0,
@@ -31,13 +34,14 @@ export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
     }
   }
 
+  @computed
   get modifiers() {
     return mapValues(this.abilities, (ability, value) =>
       Math.floor((value - 10) / 2),
     )
   }
 
-  assign(effect: AbilityEffect) {
+  unionRef(effect: AbilityEffect) {
     const abilities = { ...this.ref.abilities }
     const maximum = { ...this.ref.maximum }
 
@@ -54,7 +58,6 @@ export class AbilityEffectModel extends BaseEffectModel<AbilityEffect> {
       )
     })
 
-    this.ref.abilities = abilities
-    this.ref.maximum = maximum
+    return { abilities, maximum }
   }
 }

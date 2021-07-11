@@ -2,12 +2,12 @@ import { getDefaultMiddleware, applyMiddleware } from '@reduxjs/toolkit'
 import { createLoguxCreator } from '@logux/redux'
 import { rootReducer } from 'common/modules/redux/rootReducer'
 import { GUEST_USER, userActions } from 'common/modules/user/redux'
-import { loginRoute, profileRoute } from 'constants/routes'
+import { homeRoute } from 'constants/routes'
 
 function logout() {
   localStorage.removeItem('userId')
   localStorage.removeItem('token')
-  window.location.href = loginRoute.link()
+  window.location.href = homeRoute.link()
 }
 
 export const configureStore = () => {
@@ -39,7 +39,7 @@ export const configureStore = () => {
       const { payload } = action as ReturnType<typeof userActions.done>
       localStorage.setItem('userId', payload.userId)
       localStorage.setItem('token', payload.token)
-      window.location.href = profileRoute.link()
+      window.location.href = homeRoute.link()
     } else if (action.type === userActions.logout.type) {
       logout()
     }

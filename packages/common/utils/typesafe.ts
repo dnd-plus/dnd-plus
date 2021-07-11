@@ -1,6 +1,8 @@
 type Rec = Record<string | number | symbol, unknown>
 
-type Entry<T extends Rec> = { [K in keyof T]-?: [K, T[K]] }[keyof T]
+type Entry<T extends Rec> = T extends any
+  ? { [K in keyof T]-?: [K, T[K]] }[keyof T]
+  : never
 
 export function entries<T extends Rec>(obj: T | undefined) {
   return obj ? (Object.entries(obj) as Array<Entry<T>>) : []

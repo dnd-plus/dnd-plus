@@ -99,9 +99,7 @@ export class SelectSpellsFeatureChoiceModel extends BaseFeatureChoiceModel<
         this.characterModel,
         {
           type: 'spellCasting',
-          preparedSpellsClassMap: {
-            [this.ref.classType]: this.selectedSpellIds,
-          },
+          preparedSpells: this.selectedSpellIds,
         },
         createKey(this.key, 'spellCasting'),
       ),
@@ -117,19 +115,16 @@ export class SelectSpellsFeatureChoiceModel extends BaseFeatureChoiceModel<
       .filter((spell) => spell.level !== 0)
       .map(({ id }) => id)
 
-    this.setChoiceAction({
-      key: this.key,
-      value: {
-        cantrips: cantripIds,
-        spells: spellIds,
-      },
+    this.setState({
+      cantrips: cantripIds,
+      spells: spellIds,
     })
   }
 
   @computed
   get disabledSpells() {
     return this.characterModel.effects.spellCasting.preparedSpells.map(
-      ({ spell }) => spell,
+      (spell) => spell,
     )
   }
 

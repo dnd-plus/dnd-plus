@@ -1,10 +1,6 @@
 import { createRoute } from 'common/utils/createRoute'
 
 export const homeRoute = createRoute('/')
-export const loginRoute = createRoute('/login')
-
-// PROFILE
-export const profileRoute = createRoute('/profile')
 
 // CHARACTER INFO
 export const characterInfoRoute = createRoute<true>('/character/:characterId')

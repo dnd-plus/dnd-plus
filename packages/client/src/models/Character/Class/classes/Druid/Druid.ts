@@ -1,4 +1,5 @@
 import { CharacterClass } from 'models/Character/Class/Class'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Druid: CharacterClass = {
   type: 'druid',
@@ -31,19 +32,6 @@ export const Druid: CharacterClass = {
       'religion',
     ],
   },
-  spellCasting: {
-    type: 'mage',
-    ability: 'wisdom',
-    fromLevel: 1,
-    description:
-      'Для сотворения заклинаний друиды пользуются сакральной эссенцией самой природы, облачая в неё свою волю.',
-    availableCantripsNumber: [
-      2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    ],
-    characterLevelSpellsNumberMod: 'full',
-    ritual: true,
-    focusing: true,
-  },
   archetype: {
     level: 2,
     name: 'Круг друидов',
@@ -60,5 +48,18 @@ export const Druid: CharacterClass = {
       skillsNumber: 0,
     },
   },
-  features: [],
+  features: [
+    createSpellCastingFeature('druid', 1, {
+      spellCastingType: 'mage',
+      ability: 'wisdom',
+      description:
+        'Для сотворения заклинаний друиды пользуются сакральной эссенцией самой природы, облачая в неё свою волю.',
+      availableCantripsNumber: [
+        2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+      ],
+      characterLevelSpellsNumberMod: 'full',
+      ritual: true,
+      focusing: true,
+    }),
+  ],
 }

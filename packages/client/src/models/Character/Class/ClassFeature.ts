@@ -1,7 +1,9 @@
 import {
   Effect,
   effectFactory,
+  EffectTypeMap,
   EffectModel,
+  EffectType,
 } from 'models/Character/Effect/Effect'
 import { CharacterLevel } from 'common/types/base/character/Level'
 import { DeepReadonly } from 'ts-essentials'
@@ -14,23 +16,28 @@ import {
   LevelFeatureChoiceCreatorParams,
 } from 'models/Character/Class/LevelFeatureChoice/LevelFeatureChoice'
 
-type WithoutLevel<Effect> = Effect extends {
-  readonly characterLevel: CharacterLevel
-}
-  ? Omit<Effect, 'characterLevel'>
-  : never
+type NotString<T> = T extends any ? (string extends T ? never : T) : never
 
-type LevelEffect = WithoutLevel<Effect>
+type LevelEffect = {
+  [K in EffectType]: 'classLevel' extends NotString<keyof EffectTypeMap[K]>
+    ? Omit<EffectTypeMap[K], 'classLevel'>
+    : never
+}[EffectType]
 
 export type ClassFeature = Feature &
   DeepReadonly<{
     level: CharacterLevel
-    improvement?: true
     levelEffects?: LevelEffect[]
     levelChoices?: LevelFeatureChoice[]
+    nextLevels?: Omit<ClassFeature, 'nextLevels' | 'name'>[]
   }>
 
-export class ClassFeatureModel extends FeatureModel<ClassFeature> {
+type ClassFeatureExtended = ClassFeature & {
+  improvement?: boolean
+  archetype?: boolean
+}
+
+export class ClassFeatureModel extends FeatureModel<ClassFeatureExtended> {
   @computed
   get level() {
     return this.ref.level
@@ -42,18 +49,23 @@ export class ClassFeatureModel extends FeatureModel<ClassFeature> {
   }
 
   @computed
+  get archetype() {
+    return this.ref.archetype
+  }
+
+  @computed
   get levelEffects() {
     return this.ref.levelEffects || []
   }
 
-  getClassEffects(characterLevel: CharacterLevel): EffectModel[] {
+  getClassEffects(classLevel: CharacterLevel): EffectModel[] {
     return [
       ...this.effects,
       ...this.levelEffects.flatMap(
         (levelEffect, index) =>
           effectFactory(
             this.characterModel,
-            { ...(levelEffect as Effect), characterLevel } as Effect, // TODO: remove when has at least one level effect
+            { ...levelEffect, classLevel } as Effect,
             createKey(this.key, 'levelEffect', index),
             { feature: this.ref.name },
           ) || [],
@@ -63,12 +75,12 @@ export class ClassFeatureModel extends FeatureModel<ClassFeature> {
 
   getLevelChoices(params: LevelFeatureChoiceCreatorParams) {
     return (
-      this.ref.levelChoices?.flatMap(({ type, ...info }) => {
-        const choiceData = levelChoiceMap[type](params)
+      this.ref.levelChoices?.flatMap(({ title, type, ...levelChoice }) => {
+        const choiceData = levelChoiceMap[type](params, levelChoice)
         return choiceData
           ? {
+              title,
               ...choiceData,
-              ...info,
             }
           : []
       }) || []

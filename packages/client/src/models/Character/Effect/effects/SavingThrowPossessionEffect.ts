@@ -2,6 +2,7 @@ import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { AbilityType } from 'common/reference/AbilityType'
 import { entries } from 'common/utils/typesafe'
+import { computed } from 'mobx'
 
 export type SavingThrowPossessionEffect = DeepReadonly<{
   type: 'savingThrowPossession'
@@ -11,6 +12,7 @@ export type SavingThrowPossessionEffect = DeepReadonly<{
 }>
 
 export class SavingThrowPossessionEffectModel extends BaseEffectModel<SavingThrowPossessionEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'savingThrowPossession',
@@ -18,11 +20,12 @@ export class SavingThrowPossessionEffectModel extends BaseEffectModel<SavingThro
     } as const
   }
 
+  @computed
   get abilities() {
     return this.ref.abilities
   }
 
-  assign(effect: SavingThrowPossessionEffect) {
+  unionRef(effect: SavingThrowPossessionEffect) {
     const priority = [
       undefined,
       'halfProficient',
@@ -39,6 +42,6 @@ export class SavingThrowPossessionEffectModel extends BaseEffectModel<SavingThro
       }
     })
 
-    this.ref.abilities = abilities
+    return { abilities }
   }
 }

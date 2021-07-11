@@ -1,4 +1,5 @@
 import { CharacterClass } from 'models/Character/Class/Class'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Paladin: CharacterClass = {
   type: 'paladin',
@@ -18,16 +19,6 @@ export const Paladin: CharacterClass = {
       'persuasion',
     ],
   },
-  spellCasting: {
-    type: 'secondMage',
-    ability: 'charisma',
-    fromLevel: 2,
-    description:
-      'Получая 2 уровень, вы узнаёте, как черпать божественную магию посредством медитации и молитв, чтобы творить заклятья подобно жрецу.',
-    characterLevelSpellsNumberMod: 'half',
-    ritual: false,
-    focusing: true,
-  },
   archetype: {
     level: 3,
     name: 'Священная клятва',
@@ -44,5 +35,15 @@ export const Paladin: CharacterClass = {
       skillsNumber: 0,
     },
   },
-  features: [],
+  features: [
+    createSpellCastingFeature('paladin', 2, {
+      spellCastingType: 'secondMage',
+      ability: 'charisma',
+      description:
+        'Получая 2 уровень, вы узнаёте, как черпать божественную магию посредством медитации и молитв, чтобы творить заклятья подобно жрецу.',
+      characterLevelSpellsNumberMod: 'half',
+      ritual: false,
+      focusing: true,
+    }),
+  ],
 }

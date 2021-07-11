@@ -3,9 +3,9 @@ import {
   EFFECT_TYPES,
   EffectModel,
   effectModelsMap,
-  EffectModelsMap,
+  EffectModelMap,
   EffectType,
-  EffectTypeMap,
+  EffectModelTypeMap,
 } from 'models/Character/Effect/Effect'
 import {
   compareEffectArrays,
@@ -21,11 +21,20 @@ type KeyFromAll<KeyAll extends `${EffectType}All`> =
   KeyAll extends `${infer Key}All` ? Key : never
 
 type EffectTypeAllMap = {
-  [K in `${EffectType}All`]: InstanceType<EffectModelsMap[KeyFromAll<K>]>[]
+  [K in `${EffectType}All`]: InstanceType<EffectModelMap[KeyFromAll<K>]>[]
 }
 
-const EffectModelWithTypes = class {} as new () => EffectTypeMap &
+const EffectModelWithTypes = class {} as new () => EffectModelTypeMap &
   EffectTypeAllMap
+
+function unionEffectMapModel(
+  effectMap: EffectModelTypeMap,
+  effect: EffectModel,
+) {
+  effectMap[effect.type] = effectMap[effect.type].createUnionModel(
+    effect,
+  ) as any
+}
 
 export function withChildEffects(
   characterModel: CharacterModel,
@@ -37,7 +46,7 @@ export function withChildEffects(
 
   for (let i = 0; i < nextEffects.length; i++) {
     const effect = nextEffects[i]
-    currentEffectMap[nextEffects[i].type].assignModel(effect)
+    unionEffectMapModel(currentEffectMap, effect)
 
     const childEffects = effect.getChildEffects({
       effectMap,
@@ -50,8 +59,8 @@ export function withChildEffects(
 
     childEffects.forEach((childEffect) => {
       childEffect.withFrom(effect.from as OneOfOptionalRequired<EffectFrom>)
-      effectMap[childEffect.type].assignModel(childEffect)
-      currentEffectMap[childEffect.type].assignModel(childEffect)
+      unionEffectMapModel(effectMap, effect)
+      unionEffectMapModel(currentEffectMap, effect)
     })
   }
 

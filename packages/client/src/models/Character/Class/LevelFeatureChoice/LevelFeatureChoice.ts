@@ -1,22 +1,34 @@
 import { FeatureChoiceModel } from 'models/Character/FeatureChoice/FeatureChoice'
 import { CharacterModel } from 'models/Character/CharacterModel'
-import { EffectTypeMap } from 'models/Character/Effect/Effect'
+import { EffectModelTypeMap } from 'models/Character/Effect/Effect'
 import { CharacterClassName } from 'common/types/base/character/CharacterClassName'
-import { selectSpellsLevelFeatureChoice } from 'models/Character/Class/LevelFeatureChoice/choices/SelectSpellsLevelFeatureChoice'
+import {
+  selectSpellsLevelFeatureChoice,
+  SelectSpellsLevelFeatureChoiceRef,
+} from 'models/Character/Class/LevelFeatureChoice/choices/SelectSpellsLevelFeatureChoice'
 
-export const levelChoiceMap = {
+type LevelChoiceTypeMap = {
+  selectSpell: SelectSpellsLevelFeatureChoiceRef
+}
+
+type LevelChoiceType = keyof LevelChoiceTypeMap
+
+export const levelChoiceMap: {
+  [K in LevelChoiceType]: LevelFeatureChoiceCreator<LevelChoiceTypeMap[K]>
+} = {
   selectSpell: selectSpellsLevelFeatureChoice,
 }
 
 export type LevelFeatureChoiceCreatorParams = {
   characterModel: CharacterModel
-  currentEffectMap: EffectTypeMap
+  currentEffectMap: EffectModelTypeMap
   classType: CharacterClassName
   key: string
 }
 
-export type LevelFeatureChoiceCreator = (
+export type LevelFeatureChoiceCreator<Ref> = (
   params: LevelFeatureChoiceCreatorParams,
+  ref: Ref,
 ) =>
   | {
       choice: FeatureChoiceModel
@@ -24,6 +36,8 @@ export type LevelFeatureChoiceCreator = (
   | undefined
 
 export type LevelFeatureChoice = {
-  type: keyof typeof levelChoiceMap
-  title: string
-}
+  [K in LevelChoiceType]: {
+    title: string
+    type: K
+  } & LevelChoiceTypeMap[K]
+}[LevelChoiceType]

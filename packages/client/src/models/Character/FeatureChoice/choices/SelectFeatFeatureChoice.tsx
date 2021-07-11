@@ -34,30 +34,35 @@ import {
 } from 'models/Character/FeatureChoice/FeatureChoice'
 import { FeatEffectModel } from '../../Effect/effects/FeatEffect'
 import { observer } from 'mobx-react-lite'
-import { computed, toJS } from 'mobx'
+import { computed } from 'mobx'
 import { CharacterRace } from 'models/Character/Race/Race'
-import { EffectTypeMap } from 'models/Character/Effect/Effect'
+import { EffectModelTypeMap } from 'models/Character/Effect/Effect'
 import { useIsMobile } from 'hooks/useIsMobile'
 import { DangerButton } from 'components/DangerButton'
 
 export type SelectFeatFeatureChoice = DeepReadonly<{
   type: 'selectFeat'
 }>
-const SelectFeatureChoiceState = t.readonly(
-  t.type({
-    selected: t.number,
-  }),
-)
+const SelectFeatFeatureChoiceState = t.intersection([
+  t.readonly(
+    t.type({
+      selected: t.number,
+    }),
+  ),
+  t.readonly(
+    t.partial({
+      choices: t.readonly(t.record(t.string, t.readonly(t.unknown))),
+    }),
+  ),
+])
 
 export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
   SelectFeatFeatureChoice,
-  t.TypeOf<typeof SelectFeatureChoiceState> & {
-    choices?: Record<string, unknown>
-  }
+  t.TypeOf<typeof SelectFeatFeatureChoiceState>
 > {
   @computed
   get knownState() {
-    return SelectFeatureChoiceState.is(this.state) ? this.state : null
+    return SelectFeatFeatureChoiceState.is(this.state) ? this.state : null
   }
 
   @computed
@@ -81,10 +86,10 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
 
   @computed
   get choiceModels(): FeatureChoiceModel[] {
-    const state = toJS(this.state) as any
+    const state = this.knownState
     const selected = this.selected
 
-    if (selected && selected.choices) {
+    if (state && selected?.choices) {
       return selected.choices.flatMap(
         (choice, index) =>
           featureChoiceFactory(
@@ -93,14 +98,11 @@ export class SelectFeatFeatureChoiceModel extends BaseFeatureChoiceModel<
             choice,
             createKey(this.key, selected.id, index),
             ({ value }) =>
-              this.setChoiceAction({
-                key: this.key,
-                value: {
-                  ...state,
-                  choices: {
-                    ...state?.choices,
-                    [index]: value,
-                  },
+              this.setState({
+                ...state,
+                choices: {
+                  ...state?.choices,
+                  [index]: value,
                 },
               }),
           ) || [],
@@ -205,14 +207,7 @@ const SelectFeat = observer(
           open={isOpen}
           value={model.selected}
           onClose={() => toggleIsOpen()}
-          onChange={(feat) =>
-            model.setChoiceAction({
-              key: model.key,
-              value: {
-                selected: feat.id,
-              },
-            })
-          }
+          onChange={(feat) => model.setState({ selected: feat.id })}
           effectMap={model.currentEffectMap}
           raceRef={model.characterModel.race.ref}
         />
@@ -233,7 +228,7 @@ const FeatsListModal = observer(function FeatsListModal<F extends () => void>({
   onClose: F
   onChange: (f: Feat) => void
   value: Feat | null
-  effectMap: EffectTypeMap
+  effectMap: EffectModelTypeMap
   raceRef: CharacterRace | undefined
 }) {
   const featEffect = effectMap.feat

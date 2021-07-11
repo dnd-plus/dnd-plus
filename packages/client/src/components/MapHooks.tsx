@@ -80,8 +80,8 @@ export function MapHooks<Arg, Hooks extends object>({
     () =>
       Object.entries(hooks).map(([key, hook]) => (
         <Runner
+          key={key}
           {...{
-            key,
             arg,
             index: key,
             hook,

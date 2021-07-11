@@ -1,5 +1,6 @@
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { DeepReadonly } from 'ts-essentials'
+import { computed } from 'mobx'
 
 export type AttackEffect = DeepReadonly<{
   type: 'attack'
@@ -7,6 +8,7 @@ export type AttackEffect = DeepReadonly<{
 }>
 
 export class AttackEffectModel extends BaseEffectModel<AttackEffect> {
+  @computed
   get emptyRef(): AttackEffect {
     return {
       type: 'attack',
@@ -14,10 +16,9 @@ export class AttackEffectModel extends BaseEffectModel<AttackEffect> {
     }
   }
 
-  protected assign(effect: AttackEffect): void {
-    this.ref.attacksNumber = Math.max(
-      this.ref.attacksNumber,
-      effect.attacksNumber,
-    )
+  protected unionRef(effect: AttackEffect) {
+    return {
+      attacksNumber: Math.max(this.ref.attacksNumber, effect.attacksNumber),
+    }
   }
 }

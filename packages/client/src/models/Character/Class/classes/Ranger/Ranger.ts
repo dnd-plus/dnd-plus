@@ -1,4 +1,5 @@
 import { CharacterClass } from 'models/Character/Class/Class'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Ranger: CharacterClass = {
   type: 'ranger',
@@ -19,16 +20,6 @@ export const Ranger: CharacterClass = {
       'animalHandling',
     ],
   },
-  spellCasting: {
-    type: 'secondMage',
-    ability: 'wisdom',
-    fromLevel: 2,
-    description:
-      'Получив 2 уровень, вы обучаетесь использованию волшебной сущности природы для сотворения заклинаний подобно друиду.',
-    characterLevelSpellsNumberMod: 'half',
-    focusing: false,
-    ritual: false,
-  },
   archetype: {
     level: 3,
     name: 'Архетип следопыта',
@@ -45,5 +36,15 @@ export const Ranger: CharacterClass = {
       skillsNumber: 1,
     },
   },
-  features: [],
+  features: [
+    createSpellCastingFeature('ranger', 2, {
+      spellCastingType: 'secondMage',
+      ability: 'wisdom',
+      description:
+        'Получив 2 уровень, вы обучаетесь использованию волшебной сущности природы для сотворения заклинаний подобно друиду.',
+      characterLevelSpellsNumberMod: 'half',
+      focusing: false,
+      ritual: false,
+    }),
+  ],
 }

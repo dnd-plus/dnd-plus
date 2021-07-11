@@ -72,7 +72,7 @@ export class CharacterModel {
       this,
       { type: 'ability', abilities: this.baseAbilities?.abilities || {} },
       'baseAbilities',
-    )
+    ).withFrom({ text: 'Базовые значения характеристик' })
   }
 
   readonly race = new RaceModel(this)

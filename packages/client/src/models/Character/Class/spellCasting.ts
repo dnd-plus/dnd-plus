@@ -1,20 +1,70 @@
-import { CharacterClass } from 'models/Character/Class/Class'
-import { CharacterLevelArray } from 'common/types/base/character/Level'
+import {
+  CharacterLevel,
+  CharacterLevelArray,
+} from 'common/types/base/character/Level'
 import {
   CharacterClassName,
   CharacterClassNameDict,
 } from 'common/types/base/character/CharacterClassName'
 import {
+  AbilityType,
   AbilityTypeDict,
   AbilityTypeGenDict,
 } from 'common/reference/AbilityType'
+import { SpellCastingType } from 'common/types/base/character/Feature/SpellSlotsType'
+import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import { ClassFeature } from 'models/Character/Class/ClassFeature'
+import { DeepReadonly } from 'ts-essentials'
 
 const CHARACTER_LEVELS = [...Array(20)].map((_, index) => index + 1)
 
-export function createSpellCastingFeatureDescription(
-  className: CharacterClassName,
+export type SpellCastingInfo = DeepReadonly<
   {
-    type,
+    spellCastingType: SpellCastingType
+    ability: AbilityType
+    description: string
+    availableCantripsNumber?: CharacterLevelArray<number>
+    pact?: {
+      spellsNumber: CharacterLevelArray<number>
+      spellsLevel: CharacterLevelArray<number>
+    }
+    ritual: boolean
+    focusing: boolean
+  } & OneOfOptionalRequired<{
+    availableSpellsNumber?: CharacterLevelArray<number>
+    characterLevelSpellsNumberMod?: 'full' | 'half'
+  }>
+>
+
+export function createSpellCastingFeature(
+  classType: CharacterClassName,
+  level: CharacterLevel,
+  spellCastingInfo: SpellCastingInfo,
+): ClassFeature {
+  return {
+    level,
+    name: spellCastingInfo.pact ? 'Магия договора' : 'Использование заклинаний',
+    description: createSpellCastingFeatureDescription(
+      classType,
+      spellCastingInfo,
+    ),
+    levelEffects: [
+      {
+        type: 'spellCasting',
+        spellCastingType: spellCastingInfo.spellCastingType,
+        pact: spellCastingInfo.pact,
+      },
+    ],
+    levelChoices: [
+      { title: 'Заклинания', type: 'selectSpell', ...spellCastingInfo },
+    ],
+  }
+}
+
+export function createSpellCastingFeatureDescription(
+  classType: CharacterClassName,
+  {
+    spellCastingType,
     ability,
     pact,
     description,
@@ -23,9 +73,9 @@ export function createSpellCastingFeatureDescription(
     characterLevelSpellsNumberMod,
     focusing,
     ritual,
-  }: Exclude<CharacterClass['spellCasting'], undefined>,
+  }: SpellCastingInfo,
 ) {
-  const slots = spellCastingSlotsMap[type]
+  const slots = spellCastingSlotsMap[spellCastingType]
 
   // prettier-ignore
   return `
@@ -58,7 +108,7 @@ ${CHARACTER_LEVELS.map((level, index) => `
 ${availableCantripsNumber ? `
 **Заговоры**
 
-Вы можете творить заговоры из доступных для класса ${CharacterClassNameDict[className]} согласно таблице.
+Вы можете творить заговоры из доступных для класса ${CharacterClassNameDict[classType]} согласно таблице.
 ` : ''}
 
 **Ячейки заклинаний**

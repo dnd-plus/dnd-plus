@@ -42,7 +42,7 @@ export const FeatureItem = observer(function FeatureItem({
               <Typography variant={'h6'}>
                 <b>{data.name}</b>
               </Typography>
-              {(data as ClassFeature).improvement && (
+              {feature instanceof ClassFeatureModel && feature.improvement && (
                 <SBox ml={1} display={'inline-flex'} alignItems={'center'}>
                   <GameUiPlusLevelUp style={{ fontSize: 22 }} />
                 </SBox>

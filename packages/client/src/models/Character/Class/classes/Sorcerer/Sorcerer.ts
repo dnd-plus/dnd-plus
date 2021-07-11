@@ -1,4 +1,5 @@
 import { CharacterClass } from 'models/Character/Class/Class'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Sorcerer: CharacterClass = {
   type: 'sorcerer',
@@ -18,21 +19,6 @@ export const Sorcerer: CharacterClass = {
       'persuasion',
     ],
   },
-  spellCasting: {
-    type: 'mage',
-    ability: 'charisma',
-    fromLevel: 1,
-    description:
-      'Определённое событие в вашем прошлом или в жизни ваших родителей или предков оставило на вас неизгладимый отпечаток, связав вас с магией. Ваши заклинания питает некий источник магии, какого бы происхождения он не был.',
-    availableCantripsNumber: [
-      4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-    ],
-    availableSpellsNumber: [
-      2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15,
-    ],
-    ritual: true,
-    focusing: true,
-  },
   archetype: {
     level: 1,
     name: 'Происхождение чародея',
@@ -49,5 +35,20 @@ export const Sorcerer: CharacterClass = {
       skillsNumber: 0,
     },
   },
-  features: [],
+  features: [
+    createSpellCastingFeature('sorcerer', 1, {
+      spellCastingType: 'mage',
+      ability: 'charisma',
+      description:
+        'Определённое событие в вашем прошлом или в жизни ваших родителей или предков оставило на вас неизгладимый отпечаток, связав вас с магией. Ваши заклинания питает некий источник магии, какого бы происхождения он не был.',
+      availableCantripsNumber: [
+        4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+      ],
+      availableSpellsNumber: [
+        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15,
+      ],
+      ritual: true,
+      focusing: true,
+    }),
+  ],
 }

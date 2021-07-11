@@ -136,10 +136,7 @@ const SelectAbility = observer(
               onChange={(e) => {
                 selected.splice(index, 1, String(e.target.value))
 
-                model.setChoiceAction({
-                  key: model.key,
-                  value: { selected },
-                })
+                model.setState({ selected })
               }}
             />
           )

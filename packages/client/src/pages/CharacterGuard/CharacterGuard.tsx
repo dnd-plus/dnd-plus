@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { Navigate, Outlet, useParams } from 'react-router-dom'
-import { profileRoute } from 'constants/routes'
+import { homeRoute } from 'constants/routes'
 import { useSubscription } from '@logux/redux'
 import { characterChannel } from 'common/modules/character/channels'
 import { CharacterModelContext } from 'models/Character/CharacterModelContext'
@@ -66,11 +66,11 @@ export function CharacterGuard() {
 
   if (!id) {
     console.error('route inside CharacterGuard must have `characterId` param')
-    return <Navigate to={profileRoute.link()} />
+    return <Navigate to={homeRoute.link()} />
   }
 
   if (isSubscribing) return null
-  if (!characterModel) return <Navigate to={profileRoute.link()} />
+  if (!characterModel) return <Navigate to={homeRoute.link()} />
   return (
     <CharacterModelContext.Provider value={characterModel}>
       <Outlet />

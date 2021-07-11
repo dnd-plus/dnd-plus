@@ -33,14 +33,11 @@ import {
   ClassFeatureModel,
 } from 'models/Character/Class/ClassFeature'
 import { uniq } from 'lodash-es'
-import { SpellCasting } from 'models/Character/Effect/effects/SpellCastingEffect'
-import { createSpellCastingFeatureDescription } from 'models/Character/Class/spellCasting'
 import { computed, makeObservable } from 'mobx'
 import { getMulticlassUnmetClaims } from 'models/Character/Class/getMulticlassUnmetClaims'
 import { createEffectMap, unionEffectModels } from 'models/utils/effect'
 import { withChildEffects } from 'models/Character/EffectsModel'
 import { RuleSource } from 'common/types/RuleSource'
-import { selectSpellsLevelFeatureChoice } from 'models/Character/Class/LevelFeatureChoice/choices/SelectSpellsLevelFeatureChoice'
 
 export type CharacterClass = DeepReadonly<{
   type: CharacterClassName
@@ -63,7 +60,6 @@ export type CharacterClass = DeepReadonly<{
         toolNumber: number
       }
   )
-  spellCasting?: Omit<SpellCasting, 'level'>
   archetype: {
     variants: CharacterClassArchetype[]
     level: CharacterLevel
@@ -95,7 +91,6 @@ export type CharacterClassArchetype = {
   source: RuleSource
   name: string
   description: string
-  spellCasting?: CharacterClass['spellCasting']
   features: ClassFeature[]
 }
 
@@ -223,11 +218,44 @@ export class ClassModel {
             ],
           },
           key,
-          this.choicesStateMap[type] || {},
+          this.choicesStateMap[type],
           this.setChoiceMap[type],
         )
       )
     })
+  }
+
+  protected createFeatureModels(
+    features: ReadonlyArray<ClassFeature> | undefined = [],
+    type: CharacterClassName,
+    archetype?: boolean,
+  ) {
+    return features
+      .flatMap((feature) => {
+        const nextLevelsFeatures =
+          feature.nextLevels?.map((nextLevelFeature) => ({
+            name: feature.name,
+            improvement: true,
+            archetype,
+            ...nextLevelFeature,
+          })) || []
+        return [feature, ...nextLevelsFeatures]
+      })
+      .map(
+        (feature, index) =>
+          new ClassFeatureModel(
+            this.characterModel,
+            feature,
+            createKey(
+              type,
+              archetype ? 'archetype' : 'class',
+              feature.name,
+              index,
+            ),
+            this.choicesStateMap[type],
+            this.setChoiceMap[type],
+          ),
+      )
   }
 
   @computed
@@ -273,6 +301,13 @@ export class ClassModel {
   }
 
   @computed
+  get archetypeFeaturesMap() {
+    return mapValues(this.archetypeMap, (type, archetype) =>
+      this.createFeatureModels(archetype?.selected?.features, type, true),
+    )
+  }
+
+  @computed
   get hitsFeatureMap() {
     return mapValues(
       this.refMap,
@@ -284,7 +319,7 @@ export class ClassModel {
           description: `
 **Кость Хитов**: 1d${ref.hitDiceValue} за каждый уровень паладина
 
-**Хиты на 1 уровне**: 10 + модификатор Телосложения
+**Хиты на 1 уровне**: ${ref.hitDiceValue} + модификатор Телосложения
 
 **Хиты на следующих уровнях**: 1d${ref.hitDiceValue} (или ${ref.hitDiceValue / 2 + 1}) + модификатор Телосложения за каждый уровень после первого
         `,
@@ -352,92 +387,21 @@ export class ClassModel {
   }
 
   @computed
-  get spellCastingMap() {
-    return mapValues(this.refMap, (type, ref) => {
-      const spellCasting =
-        ref?.spellCasting || this.archetypeMap[type]?.selected?.spellCasting
-      return (
-        spellCasting && {
-          ...spellCasting,
-          level: this.levelMap[type],
-        }
-      )
-    })
-  }
-
-  @computed
-  get spellCastingFeatureMap() {
-    return mapValues(this.refMap, (type, ref): ClassFeature | undefined => {
-      const spellCasting = this.spellCastingMap[type]
-
-      return (
-        spellCasting &&
-        ref && {
-          level: spellCasting.fromLevel,
-          name: spellCasting.pact
-            ? 'Магия договора'
-            : 'Использование заклинаний',
-          description: createSpellCastingFeatureDescription(
-            ref.type,
-            spellCasting,
-          ),
-          effects: [
-            {
-              type: 'spellCasting',
-              spellCastingClassMap: {
-                [type]: spellCasting,
-              },
-            },
-          ],
-        }
-      )
-    })
-  }
-
-  @computed
   get featuresMap() {
     return mapValues(this.refMap, (type, ref) => {
-      type Data = [feature: ClassFeature, key: string]
-
       if (!ref) return
 
-      return [
-        [this.hitsFeatureMap[type], createKey(type, 'feature', 'hits')] as Data,
+      const featureModels = this.createFeatureModels(
         [
+          this.hitsFeatureMap[type],
           this.possessionFeatureMap[type],
-          createKey(type, 'feature', 'possession'),
-        ] as Data,
-        ...(this.spellCastingFeatureMap[type]
-          ? [
-              [
-                this.spellCastingFeatureMap[type],
-                createKey(type, 'feature', 'spellCasting'),
-              ] as Data,
-            ]
-          : []),
-        ...ref.features.map(
-          (feature, index): Data => [
-            feature,
-            createKey(type, 'feature', index),
-          ],
-        ),
-        ...(this.archetypeMap[type]?.selected?.features?.map(
-          (feature, index): Data => [
-            feature,
-            createKey(type, 'feature', 'archetype', index),
-          ],
-        ) || []),
-      ]
-        .map(
-          ([feature, key]: Data) =>
-            new ClassFeatureModel(
-              this.characterModel,
-              feature,
-              key,
-              this.choicesStateMap[type] || {},
-              this.setChoiceMap[type],
-            ),
-        )
+          ...ref.features,
+        ].flatMap((feature) => feature || []),
+        type,
+      )
+
+      return featureModels
+        .concat(this.archetypeFeaturesMap[type])
         .concat(this.selectArchetypeFeatureMap[type] || [])
         .filter(({ level }) => level <= Number(this.levelMap[type]))
         .sort((a, b) => a.level - b.level)
@@ -453,6 +417,7 @@ export class ClassModel {
 
     this.levelList.forEach(({ type, level }, index) => {
       if (level !== 1 || type === this.mainType) return
+      const classLevel = this.levelMap[type]
 
       const effects = withChildEffects(this.characterModel, [
         ...this.incomingEffects,
@@ -462,7 +427,8 @@ export class ClassModel {
             ({ type, level }) =>
               this.featuresMap[type]
                 ?.filter((feature) => feature.level === level)
-                .flatMap((feature) => feature.getClassEffects(level)) || [],
+                .flatMap((feature) => feature.getClassEffects(classLevel)) ||
+              [],
           ),
       ])
 
@@ -570,24 +536,13 @@ export class ClassModel {
         key,
       })
 
-      const levelFeatures =
+      return (
         this.featuresMap[type]?.flatMap((feature, index) =>
           feature.getLevelChoices(
             getParams(createKey(type, 'levelChoice', index)),
           ),
         ) || []
-
-      const selectSpellLevelFeature = selectSpellsLevelFeatureChoice(
-        getParams(createKey(type, 'levelChoice', 'spellCasting')),
       )
-      if (selectSpellLevelFeature) {
-        levelFeatures.unshift({
-          title: 'Заклинания',
-          ...selectSpellLevelFeature,
-        })
-      }
-
-      return levelFeatures
     })
   }
 

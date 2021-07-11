@@ -1,5 +1,6 @@
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { DeepReadonly } from 'ts-essentials'
+import { computed } from 'mobx'
 
 export type EmptyEffect = DeepReadonly<{
   type: 'empty'
@@ -7,10 +8,12 @@ export type EmptyEffect = DeepReadonly<{
 }>
 
 export class EmptyEffectModel extends BaseEffectModel<EmptyEffect> {
+  @computed
   get emptyRef() {
     return { type: 'empty' } as const
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  assign() {}
+  unionRef() {
+    return this.emptyRef
+  }
 }

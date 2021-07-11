@@ -69,7 +69,7 @@ export class RaceModel {
 
   @computed
   get choicesState() {
-    return this.state?.choices || ({} as Record<string, unknown>)
+    return this.state?.choices
   }
 
   @computed

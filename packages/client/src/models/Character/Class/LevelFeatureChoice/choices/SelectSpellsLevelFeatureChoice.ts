@@ -1,59 +1,62 @@
 import { LevelFeatureChoiceCreator } from 'models/Character/Class/LevelFeatureChoice/LevelFeatureChoice'
-import { spellCastingSlotsMap } from 'models/Character/Class/spellCasting'
+import {
+  SpellCastingInfo,
+  spellCastingSlotsMap,
+} from 'models/Character/Class/spellCasting'
 import { SelectSpellsFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectSpellsFeatureChoice'
 import { SpellLevel } from 'models/Character/Spell/Spell'
 
-export const selectSpellsLevelFeatureChoice: LevelFeatureChoiceCreator = ({
-  characterModel,
-  currentEffectMap,
-  classType,
-  key,
-}) => {
-  const classModel = characterModel.class
-  const spellCasting = classModel.spellCastingMap[classType]
-  const level = classModel.levelMap[classType]
-  if (!spellCasting || !level || spellCasting.fromLevel > level) return
+export type SelectSpellsLevelFeatureChoiceRef = SpellCastingInfo
 
-  const spellSlots = spellCastingSlotsMap[spellCasting.type]?.[level - 1]
-  let maxLevel = 0
-  if (spellSlots) {
-    maxLevel = spellSlots.includes(0)
-      ? spellSlots.indexOf(0)
-      : spellSlots.length
-  } else if (spellCasting.pact) {
-    maxLevel = spellCasting.pact.spellsLevel[level - 1]
-  }
+export const selectSpellsLevelFeatureChoice: LevelFeatureChoiceCreator<SelectSpellsLevelFeatureChoiceRef> =
+  ({ characterModel, currentEffectMap, classType, key }, spellCastingInfo) => {
+    const classModel = characterModel.class
+    const level = classModel.levelMap[classType]
+    if (!spellCastingInfo || !level) return
 
-  let maxNumber = 0
-  if (spellCasting.availableSpellsNumber) {
-    maxNumber = spellCasting.availableSpellsNumber?.[level - 1]
-  } else if (spellCasting.characterLevelSpellsNumberMod) {
-    maxNumber = Math.max(
-      1,
-      currentEffectMap.ability.modifiers[spellCasting.ability] +
-        Math.floor(
-          level *
-            (spellCasting.characterLevelSpellsNumberMod === 'full' ? 1 : 0.5),
-        ),
-    )
-  }
+    const spellSlots =
+      spellCastingSlotsMap[spellCastingInfo.spellCastingType]?.[level - 1]
+    let maxLevel = 0
+    if (spellSlots) {
+      maxLevel = spellSlots.includes(0)
+        ? spellSlots.indexOf(0)
+        : spellSlots.length
+    } else if (spellCastingInfo.pact) {
+      maxLevel = spellCastingInfo.pact.spellsLevel[level - 1]
+    }
 
-  return {
-    choice: new SelectSpellsFeatureChoiceModel(
-      characterModel,
-      classModel.choicesStateMap[classType]?.[key],
-      {
-        type: 'selectSpells',
-        classType: classType,
-        classOnly: true,
-        maxLevel: maxLevel as SpellLevel,
-        maxNumber,
-        maxCantripsNumber:
-          spellCasting.availableCantripsNumber?.[level - 1] || 0,
-        variant: 'all',
-      },
-      key,
-      classModel.setChoiceMap[classType],
-    ),
+    let maxNumber = 0
+    if (spellCastingInfo.availableSpellsNumber) {
+      maxNumber = spellCastingInfo.availableSpellsNumber?.[level - 1]
+    } else if (spellCastingInfo.characterLevelSpellsNumberMod) {
+      maxNumber = Math.max(
+        1,
+        currentEffectMap.ability.modifiers[spellCastingInfo.ability] +
+          Math.floor(
+            level *
+              (spellCastingInfo.characterLevelSpellsNumberMod === 'full'
+                ? 1
+                : 0.5),
+          ),
+      )
+    }
+
+    return {
+      choice: new SelectSpellsFeatureChoiceModel(
+        characterModel,
+        classModel.choicesStateMap[classType]?.[key],
+        {
+          type: 'selectSpells',
+          classType: classType,
+          classOnly: true,
+          maxLevel: maxLevel as SpellLevel,
+          maxNumber,
+          maxCantripsNumber:
+            spellCastingInfo.availableCantripsNumber?.[level - 1] || 0,
+          variant: 'all',
+        },
+        key,
+        classModel.setChoiceMap[classType],
+      ),
+    }
   }
-}

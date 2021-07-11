@@ -1,23 +1,94 @@
-import { BaseEffectModel, EffectFrom } from 'models/Character/Effect/BaseEffect'
+import { EffectFrom } from 'models/Character/Effect/BaseEffect'
 import { Tuple, Writable } from 'ts-essentials'
-import { AbilityEffectModel } from 'models/Character/Effect/effects/AbilityEffect'
-import { MovementEffectModel } from 'models/Character/Effect/effects/MovementEffect'
-import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
-import { DefenceEffectModel } from 'models/Character/Effect/effects/DefenceEffect'
-import { SavingThrowAdvantageEffectModel } from 'models/Character/Effect/effects/SavingThrowAdvantageEffect'
-import { SkillPossessionEffectModel } from 'models/Character/Effect/effects/SkillPossessionEffect'
-import { VisionEffectModel } from 'models/Character/Effect/effects/VisionEffect'
+import {
+  AbilityEffect,
+  AbilityEffectModel,
+} from 'models/Character/Effect/effects/AbilityEffect'
+import {
+  MovementEffect,
+  MovementEffectModel,
+} from 'models/Character/Effect/effects/MovementEffect'
+import {
+  EquipmentPossessionEffect,
+  EquipmentPossessionEffectModel,
+} from 'models/Character/Effect/effects/EquipmentPossessionEffect'
+import {
+  DefenceEffect,
+  DefenceEffectModel,
+} from 'models/Character/Effect/effects/DefenceEffect'
+import {
+  SavingThrowAdvantageEffect,
+  SavingThrowAdvantageEffectModel,
+} from 'models/Character/Effect/effects/SavingThrowAdvantageEffect'
+import {
+  SkillPossessionEffect,
+  SkillPossessionEffectModel,
+} from 'models/Character/Effect/effects/SkillPossessionEffect'
+import {
+  VisionEffect,
+  VisionEffectModel,
+} from 'models/Character/Effect/effects/VisionEffect'
 import { CharacterModel } from 'models/Character/CharacterModel'
-import { LanguageEffectModel } from 'models/Character/Effect/effects/LanguageEffect'
-import { SavingThrowPossessionEffectModel } from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
-import { FeatEffectModel } from 'models/Character/Effect/effects/FeatEffect'
-import { HitPointEffectModel } from 'models/Character/Effect/effects/HitPointEffect'
-import { ArmorClassEffectModel } from './effects/ArmorClassEffect'
-import { SpellCastingEffectModel } from 'models/Character/Effect/effects/SpellCastingEffect'
-import { EmptyEffectModel } from 'models/Character/Effect/effects/EmptyEffect'
-import { AttackEffectModel } from 'models/Character/Effect/effects/AttackEffect'
+import {
+  LanguageEffect,
+  LanguageEffectModel,
+} from 'models/Character/Effect/effects/LanguageEffect'
+import {
+  SavingThrowPossessionEffect,
+  SavingThrowPossessionEffectModel,
+} from 'models/Character/Effect/effects/SavingThrowPossessionEffect'
+import {
+  FeatEffect,
+  FeatEffectModel,
+} from 'models/Character/Effect/effects/FeatEffect'
+import {
+  HitPointEffect,
+  HitPointEffectModel,
+} from 'models/Character/Effect/effects/HitPointEffect'
+import {
+  ArmorClassEffect,
+  ArmorClassEffectModel,
+} from './effects/ArmorClassEffect'
+import {
+  SpellCastingEffect,
+  SpellCastingEffectModel,
+} from 'models/Character/Effect/effects/SpellCastingEffect'
+import {
+  EmptyEffect,
+  EmptyEffectModel,
+} from 'models/Character/Effect/effects/EmptyEffect'
+import {
+  AttackEffect,
+  AttackEffectModel,
+} from 'models/Character/Effect/effects/AttackEffect'
+import {
+  CombatStyleEffect,
+  CombatStyleEffectModel,
+} from 'models/Character/Effect/effects/CombatStyle'
+import { extendType } from 'common/utils/extendType'
 
-export const effectModelsMap = {
+export type EffectTypeMap = {
+  empty: EmptyEffect
+  ability: AbilityEffect
+  attack: AttackEffect
+  defence: DefenceEffect
+  equipmentPossession: EquipmentPossessionEffect
+  movement: MovementEffect
+  savingThrowAdvantage: SavingThrowAdvantageEffect
+  savingThrowPossession: SavingThrowPossessionEffect
+  skillPossession: SkillPossessionEffect
+  vision: VisionEffect
+  language: LanguageEffect
+  feat: FeatEffect
+  hitPoint: HitPointEffect
+  armorClass: ArmorClassEffect
+  spellCasting: SpellCastingEffect
+  combatStyle: CombatStyleEffect
+}
+
+export type EffectType = keyof EffectTypeMap
+
+export const effectModelsMap = extendType<Record<EffectType, any>>()({
   empty: EmptyEffectModel,
   ability: AbilityEffectModel,
   attack: AttackEffectModel,
@@ -33,28 +104,17 @@ export const effectModelsMap = {
   hitPoint: HitPointEffectModel,
   armorClass: ArmorClassEffectModel,
   spellCasting: SpellCastingEffectModel,
-} as const
+  combatStyle: CombatStyleEffectModel,
+})
 
-export const EFFECT_TYPES = Object.keys(effectModelsMap) as Tuple<
-  keyof EffectModelsMap
->
+export const EFFECT_TYPES = Object.keys(effectModelsMap) as Tuple<EffectType>
 
-export type EffectModelsMap = Writable<typeof effectModelsMap>
-export type EffectModel = BaseEffectModel<any>
-export type EffectType = keyof EffectModelsMap
-export type Effect = {
-  [K in keyof EffectModelsMap]: InstanceType<
-    EffectModelsMap[K]
-  > extends BaseEffectModel<infer R>
-    ? R
-    : null
-}[keyof EffectModelsMap]
-export type EffectTypeMap = {
-  [K in EffectType]: InstanceType<EffectModelsMap[K]>
+export type EffectModelMap = Writable<typeof effectModelsMap>
+export type EffectModel = InstanceType<EffectModelMap[keyof EffectModelMap]>
+export type Effect = EffectTypeMap[EffectType]
+export type EffectModelTypeMap = {
+  [K in EffectType]: InstanceType<EffectModelMap[K]>
 }
-
-// eslint-disable-next-line unused-imports/no-unused-vars-ts,@typescript-eslint/ban-types
-const effectModelsMapGuard: Record<Effect['type'], Function> = effectModelsMap
 
 export function effectFactory(
   characterModel: CharacterModel,
@@ -63,7 +123,6 @@ export function effectFactory(
   from?: EffectFrom,
 ) {
   if (effectModelsMap[effect.type]) {
-    // todo: understand and fix type error
     return new effectModelsMap[effect.type](
       characterModel,
       effect as any,
@@ -71,6 +130,5 @@ export function effectFactory(
       from,
     )
   }
-
-  return null
+  return undefined
 }

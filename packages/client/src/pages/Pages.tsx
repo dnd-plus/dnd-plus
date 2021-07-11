@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import React from 'react'
 import { HomePage } from 'pages/HomePage/HomePage'
-import { LoginPage } from './LoginPage/LoginPage'
 import {
   characterInfoRoute,
   characterSettingsClassRoute,
@@ -9,10 +8,7 @@ import {
   characterSettingsRaceRoute,
   characterSettingsRoute,
   homeRoute,
-  loginRoute,
-  profileRoute,
 } from 'constants/routes'
-import { ProfilePage } from 'pages/ProfilePage/ProfilePage'
 import { UserGuard } from 'pages/UserGuard/UserGuard'
 import { CharacterGuard } from 'pages/CharacterGuard/CharacterGuard'
 import { CharacterSettingsLayout } from 'pages/CharacterSettings/CharacterSettingsLayout'
@@ -24,11 +20,7 @@ export function Pages() {
   return (
     <Routes>
       <Route path={homeRoute.path} element={<HomePage />} />
-      <Route path={loginRoute.path} element={<LoginPage />} />
       <Route path={'*'} element={<UserGuard />}>
-        <Route path={profileRoute.path}>
-          <Route path={'/'} element={<ProfilePage />} />
-        </Route>
         <Route path={characterInfoRoute.path} element={<CharacterGuard />}>
           <Route
             path={characterSettingsRoute.path}
@@ -49,7 +41,7 @@ export function Pages() {
             />
           </Route>
         </Route>
-        <Route path={'*'} element={<Navigate to={profileRoute.link()} />} />
+        <Route path={'*'} element={<Navigate to={homeRoute.link()} />} />
       </Route>
     </Routes>
   )

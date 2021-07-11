@@ -1,6 +1,7 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import { computed } from 'mobx'
 
 type MovementEffectItem =
   | OneOfOptionalRequired<{
@@ -9,7 +10,7 @@ type MovementEffectItem =
     }>
   | undefined
 
-type MovementEffect = DeepReadonly<
+export type MovementEffect = DeepReadonly<
   OneOfOptionalRequired<{
     type: 'movement'
     walk?: MovementEffectItem
@@ -26,6 +27,7 @@ export class MovementEffectModel extends BaseEffectModel<MovementEffect> {
     }
   }
 
+  @computed
   get emptyRef() {
     return {
       type: 'movement',
@@ -35,12 +37,17 @@ export class MovementEffectModel extends BaseEffectModel<MovementEffect> {
     } as const
   }
 
+  @computed
   get walk() {
     return this.getItem(this.ref.walk)
   }
+
+  @computed
   get fly() {
     return this.getItem(this.ref.fly)
   }
+
+  @computed
   get swim() {
     return this.getItem(this.ref.swim)
   }
@@ -52,9 +59,11 @@ export class MovementEffectModel extends BaseEffectModel<MovementEffect> {
     }
   }
 
-  assign(effect: MovementEffect) {
-    this.ref.walk = this.assignItem(this.ref.walk, effect.walk)
-    this.ref.fly = this.assignItem(this.ref.fly, effect.fly)
-    this.ref.swim = this.assignItem(this.ref.swim, effect.swim)
+  unionRef(effect: MovementEffect) {
+    return {
+      walk: this.assignItem(this.ref.walk, effect.walk),
+      fly: this.assignItem(this.ref.fly, effect.fly),
+      swim: this.assignItem(this.ref.swim, effect.swim),
+    }
   }
 }

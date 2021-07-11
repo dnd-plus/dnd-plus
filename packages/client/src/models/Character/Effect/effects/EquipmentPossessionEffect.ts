@@ -11,6 +11,7 @@ import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { difference, uniq } from 'lodash-es'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import { computed } from 'mobx'
 
 export type EquipmentPossessionEffect = DeepReadonly<
   OneOfOptionalRequired<{
@@ -22,6 +23,7 @@ export type EquipmentPossessionEffect = DeepReadonly<
 >
 
 export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPossessionEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'equipmentPossession',
@@ -31,6 +33,7 @@ export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPos
     } as const
   }
 
+  @computed
   get weapon(): ReadonlyArray<WeaponTypeWithGroups> {
     let weapon = this.ref.weapon || []
     if (weapon.includes(SIMPLE_WEAPON_GROUP_TYPE)) {
@@ -41,20 +44,22 @@ export class EquipmentPossessionEffectModel extends BaseEffectModel<EquipmentPos
     }
     return weapon
   }
+
+  @computed
   get armor(): ReadonlyArray<ArmorType> {
     return this.ref.armor || []
   }
 
+  @computed
   get tool(): ReadonlyArray<ToolType> {
     return this.ref.tool || []
   }
 
-  assign(effect: EquipmentPossessionEffect) {
-    this.ref.weapon = uniq([
-      ...(this.ref.weapon || []),
-      ...(effect.weapon || []),
-    ])
-    this.ref.armor = uniq([...(this.ref.armor || []), ...(effect.armor || [])])
-    this.ref.tool = uniq([...(this.ref.tool || []), ...(effect.tool || [])])
+  unionRef(effect: EquipmentPossessionEffect) {
+    return {
+      weapon: uniq([...this.weapon, ...(effect.weapon || [])]),
+      armor: uniq([...this.armor, ...(effect.armor || [])]),
+      tool: uniq([...this.tool, ...(effect.tool || [])]),
+    }
   }
 }

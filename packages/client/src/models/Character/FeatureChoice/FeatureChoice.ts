@@ -15,6 +15,7 @@ import { EffectModel } from '../Effect/Effect'
 import { noop } from 'lodash-es'
 import { SelectAbilityOrFeatFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectAbilityOrFeatFeatureChoice'
 import { SelectSpellsFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectSpellsFeatureChoice'
+import { SelectCombatStyleFeatureChoiceModel } from 'models/Character/FeatureChoice/choices/SelectCombatStyleFeatureChoice'
 
 const choiceModelsMap = {
   select: SelectFeatureChoiceModel,
@@ -25,9 +26,11 @@ const choiceModelsMap = {
   selectFeat: SelectFeatFeatureChoiceModel,
   selectAbilityOrFeat: SelectAbilityOrFeatFeatureChoiceModel,
   selectSpells: SelectSpellsFeatureChoiceModel,
+  selectCombatStyle: SelectCombatStyleFeatureChoiceModel,
 } as const
 
-type FeatureChoiceModelsMap = typeof choiceModelsMap
+export type FeatureChoiceModelsMap = typeof choiceModelsMap
+export type FeatureChoiceModelType = keyof FeatureChoiceModelsMap
 export type FeatureChoiceModel = BaseFeatureChoiceModel<any, any>
 export type FeatureChoice = {
   [K in keyof FeatureChoiceModelsMap]: InstanceType<
@@ -58,7 +61,7 @@ export function featureChoiceFactory(
       setStateAction,
     )
   }
-  return null
+  return undefined
 }
 
 export function getFeatureChoiceEffects(

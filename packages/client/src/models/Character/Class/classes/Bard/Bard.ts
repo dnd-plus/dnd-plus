@@ -2,6 +2,7 @@ import { CharacterClass } from 'models/Character/Class/Class'
 import { MUSIC_TOOL_TYPES } from 'common/reference/equipment/ToolType'
 import { SKILL_TYPES } from 'common/reference/SkillType'
 import { SkillPossessionEffect } from 'models/Character/Effect/effects/SkillPossessionEffect'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Bard: CharacterClass = {
   type: 'bard',
@@ -14,21 +15,6 @@ export const Bard: CharacterClass = {
     savingThrows: ['dexterity', 'charisma'],
     skillsNumber: 3,
     skillsChoice: SKILL_TYPES,
-  },
-  spellCasting: {
-    type: 'mage',
-    ability: 'charisma',
-    fromLevel: 1,
-    description:
-      'Вы научились изменять ткань реальности в соответствии с вашими волей и музыкой. Ваши заклинания являются частью вашего обширного репертуара; это магия, которой вы найдёте применение в любой ситуации.',
-    availableCantripsNumber: [
-      2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-    ],
-    availableSpellsNumber: [
-      4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 15, 16, 18, 19, 19, 20, 22, 22, 22,
-    ],
-    ritual: true,
-    focusing: true,
   },
   archetype: {
     level: 3,
@@ -47,6 +33,21 @@ export const Bard: CharacterClass = {
     },
   },
   features: [
+    createSpellCastingFeature('bard', 1, {
+      spellCastingType: 'mage',
+      ability: 'charisma',
+      description:
+        'Вы научились изменять ткань реальности в соответствии с вашими волей и музыкой. Ваши заклинания являются частью вашего обширного репертуара; это магия, которой вы найдёте применение в любой ситуации.',
+      availableCantripsNumber: [
+        2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+      ],
+      availableSpellsNumber: [
+        4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 15, 16, 18, 19, 19, 20, 22, 22,
+        22,
+      ],
+      ritual: true,
+      focusing: true,
+    }),
     {
       level: 1,
       name: 'Вдохновение барда',
@@ -59,6 +60,24 @@ export const Bard: CharacterClass = {
 
 Ваша кость бардовского вдохновения изменяется с ростом вашего уровня в этом классе. Она становится d8 на 5 уровне, d10 на 10 уровне и d12 на 15 уровне.
       `,
+      nextLevels: [
+        {
+          level: 5,
+          description:
+            'На 5 уровне ваша кость бардовского вдохновения становится d8.',
+        },
+        {
+          level: 10,
+          description:
+            'На 10 уровне ваша кость бардовского вдохновения становится d10.',
+        },
+
+        {
+          level: 15,
+          description:
+            'На 15 уровне ваша кость бардовского вдохновения становится d12.',
+        },
+      ],
     },
     {
       level: 2,
@@ -83,6 +102,24 @@ export const Bard: CharacterClass = {
 
 Количество дополнительно восстанавливаемых хитов растёт с вашим уровнем в этом классе: 1d8 на 9 уровне, 1d10 на 13 уровне и 1d12 на 17 уровне.
       `,
+      nextLevels: [
+        {
+          level: 9,
+          description:
+            'На 9 уровне количество дополнительно восстанавливаемых хитов становится 1d8.',
+        },
+
+        {
+          level: 13,
+          description:
+            'На 13 уровне количество дополнительно восстанавливаемых хитов становится 1d10.',
+        },
+        {
+          level: 17,
+          description:
+            'На 17 уровне количество дополнительно восстанавливаемых хитов становится 1d12.',
+        },
+      ],
     },
     {
       level: 3,
@@ -111,13 +148,6 @@ export const Bard: CharacterClass = {
         'Начиная с 5 уровня вы восстанавливаете истраченные вдохновения барда и после короткого и после продолжительного отдыха.',
     },
     {
-      level: 5,
-      name: 'Вдохновение барда',
-      improvement: true,
-      description:
-        'На 5 уровне ваша кость бардовского вдохновения становится d8.',
-    },
-    {
       level: 6,
       name: 'Контрочарование',
       description:
@@ -132,20 +162,6 @@ export const Bard: CharacterClass = {
 При помощи опционального правила черт вы можете отказаться от этого умения и взять вместо него черту.
       `,
       choices: [{ type: 'selectAbilityOrFeat' }],
-    },
-    {
-      level: 9,
-      name: 'Песнь отдыха',
-      improvement: true,
-      description:
-        'На 9 уровне количество дополнительно восстанавливаемых хитов становится 1d8.',
-    },
-    {
-      level: 10,
-      name: 'Вдохновение барда',
-      improvement: true,
-      description:
-        'На 10 уровне ваша кость бардовского вдохновения становится d10.',
     },
     {
       level: 10,
@@ -178,13 +194,6 @@ export const Bard: CharacterClass = {
       choices: [{ type: 'selectAbilityOrFeat' }],
     },
     {
-      level: 13,
-      name: 'Песнь отдыха',
-      improvement: true,
-      description:
-        'На 13 уровне количество дополнительно восстанавливаемых хитов становится 1d10.',
-    },
-    {
       level: 14,
       name: 'Тайны магии',
       description: `
@@ -195,13 +204,6 @@ export const Bard: CharacterClass = {
       `,
     },
     {
-      level: 15,
-      name: 'Вдохновение барда',
-      improvement: true,
-      description:
-        'На 15 уровне ваша кость бардовского вдохновения становится d12.',
-    },
-    {
       level: 16,
       name: 'Увеличение характеристик',
       description: `
@@ -210,12 +212,6 @@ export const Bard: CharacterClass = {
 При помощи опционального правила черт вы можете отказаться от этого умения и взять вместо него черту.
       `,
       choices: [{ type: 'selectAbilityOrFeat' }],
-    },
-    {
-      level: 17,
-      name: 'Песнь отдыха',
-      description:
-        'На 17 уровне количество дополнительно восстанавливаемых хитов становится 1d12.',
     },
     {
       level: 18,

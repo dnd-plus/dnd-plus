@@ -2,6 +2,7 @@ import { DamageType } from 'common/types/base/Damage'
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { entries } from 'common/utils/typesafe'
+import { computed } from 'mobx'
 
 export type DefenceEffect = DeepReadonly<{
   type: 'defence'
@@ -11,6 +12,7 @@ export type DefenceEffect = DeepReadonly<{
 }>
 
 export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'defence',
@@ -18,11 +20,12 @@ export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
     } as const
   }
 
+  @computed
   get damages() {
     return this.ref.damages
   }
 
-  assign(effect: DefenceEffect) {
+  unionRef(effect: DefenceEffect) {
     const damages = { ...this.ref.damages }
 
     entries(effect.damages).forEach(([key, value]) => {
@@ -40,6 +43,6 @@ export class DefenceEffectModel extends BaseEffectModel<DefenceEffect> {
       }
     })
 
-    this.ref.damages = damages
+    return { damages }
   }
 }

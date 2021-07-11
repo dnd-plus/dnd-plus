@@ -198,7 +198,8 @@ export function SpellItem({
             <b>Дистанция: </b>
             {spell.spellRange
               ? declOfNum(spell.spellRange, ['футов', 'фут', 'фута'])
-              : spell.target?.type === 'self'
+              : spell.target?.type === 'self' ||
+                (spell.target?.type === 'ally' && spell.target.from === 'range')
               ? 'На себя'
               : 'Касание'}
           </Typography>
@@ -245,7 +246,7 @@ export function SpellItem({
           <SBox my={1}>
             <Divider />
           </SBox>
-          <Typography>
+          <Typography component={'div'}>
             <Markdown>{spell.description}</Markdown>
           </Typography>
         </div>

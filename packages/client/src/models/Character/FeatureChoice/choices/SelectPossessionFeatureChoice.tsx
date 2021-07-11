@@ -32,6 +32,7 @@ import {
 import { EquipmentPossessionEffectModel } from 'models/Character/Effect/effects/EquipmentPossessionEffect'
 import { computed } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { FeatureChoiceModelType } from 'models/Character/FeatureChoice/FeatureChoice'
 
 const SelectSkillFeatureChoiceState = t.readonly(
   t.type({
@@ -40,7 +41,7 @@ const SelectSkillFeatureChoiceState = t.readonly(
 )
 
 type BaseSelectPossessionRefType<
-  T extends string,
+  T extends FeatureChoiceModelType,
   K extends string,
   V extends string,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -53,7 +54,7 @@ type BaseSelectPossessionRefType<
 >
 
 abstract class BaseSelectPossessionFeatureChoiceModel<
-  T extends string,
+  T extends FeatureChoiceModelType,
   K extends string,
   V extends string,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -114,7 +115,7 @@ abstract class BaseSelectPossessionFeatureChoiceModel<
 }
 
 const SelectPossession = observer(
-  <T extends string, K extends string, V extends string>({
+  <T extends FeatureChoiceModelType, K extends string, V extends string>({
     model,
   }: {
     model: BaseSelectPossessionFeatureChoiceModel<T, K, V>
@@ -154,11 +155,8 @@ const SelectPossession = observer(
           }
         })}
         onChange={(e) =>
-          model.setChoiceAction({
-            key: model.key,
-            value: {
-              selected: String(e.target.value),
-            },
+          model.setState({
+            selected: String(e.target.value),
           })
         }
       />

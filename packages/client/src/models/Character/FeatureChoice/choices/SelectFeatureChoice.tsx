@@ -73,11 +73,8 @@ export class SelectFeatureChoiceModel<
           value: index,
         }))}
         onChange={(e) =>
-          this.setChoiceAction({
-            key: this.key,
-            value: {
-              selected: Number(e.target.value),
-            },
+          this.setState({
+            selected: Number(e.target.value),
           })
         }
       />

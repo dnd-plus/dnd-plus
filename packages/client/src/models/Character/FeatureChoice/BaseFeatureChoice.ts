@@ -1,26 +1,33 @@
 import { CharacterModel } from 'models/Character/CharacterModel'
 import { DeepReadonly } from 'ts-essentials'
 import { ReactNode } from 'react'
-import { AnyAction } from '@logux/core'
 import { EffectModel } from 'models/Character/Effect/Effect'
 import { computed, makeObservable } from 'mobx'
 import { compareEffectArrays, createEffectMap } from 'models/utils/effect'
 import { EmptyEffectModel } from 'models/Character/Effect/effects/EmptyEffect'
+import { FeatureChoiceModelType } from 'models/Character/FeatureChoice/FeatureChoice'
 
 export type FeatureChoiceAction<V = unknown> = (payload: {
   key: string
   value: V
-}) => AnyAction
+}) => void
 
-export abstract class BaseFeatureChoiceModel<R extends { type: string }, ST> {
+export abstract class BaseFeatureChoiceModel<
+  R extends { type: FeatureChoiceModelType },
+  ST,
+> {
   constructor(
     readonly characterModel: CharacterModel,
     public readonly state: unknown,
     public readonly ref: R,
     public readonly key: string,
-    readonly setChoiceAction: FeatureChoiceAction<ST>,
+    private readonly setChoiceAction: FeatureChoiceAction<ST>,
   ) {
     makeObservable(this)
+  }
+
+  setState = (value: ST) => {
+    this.setChoiceAction({ key: this.key, value })
   }
 
   @computed({ equals: compareEffectArrays })

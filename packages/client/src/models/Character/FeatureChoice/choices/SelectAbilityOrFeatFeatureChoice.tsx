@@ -9,6 +9,7 @@ import { Button, Grid } from '@material-ui/core'
 import { computed } from 'mobx'
 import { SBox } from 'components/SBox'
 import { observer } from 'mobx-react-lite'
+import { createKey } from 'models/utils/createKey'
 
 export type SelectAbilityOrFeatFeatureChoice = DeepReadonly<{
   type: 'selectAbilityOrFeat'
@@ -39,9 +40,8 @@ export class SelectAbilityOrFeatFeatureChoiceModel extends BaseFeatureChoiceMode
         this.characterModel,
         this.knownState?.feat,
         { type: 'selectFeat' },
-        this.key,
-        ({ key, value }) =>
-          this.setChoiceAction({ key, value: { feat: value } }),
+        createKey(this.key, 'feat'),
+        ({ value }) => this.setState({ feat: value }),
       ),
     ]
   }
@@ -54,15 +54,12 @@ export class SelectAbilityOrFeatFeatureChoiceModel extends BaseFeatureChoiceMode
           this.characterModel,
           this.knownState?.[name],
           { type: 'selectAbility' },
-          this.key,
-          ({ key, value }) =>
-            this.setChoiceAction({
-              key,
-              value: {
-                ability1: this.knownState?.ability1,
-                ability2: this.knownState?.ability2,
-                [name]: value,
-              },
+          createKey(this.key, 'abilities'),
+          ({ value }) =>
+            this.setState({
+              ability1: this.knownState?.ability1,
+              ability2: this.knownState?.ability2,
+              [name]: value,
             }),
         ),
     )

@@ -3736,6 +3736,9 @@ export const spells: Spell[] = [
     material: false,
     consumeComponents: false,
     needComponents: false,
+    target: {
+      type: 'self',
+    },
     castTime: {
       type: 'action',
     },

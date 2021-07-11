@@ -83,7 +83,7 @@ export const CharacterSettingsClassPage = observer(
         return (
           <>
             <ClassIcon type={type} fontSize={small ? 'small' : 'large'} />
-            <SBox mr={'auto'} ml={small ? 1 : 3}>
+            <SBox mr={'auto'} ml={small ? 1 : isMobile ? 2 : 3}>
               <Typography
                 variant={small ? 'h6' : 'h5'}
                 color={unmetTextMap[type] ? 'error' : 'textPrimary'}
@@ -103,7 +103,12 @@ export const CharacterSettingsClassPage = observer(
 
       return (
         <>
-          <Typography variant={'h4'}>Классы</Typography>
+          <Typography variant={'h4'}>
+            Классы
+            {character.class.isMulticlass &&
+              character.class.level > 0 &&
+              ` - ${character.class.level} уровень`}
+          </Typography>
           {refList.map(({ type }) => {
             return (
               <Paper key={type}>
@@ -145,7 +150,7 @@ export const CharacterSettingsClassPage = observer(
                 </SBox>
                 {character.class.levelChoicesMap[type].map(
                   ({ title, choice }) => (
-                    <Accordion>
+                    <Accordion key={choice.key}>
                       <Badge
                         style={{ width: '100%', display: 'block' }}
                         color={'error'}

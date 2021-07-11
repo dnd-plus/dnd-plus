@@ -1,6 +1,7 @@
 import { DeepReadonly } from 'ts-essentials'
 import { SKILL_TYPES, SkillType } from 'common/reference/SkillType'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
+import { computed } from 'mobx'
 
 export type SkillPossessionLevel =
   | 'expertise'
@@ -35,6 +36,7 @@ export type SkillPossessionEffect = DeepReadonly<{
 }>
 
 export class SkillPossessionEffectModel extends BaseEffectModel<SkillPossessionEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'skillPossession',
@@ -42,11 +44,12 @@ export class SkillPossessionEffectModel extends BaseEffectModel<SkillPossessionE
     } as const
   }
 
+  @computed
   get skills() {
     return this.ref.skills
   }
 
-  assign(effect: SkillPossessionEffect) {
+  unionRef(effect: SkillPossessionEffect) {
     const skills = { ...this.ref.skills }
 
     SKILL_TYPES.forEach((key) => {
@@ -56,6 +59,6 @@ export class SkillPossessionEffectModel extends BaseEffectModel<SkillPossessionE
       }
     })
 
-    this.ref.skills = skills
+    return { skills }
   }
 }

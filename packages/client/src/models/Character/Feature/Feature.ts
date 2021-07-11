@@ -21,7 +21,7 @@ export class FeatureModel<Ref extends Feature = Feature> {
     protected readonly characterModel: CharacterModel,
     public readonly ref: Ref,
     public readonly key: string,
-    protected readonly choicesState: Record<any, unknown>,
+    protected readonly choicesState: Record<any, unknown> | undefined,
     protected readonly setChoiceAction: FeatureChoiceAction,
   ) {
     makeObservable(this)
@@ -35,7 +35,7 @@ export class FeatureModel<Ref extends Feature = Feature> {
         return (
           featureChoiceFactory(
             this.characterModel,
-            this.choicesState[choiceKey],
+            this.choicesState?.[choiceKey],
             choice,
             choiceKey,
             this.setChoiceAction,

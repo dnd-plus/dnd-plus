@@ -1,6 +1,7 @@
 import { DeepReadonly } from 'ts-essentials'
 import { BaseEffectModel } from 'models/Character/Effect/BaseEffect'
 import { OneOfOptionalRequired } from 'common/types/utils/OneOfOptionalRequired'
+import { computed } from 'mobx'
 
 export type VisionEffect = DeepReadonly<
   OneOfOptionalRequired<{
@@ -12,6 +13,7 @@ export type VisionEffect = DeepReadonly<
   }>
 >
 export class VisionEffectModel extends BaseEffectModel<VisionEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'vision',
@@ -22,23 +24,32 @@ export class VisionEffectModel extends BaseEffectModel<VisionEffect> {
     } as const
   }
 
+  @computed
   get blindsight() {
     return this.ref.blindsight || 0
   }
+
+  @computed
   get dark() {
     return this.ref.dark || 0
   }
+
+  @computed
   get tremorsense() {
     return this.ref.tremorsense || 0
   }
+
+  @computed
   get truesight() {
     return this.ref.truesight || 0
   }
 
-  assign(effect: VisionEffect) {
-    this.ref.blindsight = Math.max(this.blindsight, effect.blindsight || 0)
-    this.ref.dark = Math.max(this.dark, effect.dark || 0)
-    this.ref.tremorsense = Math.max(this.tremorsense, effect.tremorsense || 0)
-    this.ref.truesight = Math.max(this.truesight, effect.truesight || 0)
+  unionRef(effect: VisionEffect) {
+    return {
+      blindsight: Math.max(this.blindsight, effect.blindsight || 0),
+      dark: Math.max(this.dark, effect.dark || 0),
+      tremorsense: Math.max(this.tremorsense, effect.tremorsense || 0),
+      truesight: Math.max(this.truesight, effect.truesight || 0),
+    }
   }
 }

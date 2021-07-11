@@ -1,32 +1,27 @@
 import {
   EFFECT_TYPES,
   EffectModel,
-  EffectModelsMap,
+  EffectModelMap,
   effectModelsMap,
-  EffectTypeMap,
+  EffectModelTypeMap,
 } from 'client/src/models/Character/Effect/Effect'
 import { createKey } from 'client/src/models/utils/createKey'
 import { CharacterModel } from 'client/src/models/Character/CharacterModel'
 import { withChildEffects } from 'models/Character/EffectsModel'
 
-export function unionEffectModels<T extends keyof EffectModelsMap>(
+export function unionEffectModels<T extends keyof EffectModelMap>(
   characterModel: CharacterModel,
   type: T,
   effectModels: EffectModel[],
-): EffectTypeMap[T] {
-  const unionModel = new effectModelsMap[type](
-    characterModel,
-    effectModelsMap[type].emptyRef,
-    createKey(type, 'union'),
-  )
-
-  effectModels
-    .filter((effectModel) => effectModel.type === type)
-    .forEach((effect) => {
-      unionModel.assignModel(effect)
-    })
-
-  return unionModel as EffectTypeMap[T]
+): EffectModelTypeMap[T] {
+  return effectModels.reduce(
+    (unionModel, model) => unionModel.createUnionModel(model),
+    new effectModelsMap[type](
+      characterModel,
+      effectModelsMap[type].emptyRef,
+      createKey(type, 'union'),
+    ),
+  ) as EffectModelTypeMap[T]
 }
 
 export function compareEffectArrays(a: EffectModel[], b: EffectModel[]) {
@@ -50,6 +45,6 @@ export function createEffectMap(
       ...obj,
       [type]: unionEffectModels(characterModel, type, resultEffects),
     }),
-    {} as EffectTypeMap,
+    {} as EffectModelTypeMap,
   )
 }

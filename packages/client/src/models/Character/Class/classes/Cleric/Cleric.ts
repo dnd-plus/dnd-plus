@@ -1,4 +1,5 @@
 import { CharacterClass } from 'models/Character/Class/Class'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Cleric: CharacterClass = {
   type: 'cleric',
@@ -10,19 +11,6 @@ export const Cleric: CharacterClass = {
     savingThrows: ['wisdom', 'charisma'],
     skillsNumber: 2,
     skillsChoice: ['history', 'medicine', 'insight', 'religion', 'persuasion'],
-  },
-  spellCasting: {
-    type: 'mage',
-    ability: 'wisdom',
-    fromLevel: 1,
-    description:
-      'Будучи проводником божественной силы, вы можете творить заклинания жреца.',
-    availableCantripsNumber: [
-      3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    ],
-    characterLevelSpellsNumberMod: 'full',
-    ritual: true,
-    focusing: true,
   },
   archetype: {
     level: 1,
@@ -40,5 +28,18 @@ export const Cleric: CharacterClass = {
       skillsNumber: 0,
     },
   },
-  features: [],
+  features: [
+    createSpellCastingFeature('cleric', 1, {
+      spellCastingType: 'mage',
+      ability: 'wisdom',
+      description:
+        'Будучи проводником божественной силы, вы можете творить заклинания жреца.',
+      availableCantripsNumber: [
+        3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+      ],
+      characterLevelSpellsNumberMod: 'full',
+      ritual: true,
+      focusing: true,
+    }),
+  ],
 }

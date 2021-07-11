@@ -13,13 +13,9 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
-import {
-  AccountBoxOutlined,
-  AccountCircle,
-  ExitToApp,
-} from '@material-ui/icons'
+import { AccountCircle, ExitToApp } from '@material-ui/icons'
 import { Link } from 'react-router-dom'
-import { homeRoute, loginRoute, profileRoute } from 'constants/routes'
+import { homeRoute } from 'constants/routes'
 import { useToggle } from 'react-use'
 import { SBox } from './SBox'
 
@@ -55,7 +51,7 @@ export function Header() {
           </Typography>
         </SBox>
         {isGuest ? (
-          <Button component={Link} to={loginRoute.path} color='inherit'>
+          <Button component={Link} to={homeRoute.path} color='inherit'>
             Вход
           </Button>
         ) : (
@@ -84,16 +80,6 @@ export function Header() {
               onClose={toggleUserMenuOpen}
               getContentAnchorEl={null}
             >
-              <MenuItem
-                component={Link}
-                to={profileRoute.path}
-                onClick={() => toggleUserMenuOpen()}
-              >
-                <ListItemIcon>
-                  <AccountBoxOutlined fontSize='small' />
-                </ListItemIcon>
-                <Typography variant='inherit'>Профиль</Typography>
-              </MenuItem>
               <MenuItem
                 onClick={() => {
                   toggleUserMenuOpen()

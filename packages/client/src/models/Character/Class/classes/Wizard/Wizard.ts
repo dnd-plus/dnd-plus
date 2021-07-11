@@ -1,4 +1,5 @@
 import { CharacterClass } from 'models/Character/Class/Class'
+import { createSpellCastingFeature } from 'models/Character/Class/spellCasting'
 
 export const Wizard: CharacterClass = {
   type: 'wizard',
@@ -18,19 +19,6 @@ export const Wizard: CharacterClass = {
       'religion',
     ],
   },
-  spellCasting: {
-    type: 'mage',
-    ability: 'intelligence',
-    fromLevel: 1,
-    description:
-      'Являясь учеником тайной магии, вы обладаете книгой, содержащей заклинания, показывающие первые проблески вашей истинной силы.',
-    availableCantripsNumber: [
-      3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-    ],
-    characterLevelSpellsNumberMod: 'full',
-    ritual: true,
-    focusing: false,
-  },
   archetype: {
     level: 2,
     name: 'Магические традиции',
@@ -47,5 +35,18 @@ export const Wizard: CharacterClass = {
       skillsNumber: 0,
     },
   },
-  features: [],
+  features: [
+    createSpellCastingFeature('wizard', 1, {
+      spellCastingType: 'mage',
+      ability: 'intelligence',
+      description:
+        'Являясь учеником тайной магии, вы обладаете книгой, содержащей заклинания, показывающие первые проблески вашей истинной силы.',
+      availableCantripsNumber: [
+        3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+      ],
+      characterLevelSpellsNumberMod: 'full',
+      ritual: true,
+      focusing: false,
+    }),
+  ],
 }

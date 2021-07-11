@@ -9,6 +9,7 @@ import { createKey } from 'models/utils/createKey'
 import { checkFeatConditions } from 'models/Character/Feat/Feat'
 import { feats } from 'models/Character/Feat/feats'
 import { getFeatureChoiceEffects } from '../../FeatureChoice/FeatureChoice'
+import { computed } from 'mobx'
 
 export type FeatEffect = DeepReadonly<{
   type: 'feat'
@@ -16,6 +17,7 @@ export type FeatEffect = DeepReadonly<{
 }>
 
 export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
+  @computed
   get emptyRef() {
     return {
       type: 'feat',
@@ -68,11 +70,19 @@ export class FeatEffectModel extends BaseEffectModel<FeatEffect> {
     })
   }
 
-  feats = this.ref.feats
+  @computed
+  get feats() {
+    return this.ref.feats
+  }
 
-  featIds = this.ref.feats.map(({ id }) => id)
+  @computed
+  get featIds() {
+    return this.ref.feats.map(({ id }) => id)
+  }
 
-  assign(effect: FeatEffect) {
-    this.ref.feats = uniqBy([...this.ref.feats, ...effect.feats], 'id')
+  unionRef(effect: FeatEffect) {
+    return {
+      feats: uniqBy([...this.ref.feats, ...effect.feats], 'id'),
+    }
   }
 }
